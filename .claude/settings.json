@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv ~/.claude/skills/create-prd.md \"/Users/xiexie/Desktop/Claude code/.claude/skills/create-prd/skill.md\")",
+      "Bash(mv ~/.claude/skills/check-prd.md \"/Users/xiexie/Desktop/Claude code/.claude/skills/check-prd/skill.md\")",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
