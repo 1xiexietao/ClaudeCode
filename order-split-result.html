@@ -115,7 +115,7 @@ body {
 .filter-input:focus, .filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 .filter-select {
   cursor: pointer; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
 .filter-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); }
@@ -163,6 +163,7 @@ body {
   white-space: nowrap;
 }
 
+/* Level 1 - Order Row */
 .order-row { cursor: pointer; transition: background 0.15s; }
 .order-row:hover { background: var(--bg-hover); }
 .order-row td {
@@ -178,6 +179,7 @@ body {
 .expand-btn svg { width: 13px; height: 13px; transition: transform 0.2s; }
 .order-row.expanded .expand-btn svg { transform: rotate(90deg); }
 
+/* Expand/Collapse All Toggle */
 .expand-toggle-btn {
   width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
   border: none; background: none; cursor: pointer; color: var(--text-muted);
@@ -185,52 +187,10 @@ body {
 }
 .expand-toggle-btn:hover { background: #F4F1FF; color: #7B61FF; }
 .expand-toggle-btn svg { width: 16px; height: 16px; transition: transform 0.2s; }
-
+.expand-toggle-btn.collapsed svg { transform: rotate(180deg); }
 .order-id { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--text-primary); }
 .order-date { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
 .order-num { font-family: var(--font-mono); font-weight: 500; }
-
-.suborder-row { display: none; }
-.suborder-row.visible { display: table-row; }
-.suborder-row td { padding: 0; border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; }
-.suborder-container { padding: 10px 16px 10px 52px; }
-.suborder-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-subtle); }
-.suborder-table th {
-  padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 600;
-  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
-  background: #F7F8FA; border-bottom: 1px solid var(--border-subtle);
-}
-.suborder-table td { padding: 9px 12px; font-size: 12px; color: var(--text-primary); border-bottom: 1px solid var(--border-subtle); }
-.suborder-table tr:last-child td { border-bottom: none; }
-
-.flag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; }
-.flag-urgent { background: #FEE2E2; color: #DC2626; }
-.flag-note { background: #FEF3C7; color: #D97706; }
-.flag-vip { background: #F4F1FF; color: #7B61FF; }
-
-.sub-action-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 10px; border: none; border-radius: 4px;
-  font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.2s;
-  background: #D1FAE5; color: #059669;
-}
-.sub-action-btn:hover { background: #A7F3D0; }
-.sub-action-btn.split {
-  background: #F4F1FF; color: #7B61FF;
-}
-.sub-action-btn.split:hover { background: #E9E5FB; }
-.sub-action-btn.sync {
-  background: #DBEAFE; color: #2563EB;
-}
-.sub-action-btn.sync:hover { background: #BFDBFE; }
-.sub-action-group { display: flex; gap: 6px; justify-content: flex-end; }
-
-.suborder-num-link {
-  font-family: var(--font-mono); font-weight: 600; font-size: 12px;
-  color: #4078FF; cursor: pointer; padding: 2px 6px; border-radius: 4px;
-  transition: all 0.2s;
-}
-.suborder-num-link:hover { background: #F4F1FF; text-decoration: underline; }
 
 /* Pagination */
 .pagination {
@@ -247,30 +207,15 @@ body {
 }
 .page-btn:hover { background: #F4F1FF; border-color: rgba(123,97,255,0.2); color: #7B61FF; }
 .page-btn.active { background: #F4F1FF; border-color: rgba(123,97,255,0.25); color: #7B61FF; }
+.page-btn svg { width: 13px; height: 13px; }
 
-/* Modal */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(30,30,46,0.45);
-  backdrop-filter: blur(6px); z-index: 1000;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
-}
-.modal-overlay.open { opacity: 1; visibility: visible; }
-.modal {
-  background: #fff; border-radius: 16px; width: 500px; max-width: 92vw; max-height: 90vh;
-  display: flex; flex-direction: column;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.15);
-  transform: translateY(20px) scale(0.97); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
-}
-.modal-overlay.open .modal { transform: translateY(0) scale(1); }
-.modal-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 22px 14px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
-}
-.modal-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); }
-.modal-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
-.modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 14px 22px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+/* Flag styles */
+.flag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; }
+.flag-urgent { background: #FEE2E2; color: #DC2626; }
+.flag-note { background: #FEF3C7; color: #D97706; }
+.flag-vip { background: #F4F1FF; color: #7B61FF; }
 
+/* Toast */
 .toast {
   position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
   background: #1e1e2e; color: #fff; padding: 9px 20px; border-radius: 8px;
@@ -281,9 +226,11 @@ body {
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 
+/* Animation */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .animate-in { animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
-.delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; }
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -448,6 +395,7 @@ body {
 
   </main>
 
+  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
 </div>
@@ -466,15 +414,17 @@ const orders = [
   { id: 'SHOP-20260623-010', date: '2026-06-24', channel: 'iphone', store: 'store004', payStatus: 'paid', shipStatus: 'pending', productCount: 5, subCount: 3, flags: ['urgent'] }
 ];
 
+let expandedRows = new Set();
+
 function init() {
   renderOrderTable();
 }
 
 function renderOrderTable() {
   const tbody = document.getElementById('orderTableBody');
-  tbody.innerHTML = orders.map((order, idx) => `
-    <tr class="order-row">
-      <td><button class="expand-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg></button></td>
+  tbody.innerHTML = orders.map((order) => `
+    <tr class="order-row" data-order-id="${order.id}">
+      <td><button class="expand-btn" onclick="event.stopPropagation(); toggleSubOrder('${order.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg></button></td>
       <td><span class="order-id">${order.id}</span></td>
       <td><span class="order-num">${order.subCount}</span></td>
       <td><span class="order-date">${order.date}</span></td>
@@ -484,9 +434,36 @@ function renderOrderTable() {
       <td>${getShipStatusBadge(order.shipStatus)}</td>
       <td><span class="order-num">${order.productCount}</span></td>
       <td>${getFlagsBadges(order.flags)}</td>
-      <td><button class="btn btn-secondary" onclick="showToast('查看操作日志')">日志</button></td>
+      <td><button class="btn btn-secondary" onclick="showOrderLog('${order.id}')">日志</button></td>
     </tr>
   `).join('');
+}
+
+function toggleSubOrder(orderId) {
+  const row = document.querySelector(`[data-order-id="${orderId}"]`);
+  if (expandedRows.has(orderId)) {
+    expandedRows.delete(orderId);
+    row.classList.remove('expanded');
+  } else {
+    expandedRows.add(orderId);
+    row.classList.add('expanded');
+  }
+  showToast(`订单 ${orderId} ${expandedRows.has(orderId) ? '已展开' : '已折叠'}`);
+}
+
+function toggleAllSubOrders() {
+  const btn = document.getElementById('expandToggleBtn');
+  if (expandedRows.size === 0) {
+    orders.forEach(order => expandedRows.add(order.id));
+    document.querySelectorAll('.order-row').forEach(row => row.classList.add('expanded'));
+    btn.classList.add('collapsed');
+    showToast('✓ 已展开所有子订单');
+  } else {
+    expandedRows.clear();
+    document.querySelectorAll('.order-row').forEach(row => row.classList.remove('expanded'));
+    btn.classList.remove('collapsed');
+    showToast('✓ 已折叠所有子订单');
+  }
 }
 
 function getChannelName(ch) {
@@ -521,12 +498,29 @@ function getFlagsBadges(flags) {
   }).join('');
 }
 
-function toggleAllSubOrders() { showToast('切换展开/折叠'); }
-function applyFilters() { showToast('查询成功！'); }
-function resetFilters() { showToast('筛选已重置'); }
-function batchSyncWms() { showToast('批量同步易仓已启动...'); }
-function openBatchImport() { showToast('打开批量导入窗口'); }
-function exportData() { showToast('数据导出成功！'); }
+function showOrderLog(orderId) {
+  showToast(`✓ 查看订单 ${orderId} 的操作日志`);
+}
+
+function applyFilters() {
+  showToast('✓ 查询成功！');
+}
+
+function resetFilters() {
+  showToast('✓ 筛选已重置');
+}
+
+function batchSyncWms() {
+  showToast('⟳ 批量同步易仓已启动...');
+}
+
+function openBatchImport() {
+  showToast('📤 打开批量导入窗口');
+}
+
+function exportData() {
+  showToast('✓ 数据导出成功！');
+}
 
 function showToast(msg) {
   const toast = document.getElementById('toast');
