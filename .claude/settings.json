@@ -10,7 +10,27 @@
       "Skill(update-config:*)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git config *)",
+      "Bash(gh auth *)",
+      "Bash(git fetch *)",
+      "Bash(find /Users/xiexie/.claude -name \"*.md\" -o -name \"*.json\" 2>/dev/null | head -30)",
+      "Read(//Users/xiexie/.claude/**)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(gh search *)",
+      "Bash(mkdir -p \"/Users/xiexie/Desktop/Claude code/.claude/skills/frontend-design\")",
+      "Bash(mkdir -p \"/Users/xiexie/Desktop/Claude code/.claude/skills/frontend-design/.claude-plugin\")",
+      "Edit(/.claude/skills/create-prd/**)",
+      "Bash(git push *)",
+      "Bash(mkdir -p \"/Users/xiexie/Desktop/Claude code/docs/prd\")",
+      "Bash(code --install-extension bierner.markdown-mermaid)",
+      "Bash(git commit -m 'feat: 新增0630迭代版本PRD及项目配置整合 *)",
+      "WebFetch(domain:open.eccang.com)"
+    ],
+    "additionalDirectories": [
+      "/Users/xiexie/Desktop/Claude code/.claude/skills",
+      "/Users/xiexie/Desktop/Claude code/.claude/skills/frontend-design",
+      "/Users/xiexie/Desktop/Claude code/docs"
     ]
   }
 }

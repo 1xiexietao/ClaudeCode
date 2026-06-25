@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订单管理中心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #f3f4f8;
+  --bg-primary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f7f7fb;
+  --bg-hover: #f0f0f7;
+  --bg-input: #f5f5fa;
+  --border-subtle: #e8e8f0;
+  --border-medium: #d8d8e4;
+  --border-strong: #c0c0d0;
+  --text-primary: #1e1e2e;
+  --text-secondary: #6b6b80;
+  --text-muted: #9e9eb5;
+  --accent: #7c3aed;
+  --accent-soft: rgba(124,58,237,0.08);
+  --accent-glow: rgba(124,58,237,0.18);
+  --green: #10b981;
+  --green-soft: rgba(16,185,129,0.08);
+  --red: #ef4444;
+  --red-soft: rgba(239,68,68,0.08);
+  --blue: #3b82f6;
+  --blue-soft: rgba(59,130,246,0.08);
+  --yellow: #f59e0b;
+  --yellow-soft: rgba(245,158,11,0.08);
+  --pink: #ec4899;
+  --pink-soft: rgba(236,72,153,0.08);
+  --orange: #f97316;
+  --orange-soft: rgba(249,115,22,0.08);
+  --purple: #8b5cf6;
+  --purple-soft: rgba(139,92,246,0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --shadow-elevated: 0 4px 24px rgba(0,0,0,0.08);
+  --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === AMBIENT BACKGROUND === */
+body::before {
+  content: '';
+  position: fixed;
+  top: -30%; right: -15%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%; left: -10%;
+  width: 50vw; height: 50vw;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === LAYOUT === */
+.app { position: relative; z-index: 1; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--font-display);
+  box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+}
+.logo-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.logo-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-medium);
+}
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar-badge {
+  padding: 4px 10px;
+  background: #f5f3ff;
+  color: #7c3aed;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+.topbar-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.topbar-avatar:hover { box-shadow: 0 0 0 3px rgba(124,58,237,0.2); }
+
+.main { padding: 24px 32px 48px; max-width: 1440px; margin: 0 auto; }
+
+/* === STATS ROW === */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+.stat-card:hover {
+  border-color: var(--border-medium);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  border-radius: 3px 3px 0 0;
+}
+.stat-card:nth-child(1)::before { background: linear-gradient(90deg, #7c3aed, #a855f7); }
+.stat-card:nth-child(2)::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.stat-card:nth-child(3)::before { background: linear-gradient(90deg, #10b981, #34d399); }
+.stat-card:nth-child(4)::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.stat-card:nth-child(5)::before { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.stat-card:nth-child(1) .stat-value { color: #7c3aed; }
+.stat-card:nth-child(2) .stat-value { color: #3b82f6; }
+.stat-card:nth-child(3) .stat-value { color: #10b981; }
+.stat-card:nth-child(4) .stat-value { color: #f59e0b; }
+.stat-card:nth-child(5) .stat-value { color: #ec4899; }
+
+.stat-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 8px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.stat-change.up { color: #10b981; }
+.stat-change.down { color: #ef4444; }
+
+/* === FILTER SECTION === */
+.filter-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.filter-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.filter-title svg {
+  width: 16px; height: 16px;
+  color: #7c3aed;
+}
+.filter-reset {
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+}
+.filter-reset:hover { color: #7c3aed; }
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.filter-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.filter-input,
+.filter-select {
+  height: 40px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-body);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+}
+.filter-input::placeholder { color: var(--text-muted); }
+.filter-input:focus,
+.filter-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.filter-select { cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239e9eb5' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.filter-select option { background: #fff; color: var(--text-primary); }
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn svg { width: 15px; height: 15px; }
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.25);
+}
+.btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+}
+.btn-secondary:hover {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border-color: rgba(124,58,237,0.3);
+}
+
+/* === TABLE SECTION === */
+.table-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.table-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.table-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.table-count span { color: #7c3aed; font-weight: 500; }
+
+.tab-group {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-input);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+}
+.tab {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+  font-family: var(--font-body);
+}
+.tab:hover { color: var(--text-secondary); }
+.tab.active {
+  background: #fff;
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.table-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toolbar-btn {
+  width: 34px; height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.toolbar-btn:hover {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border-color: rgba(124,58,237,0.25);
+}
+.toolbar-btn svg { width: 16px; height: 16px; }
+
+.search-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
+}
+.search-inline:focus-within { border-color: #7c3aed; }
+.search-inline svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; }
+.search-inline input {
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: 12px;
+  outline: none;
+  width: 160px;
+  font-family: var(--font-body);
+}
+.search-inline input::placeholder { color: var(--text-muted); }
+
+/* === TABLE === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead th {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #fafafe;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text-secondary); }
+thead th .sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.3;
+  font-size: 10px;
+  transition: opacity 0.2s;
+}
+thead th.sorted .sort-icon { opacity: 1; color: #7c3aed; }
+
+tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+tbody tr:hover { background: #f5f3ff; }
+tbody tr:last-child { border-bottom: none; }
+
+tbody td {
+  padding: 14px 20px;
+  font-size: 13px;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.cell-order-id {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  color: #7c3aed;
+  letter-spacing: 0.02em;
+}
+.cell-order-id:hover { text-decoration: underline; }
+
+.cell-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.product-thumb {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.product-name {
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.product-sku {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.cell-amount {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+
+.cell-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar-sm {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.user-name { font-size: 13px; }
+
+/* === STATUS BADGES === */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.status-pending { background: #fef3c7; color: #d97706; }
+.status-pending .status-dot { background: #f59e0b; }
+.status-processing { background: #dbeafe; color: #2563eb; }
+.status-processing .status-dot { background: #3b82f6; animation: pulse-dot 2s infinite; }
+.status-shipped { background: #ede9fe; color: #7c3aed; }
+.status-shipped .status-dot { background: #8b5cf6; }
+.status-completed { background: #d1fae5; color: #059669; }
+.status-completed .status-dot { background: #10b981; }
+.status-cancelled { background: #fee2e2; color: #dc2626; }
+.status-cancelled .status-dot { background: #ef4444; }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* === PAYMENT TAG === */
+.payment-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.payment-tag.paid { color: #10b981; }
+.payment-tag.unpaid { color: #9e9eb5; }
+.payment-tag.refunded { color: #ef4444; }
+
+/* === ACTIONS === */
+.cell-actions {
+  display: flex;
+  gap: 4px;
+}
+.action-btn {
+  width: 28px; height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.action-btn:hover {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+.action-btn svg { width: 14px; height: 14px; }
+
+/* === PAGINATION === */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+.page-info {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.page-btn {
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.page-btn:hover {
+  background: #f5f3ff;
+  border-color: rgba(124,58,237,0.2);
+  color: #7c3aed;
+}
+.page-btn.active {
+  background: var(--accent-soft);
+  border-color: rgba(124,58,237,0.25);
+  color: var(--accent);
+}
+.page-btn svg { width: 14px; height: 14px; }
+
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+
+/* row hover detail indicator */
+tbody tr td:first-child {
+  position: relative;
+}
+tbody tr:hover td:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 3px;
+  background: linear-gradient(180deg, #7c3aed, #a855f7);
+  border-radius: 0 2px 2px 0;
+}
+
+/* checkbox */
+.row-check {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-strong);
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+}
+.row-check:checked {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+.row-check:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: #fff;
+  font-weight: 700;
+}
+
+th:first-child, td:first-child { width: 44px; text-align: center; }
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+  .filter-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .main { padding: 16px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .filter-grid { grid-template-columns: 1fr; }
+  .topbar { padding: 12px 16px; }
+  .table-toolbar { flex-wrap: wrap; gap: 10px; }
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d0d0e0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b0b0c0; }
+
+.table-scroll { overflow-x: auto; }
+
+/* === MODAL OVERLAY === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 30, 46, 0.45);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* === MODAL === */
+.modal {
+  background: #fff;
+  border-radius: 18px;
+  width: 680px;
+  max-width: 92vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-overlay.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.modal-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(124,58,237,0.25);
+}
+.modal-icon svg { width: 20px; height: 20px; color: #fff; }
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.modal-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.modal-close {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+.modal-close:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+.modal-close svg { width: 16px; height: 16px; }
+
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* form grid */
+.form-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.form-grid .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.form-label .required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+.form-input,
+.form-select,
+.form-textarea {
+  height: 40px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-body);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  width: 100%;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+}
+.form-input::placeholder { color: var(--text-muted); }
+.form-select {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239e9eb5' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.form-select option { background: #fff; }
+.form-input[readonly] {
+  background: #f0f0f5;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* icon picker */
+.icon-picker {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.icon-option {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  border: 2px solid var(--border-subtle);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.icon-option:hover { border-color: #a78bfa; background: #f5f3ff; }
+.icon-option.selected {
+  border-color: #7c3aed;
+  background: #f5f3ff;
+  box-shadow: 0 0 0 2px rgba(124,58,237,0.15);
+}
+
+/* amount input with prefix */
+.input-with-prefix {
+  position: relative;
+}
+.input-prefix {
+  position: absolute;
+  left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.input-with-prefix .form-input {
+  padding-left: 28px;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 28px;
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+.modal-footer .btn { height: 38px; padding: 0 22px; }
+.btn-danger {
+  background: #fff;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+}
+.btn-danger:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+/* toast */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: #1e1e2e;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.toast .toast-icon { margin-right: 6px; }
+
+/* === LOG MODAL === */
+.modal.modal-log {
+  width: 560px;
+}
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.log-entry {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+.log-entry:last-child { border-bottom: none; }
+
+.log-time-col {
+  width: 70px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 2px;
+}
+.log-time {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.log-date {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.log-icon-col {
+  width: 28px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.log-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.log-icon.create { background: #d1fae5; }
+.log-icon.edit { background: #dbeafe; }
+.log-icon.status { background: #ede9fe; }
+.log-icon.payment { background: #fef3c7; }
+.log-icon.ship { background: #e0e7ff; }
+.log-icon.cancel { background: #fee2e2; }
+.log-icon.system { background: #f0f0f5; }
+
+.log-content-col {
+  flex: 1;
+  min-width: 0;
+}
+.log-action {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.log-action strong {
+  font-weight: 600;
+  color: #7c3aed;
+}
+.log-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.log-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  background: var(--bg-input);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.log-user-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+/* log entry stagger animation */
+.log-entry {
+  animation: logSlide 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes logSlide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* click hint on product name */
+.cell-product { cursor: pointer; }
+.product-name {
+  transition: color 0.15s;
+}
+.cell-product:hover .product-name {
+  color: #7c3aed;
+}
+
+/* log-btn specific */
+.action-btn.log-btn {
+  color: #8b5cf6;
+}
+.action-btn.log-btn:hover {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <div class="logo-icon">O</div>
+        <span class="logo-text">OrderOS</span>
+      </div>
+      <div class="logo-divider"></div>
+      <span class="page-title">订单管理中心</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge">v2.4.1</span>
+      <div class="topbar-avatar">谢</div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card animate-in delay-1">
+        <div class="stat-label">今日订单</div>
+        <div class="stat-value">1,284</div>
+        <div class="stat-change up">↑ 12.5% 较昨日</div>
+      </div>
+      <div class="stat-card animate-in delay-2">
+        <div class="stat-label">待处理</div>
+        <div class="stat-value">86</div>
+        <div class="stat-change down">↑ 8 需紧急处理</div>
+      </div>
+      <div class="stat-card animate-in delay-3">
+        <div class="stat-label">已完成</div>
+        <div class="stat-value">1,092</div>
+        <div class="stat-change up">↑ 15.2%</div>
+      </div>
+      <div class="stat-card animate-in delay-4">
+        <div class="stat-label">今日营收</div>
+        <div class="stat-value">¥284K</div>
+        <div class="stat-change up">↑ 9.8%</div>
+      </div>
+      <div class="stat-card animate-in delay-5">
+        <div class="stat-label">退款率</div>
+        <div class="stat-value">1.2%</div>
+        <div class="stat-change up">↓ 0.3% 趋势向好</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-section animate-in delay-2">
+      <div class="filter-header">
+        <div class="filter-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          筛选条件
+        </div>
+        <button class="filter-reset" onclick="resetFilters()">重置全部</button>
+      </div>
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label class="filter-label">订单编号</label>
+          <input type="text" class="filter-input" placeholder="输入订单号搜索..." id="filterOrderId">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">订单状态</label>
+          <select class="filter-select" id="filterStatus">
+            <option value="">全部状态</option>
+            <option value="pending">待付款</option>
+            <option value="processing">处理中</option>
+            <option value="shipped">已发货</option>
+            <option value="completed">已完成</option>
+            <option value="cancelled">已取消</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">支付方式</label>
+          <select class="filter-select" id="filterPayment">
+            <option value="">全部方式</option>
+            <option value="alipay">支付宝</option>
+            <option value="wechat">微信支付</option>
+            <option value="bank">银行转账</option>
+            <option value="cod">货到付款</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">下单时间</label>
+          <select class="filter-select" id="filterDate">
+            <option value="">全部时间</option>
+            <option value="today">今天</option>
+            <option value="week">本周</option>
+            <option value="month">本月</option>
+            <option value="quarter">本季度</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="applyFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          查询
+        </button>
+        <button class="btn btn-secondary" onclick="exportData()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-section animate-in delay-3">
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <div class="tab-group">
+            <button class="tab active" onclick="switchTab(this, 'all')">全部</button>
+            <button class="tab" onclick="switchTab(this, 'pending')">待处理</button>
+            <button class="tab" onclick="switchTab(this, 'processing')">进行中</button>
+            <button class="tab" onclick="switchTab(this, 'completed')">已完成</button>
+          </div>
+          <span class="table-count">共 <span id="totalCount">1,284</span> 条</span>
+        </div>
+        <div class="table-toolbar-right">
+          <div class="search-inline">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="搜索商品、客户..." id="quickSearch" oninput="handleSearch(this.value)">
+          </div>
+          <button class="toolbar-btn" title="刷新" onclick="refreshData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          </button>
+          <button class="toolbar-btn" title="列设置">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="row-check" id="selectAll" onchange="toggleSelectAll(this)"></th>
+              <th class="sorted" onclick="sortTable('id')">订单编号 <span class="sort-icon">↕</span></th>
+              <th>商品信息</th>
+              <th onclick="sortTable('amount')">订单金额 <span class="sort-icon">↕</span></th>
+              <th>客户信息</th>
+              <th>订单状态</th>
+              <th>支付状态</th>
+              <th onclick="sortTable('date')">下单时间 <span class="sort-icon">↕</span></th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="orderTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="page-info">显示 1-20 / 共 1,284 条</div>
+        <div class="page-controls">
+          <button class="page-btn" title="上一页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">...</button>
+          <button class="page-btn">65</button>
+          <button class="page-btn" title="下一页">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- EDIT MODAL -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <div>
+            <div class="modal-title">编辑订单</div>
+            <div class="modal-subtitle" id="modalOrderId">ORD-20260525-001</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-section-title">商品信息</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">商品名称 <span class="required">*</span></label>
+            <input type="text" class="form-input" id="editProduct" placeholder="输入商品名称">
+          </div>
+          <div class="form-group">
+            <label class="form-label">SKU 编号 <span class="required">*</span></label>
+            <input type="text" class="form-input" id="editSku" placeholder="输入 SKU">
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label">商品图标</label>
+            <div class="icon-picker" id="iconPicker">
+              <div class="icon-option" data-icon="💻" onclick="selectIcon(this)">💻</div>
+              <div class="icon-option" data-icon="📱" onclick="selectIcon(this)">📱</div>
+              <div class="icon-option" data-icon="🎧" onclick="selectIcon(this)">🎧</div>
+              <div class="icon-option" data-icon="🖥️" onclick="selectIcon(this)">🖥️</div>
+              <div class="icon-option" data-icon="⌚" onclick="selectIcon(this)">⌚</div>
+              <div class="icon-option" data-icon="📷" onclick="selectIcon(this)">📷</div>
+              <div class="icon-option" data-icon="🎮" onclick="selectIcon(this)">🎮</div>
+              <div class="icon-option" data-icon="🪑" onclick="selectIcon(this)">🪑</div>
+              <div class="icon-option" data-icon="☕" onclick="selectIcon(this)">☕</div>
+              <div class="icon-option" data-icon="🔊" onclick="selectIcon(this)">🔊</div>
+              <div class="icon-option" data-icon="📖" onclick="selectIcon(this)">📖</div>
+              <div class="icon-option" data-icon="🧹" onclick="selectIcon(this)">🧹</div>
+              <div class="icon-option" data-icon="🔥" onclick="selectIcon(this)">🔥</div>
+              <div class="icon-option" data-icon="🥤" onclick="selectIcon(this)">🥤</div>
+              <div class="icon-option" data-icon="🎙️" onclick="selectIcon(this)">🎙️</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">订单信息</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">订单金额 <span class="required">*</span></label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">¥</span>
+              <input type="number" class="form-input" id="editAmount" placeholder="0.00">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">订单状态 <span class="required">*</span></label>
+            <select class="form-select" id="editStatus">
+              <option value="pending">待付款</option>
+              <option value="processing">处理中</option>
+              <option value="shipped">已发货</option>
+              <option value="completed">已完成</option>
+              <option value="cancelled">已取消</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">支付状态 <span class="required">*</span></label>
+            <select class="form-select" id="editPayment">
+              <option value="unpaid">待支付</option>
+              <option value="paid">已支付</option>
+              <option value="refunded">已退款</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">支付方式</label>
+            <select class="form-select" id="editMethod">
+              <option value="—">未选择</option>
+              <option value="支付宝">支付宝</option>
+              <option value="微信支付">微信支付</option>
+              <option value="银行转账">银行转账</option>
+              <option value="货到付款">货到付款</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">客户信息</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">客户姓名 <span class="required">*</span></label>
+            <input type="text" class="form-input" id="editCustomer" placeholder="输入客户姓名">
+          </div>
+          <div class="form-group">
+            <label class="form-label">下单时间</label>
+            <input type="text" class="form-input" id="editDate" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-danger" onclick="deleteOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          删除订单
+        </button>
+        <div style="flex:1"></div>
+        <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" onclick="saveOrder()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:15px;height:15px"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          保存修改
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG MODAL -->
+  <div class="modal-overlay" id="logModal">
+    <div class="modal modal-log">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); box-shadow: 0 4px 12px rgba(245,158,11,0.25);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="modal-title">操作日志</div>
+            <div class="modal-subtitle" id="logOrderId">ORD-20260525-001</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeLogModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding-top: 16px;">
+        <div class="log-list" id="logList"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeLogModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+let currentEditId = null;
+
+const orders = [
+  { id: 'ORD-20260525-001', product: 'MacBook Pro 14"', sku: 'SKU-MBP14-M3', icon: '💻', amount: 14999, customer: '张明远', customerInit: '张', status: 'completed', payment: 'paid', method: '支付宝', date: '2026-05-25 09:23:14',
+    logs: [
+      { time: '09:23', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '客户通过支付宝下单购买 MacBook Pro 14"', user: '系统' },
+      { time: '09:23', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥14,999.00', user: '系统' },
+      { time: '09:25', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '09:40', date: '05-25', type: 'edit', icon: '✎', action: '仓库确认', detail: '华南仓已确认库存，准备拣货', user: '仓管-王伟' },
+      { time: '10:15', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '顺丰 SF1234567890，预计 1-2 日送达', user: '仓管-王伟' },
+      { time: '14:30', date: '05-26', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收确认', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 09:23', done: true },
+      { text: '支付完成', time: '05-25 09:23', done: true },
+      { text: '仓库处理', time: '05-25 09:40', done: true },
+      { text: '已发货', time: '05-25 10:15', done: true },
+      { text: '已签收', time: '05-26 14:30', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-002', product: 'Sony WH-1000XM5', sku: 'SKU-SNY-WH5', icon: '🎧', amount: 2699, customer: '李思琪', customerInit: '李', status: 'processing', payment: 'paid', method: '微信支付', date: '2026-05-25 09:45:38',
+    logs: [
+      { time: '09:45', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '客户通过微信支付下单', user: '系统' },
+      { time: '09:45', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥2,699.00', user: '系统' },
+      { time: '09:46', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '10:00', date: '05-25', type: 'edit', icon: '✎', action: '仓库确认', detail: '华东仓确认库存中', user: '仓管-李明' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 09:45', done: true },
+      { text: '支付完成', time: '05-25 09:45', done: true },
+      { text: '仓库处理', time: '05-25 10:00', active: true },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-003', product: 'iPad Air M2', sku: 'SKU-IPA-M2-256', icon: '📱', amount: 5499, customer: '王建国', customerInit: '王', status: 'shipped', payment: 'paid', method: '银行转账', date: '2026-05-25 10:12:05',
+    logs: [
+      { time: '10:12', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '银行转账订单', user: '系统' },
+      { time: '10:30', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '银行转账到账 ¥5,499.00', user: '财务-赵丽' },
+      { time: '10:31', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '14:00', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '京东物流 JD0098765432', user: '仓管-王伟' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 10:12', done: true },
+      { text: '支付完成', time: '05-25 10:30', done: true },
+      { text: '仓库处理', time: '05-25 10:31', done: true },
+      { text: '已发货', time: '05-25 14:00', done: true },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-004', product: 'Herman Miller Aeron', sku: 'SKU-HM-AER-B', icon: '🪑', amount: 12800, customer: '赵文婷', customerInit: '赵', status: 'pending', payment: 'unpaid', method: '—', date: '2026-05-25 10:33:21',
+    logs: [
+      { time: '10:33', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '客户提交订单，待支付', user: '系统' },
+      { time: '10:35', date: '05-25', type: 'system', icon: '⏰', action: '支付提醒', detail: '系统自动发送支付提醒短信', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 10:33', done: true },
+      { text: '支付完成', time: '—', done: false },
+      { text: '仓库处理', time: '—', done: false },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-005', product: 'Leica Q3', sku: 'SKU-LC-Q3-BK', icon: '📷', amount: 42800, customer: '陈浩南', customerInit: '陈', status: 'completed', payment: 'paid', method: '支付宝', date: '2026-05-25 11:08:47',
+    logs: [
+      { time: '11:08', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝大额订单', user: '系统' },
+      { time: '11:08', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥42,800.00（大额交易）', user: '系统' },
+      { time: '11:10', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '11:15', date: '05-25', type: 'edit', icon: '✎', action: '风控审核', detail: '大额订单风控审核通过', user: '风控-张强' },
+      { time: '14:00', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '顺丰特快 SF2233445566', user: '仓管-王伟' },
+      { time: '10:00', date: '05-27', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收，7天无理由退换期开始', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 11:08', done: true },
+      { text: '支付完成', time: '05-25 11:08', done: true },
+      { text: '风控审核', time: '05-25 11:15', done: true },
+      { text: '已发货', time: '05-25 14:00', done: true },
+      { text: '已签收', time: '05-27 10:00', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-006', product: 'Dyson V15 Detect', sku: 'SKU-DY-V15-G', icon: '🧹', amount: 5990, customer: '林雪梅', customerInit: '林', status: 'cancelled', payment: 'refunded', method: '微信支付', date: '2026-05-25 11:25:33',
+    logs: [
+      { time: '11:25', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '微信支付订单', user: '系统' },
+      { time: '11:25', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥5,990.00', user: '系统' },
+      { time: '11:30', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '13:00', date: '05-25', type: 'cancel', icon: '✕', action: '客户申请取消', detail: '原因：不想要了', user: '客服-刘晓' },
+      { time: '13:05', date: '05-25', type: 'cancel', icon: '✕', action: '取消审核通过', detail: '订单取消，发起退款', user: '客服主管-周婷' },
+      { time: '13:06', date: '05-25', type: 'payment', icon: '↩', action: '退款完成', detail: '原路退回 ¥5,990.00', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 11:25', done: true },
+      { text: '支付完成', time: '05-25 11:25', done: true },
+      { text: '客户取消', time: '05-25 13:00', done: true },
+      { text: '退款完成', time: '05-25 13:06', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-007', product: 'ThinkPad X1 Carbon', sku: 'SKU-TP-X1C-G12', icon: '💻', amount: 11999, customer: '黄志强', customerInit: '黄', status: 'processing', payment: 'paid', method: '银行转账', date: '2026-05-25 12:01:56',
+    logs: [
+      { time: '12:01', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '银行转账企业订单', user: '系统' },
+      { time: '12:30', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '企业银行转账 ¥11,999.00', user: '财务-赵丽' },
+      { time: '12:31', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 12:01', done: true },
+      { text: '支付完成', time: '05-25 12:30', done: true },
+      { text: '仓库处理', time: '—', active: true },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-008', product: 'Samsung 49" OLED', sku: 'SKU-SAM-OLED49', icon: '🖥️', amount: 9999, customer: '周小燕', customerInit: '周', status: 'pending', payment: 'unpaid', method: '—', date: '2026-05-25 13:14:22',
+    logs: [
+      { time: '13:14', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '客户提交订单，等待支付', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 13:14', done: true },
+      { text: '支付完成', time: '—', done: false },
+      { text: '仓库处理', time: '—', done: false },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-009', product: 'Bose QC Ultra', sku: 'SKU-BOSE-QCU', icon: '🎧', amount: 2999, customer: '吴天昊', customerInit: '吴', status: 'shipped', payment: 'paid', method: '支付宝', date: '2026-05-25 13:42:09',
+    logs: [
+      { time: '13:42', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝订单', user: '系统' },
+      { time: '13:42', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥2,999.00', user: '系统' },
+      { time: '14:00', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+      { time: '16:00', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '中通快递 ZT7890123456', user: '仓管-李明' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 13:42', done: true },
+      { text: '支付完成', time: '05-25 13:42', done: true },
+      { text: '仓库处理', time: '05-25 14:00', done: true },
+      { text: '已发货', time: '05-25 16:00', done: true },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-010', product: 'Nespresso Lattissima', sku: 'SKU-NESP-LAT', icon: '☕', amount: 3588, customer: '郑雅文', customerInit: '郑', status: 'completed', payment: 'paid', method: '微信支付', date: '2026-05-25 14:05:31',
+    logs: [
+      { time: '14:05', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '微信支付订单', user: '系统' },
+      { time: '14:05', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥3,588.00', user: '系统' },
+      { time: '15:00', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '顺丰快递 SF3344556677', user: '仓管-王伟' },
+      { time: '09:00', date: '05-27', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收确认', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 14:05', done: true },
+      { text: '支付完成', time: '05-25 14:05', done: true },
+      { text: '已发货', time: '05-25 15:00', done: true },
+      { text: '已签收', time: '05-27 09:00', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-011', product: 'Apple Watch Ultra 2', sku: 'SKU-AWU2-TIT', icon: '⌚', amount: 6499, customer: '孙明辉', customerInit: '孙', status: 'processing', payment: 'paid', method: '支付宝', date: '2026-05-25 14:28:17',
+    logs: [
+      { time: '14:28', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝订单', user: '系统' },
+      { time: '14:28', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥6,499.00', user: '系统' },
+      { time: '14:30', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 14:28', done: true },
+      { text: '支付完成', time: '05-25 14:28', done: true },
+      { text: '仓库处理', time: '—', active: true },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-012', product: 'Aeron Chair B-size', sku: 'SKU-HM-AER-B2', icon: '🪑', amount: 12800, customer: '马晓峰', customerInit: '马', status: 'pending', payment: 'unpaid', method: '—', date: '2026-05-25 14:55:44',
+    logs: [
+      { time: '14:55', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '客户提交订单，等待支付', user: '系统' },
+      { time: '15:00', date: '05-25', type: 'system', icon: '⏰', action: '支付提醒', detail: '超时未支付，系统自动提醒', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 14:55', done: true },
+      { text: '支付完成', time: '—', done: false },
+      { text: '仓库处理', time: '—', done: false },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-013', product: 'Kindle Paperwhite', sku: 'SKU-KND-PW-32', icon: '📖', amount: 998, customer: '徐丽华', customerInit: '徐', status: 'completed', payment: 'paid', method: '微信支付', date: '2026-05-25 15:12:03',
+    logs: [
+      { time: '15:12', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '微信支付订单', user: '系统' },
+      { time: '15:12', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥998.00', user: '系统' },
+      { time: '16:00', date: '05-25', type: 'ship', icon: '⛟', action: '已发货', detail: '圆通快递 YT1122334455', user: '仓管-李明' },
+      { time: '11:00', date: '05-27', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 15:12', done: true },
+      { text: '支付完成', time: '05-25 15:12', done: true },
+      { text: '已发货', time: '05-25 16:00', done: true },
+      { text: '已签收', time: '05-27 11:00', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-014', product: 'LG 27" 4K Monitor', sku: 'SKU-LG-27-4K', icon: '🖥️', amount: 3299, customer: '胡嘉伟', customerInit: '胡', status: 'shipped', payment: 'paid', method: '银行转账', date: '2026-05-25 15:38:29',
+    logs: [
+      { time: '15:38', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '银行转账订单', user: '系统' },
+      { time: '15:40', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '银行转账 ¥3,299.00', user: '财务-赵丽' },
+      { time: '09:00', date: '05-26', type: 'ship', icon: '⛟', action: '已发货', detail: '德邦物流 DP9988776655（大件）', user: '仓管-王伟' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 15:38', done: true },
+      { text: '支付完成', time: '05-25 15:40', done: true },
+      { text: '已发货', time: '05-26 09:00', done: true },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-015', product: 'Bang & Olufsen A9', sku: 'SKU-BO-A9-5G', icon: '🔊', amount: 22998, customer: '朱芳芳', customerInit: '朱', status: 'completed', payment: 'paid', method: '支付宝', date: '2026-05-25 16:01:55',
+    logs: [
+      { time: '16:01', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝大额订单', user: '系统' },
+      { time: '16:01', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥22,998.00', user: '系统' },
+      { time: '16:10', date: '05-25', type: 'edit', icon: '✎', action: '风控审核', detail: '大额订单审核通过', user: '风控-张强' },
+      { time: '10:00', date: '05-26', type: 'ship', icon: '⛟', action: '已发货', detail: '顺丰特快 SF5566778899', user: '仓管-李明' },
+      { time: '15:00', date: '05-28', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 16:01', done: true },
+      { text: '支付完成', time: '05-25 16:01', done: true },
+      { text: '风控审核', time: '05-25 16:10', done: true },
+      { text: '已发货', time: '05-26 10:00', done: true },
+      { text: '已签收', time: '05-28 15:00', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-016', product: 'PlayStation 5 Pro', sku: 'SKU-PS5-PRO', icon: '🎮', amount: 5499, customer: '郭宇航', customerInit: '郭', status: 'cancelled', payment: 'refunded', method: '支付宝', date: '2026-05-25 16:22:41',
+    logs: [
+      { time: '16:22', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝订单', user: '系统' },
+      { time: '16:22', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥5,499.00', user: '系统' },
+      { time: '17:00', date: '05-25', type: 'cancel', icon: '✕', action: '客户申请取消', detail: '原因：地址填写错误', user: '客服-刘晓' },
+      { time: '17:05', date: '05-25', type: 'cancel', icon: '✕', action: '取消审核通过', detail: '订单取消，发起退款', user: '客服主管-周婷' },
+      { time: '17:06', date: '05-25', type: 'payment', icon: '↩', action: '退款完成', detail: '原路退回 ¥5,499.00', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 16:22', done: true },
+      { text: '支付完成', time: '05-25 16:22', done: true },
+      { text: '客户取消', time: '05-25 17:00', done: true },
+      { text: '退款完成', time: '05-25 17:06', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-017', product: 'Vitamix E520', sku: 'SKU-VMIX-E520', icon: '🥤', amount: 4299, customer: '谢婉清', customerInit: '谢', status: 'processing', payment: 'paid', method: '微信支付', date: '2026-05-25 16:45:08',
+    logs: [
+      { time: '16:45', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '微信支付订单', user: '系统' },
+      { time: '16:45', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥4,299.00', user: '系统' },
+      { time: '16:46', date: '05-25', type: 'status', icon: '→', action: '状态变更', detail: '待付款 → 处理中', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 16:45', done: true },
+      { text: '支付完成', time: '05-25 16:45', done: true },
+      { text: '仓库处理', time: '—', active: true },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-018', product: 'Rode NT-USB Mini', sku: 'SKU-RODE-NTU', icon: '🎙️', amount: 799, customer: '冯家豪', customerInit: '冯', status: 'completed', payment: 'paid', method: '支付宝', date: '2026-05-25 17:03:36',
+    logs: [
+      { time: '17:03', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '支付宝订单', user: '系统' },
+      { time: '17:03', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '支付宝到账 ¥799.00', user: '系统' },
+      { time: '09:30', date: '05-26', type: 'ship', icon: '⛟', action: '已发货', detail: '韵达快递 YD6677889900', user: '仓管-王伟' },
+      { time: '14:00', date: '05-28', type: 'status', icon: '✓', action: '订单完成', detail: '客户签收', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 17:03', done: true },
+      { text: '支付完成', time: '05-25 17:03', done: true },
+      { text: '已发货', time: '05-26 09:30', done: true },
+      { text: '已签收', time: '05-28 14:00', done: true },
+    ]
+  },
+  { id: 'ORD-20260525-019', product: 'Weber Spirit II', sku: 'SKU-WBR-SP2', icon: '🔥', amount: 4599, customer: '韩冰冰', customerInit: '韩', status: 'pending', payment: 'cod', method: '货到付款', date: '2026-05-25 17:28:12',
+    logs: [
+      { time: '17:28', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '货到付款订单', user: '系统' },
+      { time: '17:30', date: '05-25', type: 'status', icon: '→', action: '等待确认', detail: '货到付款订单，等待仓库确认', user: '系统' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 17:28', done: true },
+      { text: '仓库确认', time: '—', done: false },
+      { text: '已发货', time: '—', done: false },
+      { text: '已签收', time: '—', done: false },
+      { text: '收款完成', time: '—', done: false },
+    ]
+  },
+  { id: 'ORD-20260525-020', product: 'Ember Mug 2', sku: 'SKU-EMB-MUG2', icon: '☕', amount: 899, customer: '曹思远', customerInit: '曹', status: 'shipped', payment: 'paid', method: '微信支付', date: '2026-05-25 17:50:44',
+    logs: [
+      { time: '17:50', date: '05-25', type: 'create', icon: '＋', action: '订单创建', detail: '微信支付订单', user: '系统' },
+      { time: '17:50', date: '05-25', type: 'payment', icon: '¥', action: '收到支付', detail: '微信支付到账 ¥899.00', user: '系统' },
+      { time: '09:00', date: '05-26', type: 'ship', icon: '⛟', action: '已发货', detail: '申通快递 ST1234432112', user: '仓管-李明' },
+    ],
+    timeline: [
+      { text: '订单创建', time: '05-25 17:50', done: true },
+      { text: '支付完成', time: '05-25 17:50', done: true },
+      { text: '已发货', time: '05-26 09:00', done: true },
+      { text: '已签收', time: '—', done: false },
+    ]
+  },
+];
+
+const statusMap = {
+  pending: { label: '待付款', cls: 'status-pending' },
+  processing: { label: '处理中', cls: 'status-processing' },
+  shipped: { label: '已发货', cls: 'status-shipped' },
+  completed: { label: '已完成', cls: 'status-completed' },
+  cancelled: { label: '已取消', cls: 'status-cancelled' },
+};
+
+const avatarColors = [
+  'linear-gradient(135deg, #7c3aed, #a855f7)',
+  'linear-gradient(135deg, #3b82f6, #60a5fa)',
+  'linear-gradient(135deg, #10b981, #34d399)',
+  'linear-gradient(135deg, #f59e0b, #fbbf24)',
+  'linear-gradient(135deg, #ec4899, #f472b6)',
+  'linear-gradient(135deg, #ef4444, #f87171)',
+  'linear-gradient(135deg, #f97316, #fb923c)',
+  'linear-gradient(135deg, #06b6d4, #22d3ee)',
+];
+
+function renderTable(data) {
+  const tbody = document.getElementById('orderTableBody');
+  tbody.innerHTML = data.map((o, i) => {
+    const s = statusMap[o.status];
+    const payCls = o.payment === 'paid' ? 'paid' : o.payment === 'refunded' ? 'refunded' : 'unpaid';
+    const payLabel = o.payment === 'paid' ? '已支付' : o.payment === 'refunded' ? '已退款' : '待支付';
+    const color = avatarColors[i % avatarColors.length];
+    return `<tr style="animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) ${i * 0.03}s both">
+      <td><input type="checkbox" class="row-check"></td>
+      <td><span class="cell-order-id">${o.id}</span></td>
+      <td>
+        <div class="cell-product" onclick="showDetail('${o.id}')">
+          <div class="product-thumb">${o.icon}</div>
+          <div class="product-info">
+            <span class="product-name">${o.product}</span>
+            <span class="product-sku">${o.sku}</span>
+          </div>
+        </div>
+      </td>
+      <td><span class="cell-amount">¥${o.amount.toLocaleString()}</span></td>
+      <td>
+        <div class="cell-user">
+          <div class="user-avatar-sm" style="background: ${color}">${o.customerInit}</div>
+          <span class="user-name">${o.customer}</span>
+        </div>
+      </td>
+      <td><span class="status ${s.cls}"><span class="status-dot"></span>${s.label}</span></td>
+      <td><span class="payment-tag ${payCls}">${payLabel}</span></td>
+      <td style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary)">${o.date}</td>
+      <td>
+        <div class="cell-actions">
+          <button class="action-btn" title="查看详情" onclick="showDetail('${o.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button class="action-btn" title="编辑" onclick="editOrder('${o.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="action-btn log-btn" title="操作日志" onclick="showLog('${o.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </button>
+          <button class="action-btn" title="更多" onclick="moreActions('${o.id}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleSelectAll(el) {
+  document.querySelectorAll('#orderTableBody .row-check').forEach(cb => cb.checked = el.checked);
+}
+
+function switchTab(btn, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  if (tab === 'all') renderTable(orders);
+  else renderTable(orders.filter(o => o.status === tab));
+}
+
+function handleSearch(val) {
+  const q = val.toLowerCase();
+  if (!q) { renderTable(orders); return; }
+  renderTable(orders.filter(o =>
+    o.id.toLowerCase().includes(q) ||
+    o.product.toLowerCase().includes(q) ||
+    o.customer.toLowerCase().includes(q)
+  ));
+}
+
+function resetFilters() {
+  document.getElementById('filterOrderId').value = '';
+  document.getElementById('filterStatus').value = '';
+  document.getElementById('filterPayment').value = '';
+  document.getElementById('filterDate').value = '';
+  renderTable(orders);
+}
+
+function applyFilters() {
+  let filtered = [...orders];
+  const orderId = document.getElementById('filterOrderId').value.trim();
+  const status = document.getElementById('filterStatus').value;
+  const payment = document.getElementById('filterPayment').value;
+  if (orderId) filtered = filtered.filter(o => o.id.includes(orderId));
+  if (status) filtered = filtered.filter(o => o.status === status);
+  if (payment) {
+    const methodMap = { alipay: '支付宝', wechat: '微信支付', bank: '银行转账', cod: '货到付款' };
+    filtered = filtered.filter(o => o.method === methodMap[payment]);
+  }
+  renderTable(filtered);
+  document.getElementById('totalCount').textContent = filtered.length.toLocaleString();
+}
+
+function exportData() { showToast('正在生成 CSV 文件...'); }
+function refreshData() { renderTable(orders); showToast('数据已刷新'); }
+function moreActions(id) { showToast('更多操作: ' + id); }
+
+/* === DETAIL NAV === */
+function showDetail(id) {
+  window.location.href = 'product-detail.html?id=' + encodeURIComponent(id);
+}
+
+/* === LOG MODAL === */
+function showLog(id) {
+  const order = orders.find(o => o.id === id);
+  if (!order) return;
+
+  document.getElementById('logOrderId').textContent = id + ' — 操作日志';
+
+  const list = document.getElementById('logList');
+  if (order.logs && order.logs.length) {
+    list.innerHTML = order.logs.map((log, i) => `
+      <div class="log-entry" style="animation-delay: ${i * 0.04}s">
+        <div class="log-time-col">
+          <span class="log-time">${log.time}</span>
+          <span class="log-date">${log.date}</span>
+        </div>
+        <div class="log-icon-col">
+          <div class="log-icon ${log.type}">${log.icon}</div>
+        </div>
+        <div class="log-content-col">
+          <div class="log-action">${log.action}</div>
+          <div class="log-detail">${log.detail}</div>
+          <span class="log-user"><span class="log-user-dot"></span>${log.user}</span>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:13px;">暂无操作日志</div>';
+  }
+
+  document.getElementById('logModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLogModal() {
+  document.getElementById('logModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('logModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLogModal();
+});
+
+/* === MODAL === */
+function editOrder(id) {
+  const order = orders.find(o => o.id === id);
+  if (!order) return;
+  currentEditId = id;
+
+  document.getElementById('modalOrderId').textContent = id;
+  document.getElementById('editProduct').value = order.product;
+  document.getElementById('editSku').value = order.sku;
+  document.getElementById('editAmount').value = order.amount;
+  document.getElementById('editCustomer').value = order.customer;
+  document.getElementById('editStatus').value = order.status;
+  document.getElementById('editPayment').value = order.payment;
+  document.getElementById('editMethod').value = order.method;
+  document.getElementById('editDate').value = order.date;
+
+  // icon picker
+  document.querySelectorAll('#iconPicker .icon-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.icon === order.icon);
+  });
+
+  document.getElementById('editModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentEditId = null;
+}
+
+function selectIcon(el) {
+  document.querySelectorAll('#iconPicker .icon-option').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function saveOrder() {
+  if (!currentEditId) return;
+  const order = orders.find(o => o.id === currentEditId);
+  if (!order) return;
+
+  const product = document.getElementById('editProduct').value.trim();
+  const sku = document.getElementById('editSku').value.trim();
+  const amount = parseFloat(document.getElementById('editAmount').value);
+  const customer = document.getElementById('editCustomer').value.trim();
+
+  if (!product || !sku || isNaN(amount) || !customer) {
+    showToast('请填写所有必填项', true);
+    return;
+  }
+
+  const selectedIcon = document.querySelector('#iconPicker .icon-option.selected');
+
+  order.product = product;
+  order.sku = sku;
+  order.icon = selectedIcon ? selectedIcon.dataset.icon : order.icon;
+  order.amount = amount;
+  order.customer = customer;
+  order.customerInit = customer.charAt(0);
+  order.status = document.getElementById('editStatus').value;
+  order.payment = document.getElementById('editPayment').value;
+  order.method = document.getElementById('editMethod').value;
+
+  closeModal();
+  renderTable(orders);
+  showToast('订单 ' + currentEditId + ' 已保存');
+}
+
+function deleteOrder() {
+  if (!currentEditId) return;
+  const idx = orders.findIndex(o => o.id === currentEditId);
+  if (idx === -1) return;
+  const id = currentEditId;
+  orders.splice(idx, 1);
+  closeModal();
+  renderTable(orders);
+  document.getElementById('totalCount').textContent = orders.length.toLocaleString();
+  showToast('订单 ' + id + ' 已删除');
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<span class="toast-icon">${isError ? '⚠' : '✓'}</span> ${msg}`;
+  t.style.background = isError ? '#dc2626' : '#1e1e2e';
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// close modal on overlay click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+// close modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeLogModal();
+  }
+});
+
+function sortTable(field) {
+  const sorted = [...orders];
+  if (field === 'amount') sorted.sort((a, b) => b.amount - a.amount);
+  else if (field === 'date') sorted.sort((a, b) => b.date.localeCompare(a.date));
+  else if (field === 'id') sorted.sort((a, b) => a.id.localeCompare(b.id));
+  renderTable(sorted);
+}
+
+// Init
+renderTable(orders);
+</script>
+</body>
+</html>

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订单详情 — OrderOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #f3f4f8;
+  --bg-primary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f7f7fb;
+  --bg-input: #f5f5fa;
+  --border-subtle: #e8e8f0;
+  --border-medium: #d8d8e4;
+  --text-primary: #1e1e2e;
+  --text-secondary: #6b6b80;
+  --text-muted: #9e9eb5;
+  --accent: #7c3aed;
+  --accent-soft: rgba(124,58,237,0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%; right: -10%;
+  width: 50vw; height: 50vw;
+  background: radial-gradient(ellipse, rgba(124,58,237,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* === TOPBAR === */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff;
+  font-family: var(--font-display);
+  box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+}
+.logo-text { font-family: var(--font-display); font-weight: 600; font-size: 16px; letter-spacing: -0.02em; }
+.logo-divider { width: 1px; height: 24px; background: var(--border-medium); }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); }
+.breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { font-size: 11px; }
+.breadcrumb .current { color: var(--text-primary); font-weight: 500; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-badge {
+  padding: 4px 10px;
+  background: #f5f3ff; color: #7c3aed;
+  border-radius: 20px; font-size: 12px; font-weight: 500;
+  font-family: var(--font-mono);
+}
+.topbar-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: #fff; cursor: pointer;
+}
+
+/* === LAYOUT === */
+.main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 28px 32px 60px; }
+
+/* === BACK BAR === */
+.back-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 8px 16px;
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  cursor: pointer; transition: all 0.2s; font-family: var(--font-body);
+}
+.back-btn:hover { background: #fff; color: #7c3aed; border-color: rgba(124,58,237,0.3); }
+.back-btn svg { width: 15px; height: 15px; }
+
+.back-actions { display: flex; gap: 8px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 38px; padding: 0 18px;
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+  font-family: var(--font-body); cursor: pointer;
+  transition: all 0.2s; border: none;
+}
+.btn svg { width: 15px; height: 15px; }
+.btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(124,58,237,0.25);
+}
+.btn-primary:hover { box-shadow: 0 4px 16px rgba(124,58,237,0.35); transform: translateY(-1px); }
+.btn-secondary {
+  background: #fff; color: var(--text-secondary);
+  border: 1px solid var(--border-medium);
+}
+.btn-secondary:hover { background: #f5f3ff; color: #7c3aed; border-color: rgba(124,58,237,0.3); }
+
+/* === CARDS === */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* === HERO === */
+.hero-card {
+  margin-bottom: 20px;
+  padding: 32px;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-icon {
+  width: 88px; height: 88px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+  border: 1px solid #e9e5ff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px; flex-shrink: 0;
+}
+.hero-info { flex: 1; }
+.hero-name {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 12px;
+  flex-wrap: wrap;
+}
+.hero-sku {
+  font-size: 12px; color: var(--text-muted);
+  font-family: var(--font-mono);
+  background: var(--bg-input); padding: 3px 10px;
+  border-radius: 5px;
+}
+.hero-amount {
+  font-family: var(--font-mono);
+  font-size: 28px; font-weight: 700;
+  color: #7c3aed;
+  letter-spacing: -0.03em;
+  text-align: right;
+  animation: fadeUp 0.5s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+}
+.hero-amount-label {
+  font-size: 11px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  font-weight: 600; margin-bottom: 4px;
+  text-align: right;
+}
+
+/* === GRID 3-col === */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.info-grid .card {
+  padding: 24px;
+  animation: fadeUp 0.5s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+}
+.info-grid .card:nth-child(2) { animation-delay: 0.2s; }
+.info-grid .card:nth-child(3) { animation-delay: 0.25s; }
+.card-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-label svg { width: 14px; height: 14px; color: #7c3aed; }
+
+/* detail rows */
+.detail-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.detail-row:last-child { border-bottom: none; }
+.detail-row-label { font-size: 13px; color: var(--text-secondary); }
+.detail-row-value { font-size: 13px; font-weight: 500; }
+
+/* status & payment badges */
+.status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+.status-pending { background: #fef3c7; color: #d97706; }
+.status-pending .status-dot { background: #f59e0b; }
+.status-processing { background: #dbeafe; color: #2563eb; }
+.status-processing .status-dot { background: #3b82f6; animation: pulse-dot 2s infinite; }
+.status-shipped { background: #ede9fe; color: #7c3aed; }
+.status-shipped .status-dot { background: #8b5cf6; }
+.status-completed { background: #d1fae5; color: #059669; }
+.status-completed .status-dot { background: #10b981; }
+.status-cancelled { background: #fee2e2; color: #dc2626; }
+.status-cancelled .status-dot { background: #ef4444; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.payment-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; }
+.payment-tag.paid { color: #10b981; }
+.payment-tag.unpaid { color: #9e9eb5; }
+.payment-tag.refunded { color: #ef4444; }
+
+/* === TIMELINE === */
+.timeline-card {
+  padding: 28px;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s 0.3s cubic-bezier(0.22,1,0.36,1) both;
+}
+.timeline {
+  position: relative;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 15px; left: 15px; right: 15px;
+  height: 3px;
+  background: var(--border-subtle);
+  border-radius: 2px;
+  z-index: 0;
+}
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+.timeline-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--border-medium);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+.timeline-step.done .timeline-dot {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-color: #7c3aed;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(124,58,237,0.25);
+}
+.timeline-step.active .timeline-dot {
+  background: #fff;
+  border-color: #7c3aed;
+  color: #7c3aed;
+  box-shadow: 0 0 0 5px rgba(124,58,237,0.12);
+  animation: pulse-ring 2s infinite;
+}
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 5px rgba(124,58,237,0.12); }
+  50% { box-shadow: 0 0 0 8px rgba(124,58,237,0.06); }
+}
+.timeline-label {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+.timeline-time {
+  font-size: 11px; color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.timeline-step:not(.done):not(.active) .timeline-label { color: var(--text-muted); }
+.timeline-step:not(.done):not(.active) .timeline-dot { background: var(--bg-input); }
+
+/* === LOG SECTION === */
+.log-card {
+  padding: 28px;
+  animation: fadeUp 0.5s 0.35s cubic-bezier(0.22,1,0.36,1) both;
+}
+.log-list { display: flex; flex-direction: column; }
+.log-entry {
+  display: flex; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.log-entry:last-child { border-bottom: none; }
+.log-time-col {
+  width: 72px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  align-items: flex-end; padding-top: 2px;
+}
+.log-time { font-size: 12px; font-family: var(--font-mono); font-weight: 500; color: var(--text-secondary); }
+.log-date { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); }
+.log-icon-col { width: 30px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
+.log-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.log-icon.create { background: #d1fae5; }
+.log-icon.edit { background: #dbeafe; }
+.log-icon.status { background: #ede9fe; }
+.log-icon.payment { background: #fef3c7; }
+.log-icon.ship { background: #e0e7ff; }
+.log-icon.cancel { background: #fee2e2; }
+.log-icon.system { background: #f0f0f5; }
+.log-content-col { flex: 1; min-width: 0; }
+.log-action { font-size: 13px; color: var(--text-primary); line-height: 1.5; }
+.log-action strong { font-weight: 600; color: #7c3aed; }
+.log-detail { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+.log-user {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--text-muted);
+  margin-top: 4px; background: var(--bg-input);
+  padding: 2px 8px; border-radius: 4px;
+}
+.log-user-dot { width: 5px; height: 5px; border-radius: 50%; background: #10b981; }
+
+.log-entry { animation: logSlide 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes logSlide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .hero-card { flex-direction: column; text-align: center; }
+  .hero-amount { text-align: center; }
+  .hero-amount-label { text-align: center; }
+  .timeline { flex-direction: column; gap: 0; }
+  .timeline::before { top: 15px; bottom: 15px; left: 15px; right: auto; width: 3px; height: auto; }
+  .timeline-step { flex-direction: row; gap: 12px; padding: 10px 0; }
+  .timeline-dot { margin-bottom: 0; }
+  .timeline-label, .timeline-time { text-align: left; }
+  .main { padding: 20px 16px 40px; }
+  .topbar { padding: 12px 16px; }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d0d0e0; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <div class="logo-icon">O</div>
+      <span class="logo-text">OrderOS</span>
+    </div>
+    <div class="logo-divider"></div>
+    <div class="breadcrumb">
+      <a href="order-management.html">订单管理</a>
+      <span class="sep">›</span>
+      <span class="current" id="breadcrumbId">订单详情</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v2.4.1</span>
+    <div class="topbar-avatar">谢</div>
+  </div>
+</header>
+
+<main class="main">
+  <!-- BACK BAR -->
+  <div class="back-bar">
+    <button class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      返回列表
+    </button>
+    <div class="back-actions">
+      <button class="btn btn-secondary" id="btnLog" onclick="scrollToLog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        操作日志
+      </button>
+      <button class="btn btn-primary" id="btnEdit" onclick="goEdit()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        编辑订单
+      </button>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-card card">
+    <div class="hero-icon" id="heroIcon">💻</div>
+    <div class="hero-info">
+      <div class="hero-name" id="heroName">—</div>
+      <div class="hero-meta">
+        <span class="hero-sku" id="heroSku">—</span>
+        <span id="heroStatus"></span>
+        <span id="heroPayment"></span>
+      </div>
+    </div>
+    <div>
+      <div class="hero-amount-label">订单金额</div>
+      <div class="hero-amount" id="heroAmount">¥0</div>
+    </div>
+  </div>
+
+  <!-- INFO GRID -->
+  <div class="info-grid">
+    <!-- order info -->
+    <div class="card">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        订单信息
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">订单编号</span>
+        <span class="detail-row-value" style="font-family:var(--font-mono);color:#7c3aed" id="infoId">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">下单时间</span>
+        <span class="detail-row-value" style="font-family:var(--font-mono)" id="infoDate">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">支付方式</span>
+        <span class="detail-row-value" id="infoMethod">—</span>
+      </div>
+    </div>
+
+    <!-- customer info -->
+    <div class="card">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        客户信息
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">客户姓名</span>
+        <span class="detail-row-value" id="infoCustomer">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">联系电话</span>
+        <span class="detail-row-value" style="font-family:var(--font-mono)" id="infoPhone">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">收货地址</span>
+        <span class="detail-row-value" id="infoAddr">—</span>
+      </div>
+    </div>
+
+    <!-- product info -->
+    <div class="card">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        商品信息
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">商品名称</span>
+        <span class="detail-row-value" id="infoProduct">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">SKU</span>
+        <span class="detail-row-value" style="font-family:var(--font-mono)" id="infoSku">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-row-label">单价</span>
+        <span class="detail-row-value" style="font-family:var(--font-mono);color:#7c3aed" id="infoPrice">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card timeline-card">
+    <div class="card-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      订单流转
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- LOG -->
+  <div class="card log-card" id="logSection">
+    <div class="card-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      操作日志
+    </div>
+    <div class="log-list" id="logList"></div>
+  </div>
+</main>
+
+<script>
+// ========== ORDER DATA (mirrored from list page) ==========
+const orders = [
+  { id:'ORD-20260525-001', product:'MacBook Pro 14"', sku:'SKU-MBP14-M3', icon:'💻', amount:14999, customer:'张明远', status:'completed', payment:'paid', method:'支付宝', date:'2026-05-25 09:23:14', phone:'138****6789', addr:'广东省深圳市南山区科技园南路88号',
+    logs:[
+      {time:'09:23',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'客户通过支付宝下单购买 MacBook Pro 14"',user:'系统'},
+      {time:'09:23',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥14,999.00',user:'系统'},
+      {time:'09:25',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+      {time:'09:40',date:'05-25',type:'edit',icon:'✎',action:'仓库确认',detail:'华南仓已确认库存，准备拣货',user:'仓管-王伟'},
+      {time:'10:15',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'顺丰 SF1234567890，预计 1-2 日送达',user:'仓管-王伟'},
+      {time:'14:30',date:'05-26',type:'status',icon:'✓',action:'订单完成',detail:'客户签收确认',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 09:23',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 09:23',done:true,icon:'¥'},
+      {text:'仓库处理',time:'05-25 09:40',done:true,icon:'✎'},
+      {text:'已发货',time:'05-25 10:15',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-26 14:30',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-002', product:'Sony WH-1000XM5', sku:'SKU-SNY-WH5', icon:'🎧', amount:2699, customer:'李思琪', status:'processing', payment:'paid', method:'微信支付', date:'2026-05-25 09:45:38', phone:'139****2345', addr:'上海市浦东新区张江高科技园区',
+    logs:[
+      {time:'09:45',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'客户通过微信支付下单',user:'系统'},
+      {time:'09:45',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥2,699.00',user:'系统'},
+      {time:'09:46',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+      {time:'10:00',date:'05-25',type:'edit',icon:'✎',action:'仓库确认',detail:'华东仓确认库存中',user:'仓管-李明'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 09:45',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 09:45',done:true,icon:'¥'},
+      {text:'仓库处理',time:'05-25 10:00',active:true,icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-003', product:'iPad Air M2', sku:'SKU-IPA-M2-256', icon:'📱', amount:5499, customer:'王建国', status:'shipped', payment:'paid', method:'银行转账', date:'2026-05-25 10:12:05', phone:'137****8901', addr:'北京市海淀区中关村大街1号',
+    logs:[
+      {time:'10:12',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'银行转账订单',user:'系统'},
+      {time:'10:30',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'银行转账到账 ¥5,499.00',user:'财务-赵丽'},
+      {time:'10:31',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+      {time:'14:00',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'京东物流 JD0098765432',user:'仓管-王伟'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 10:12',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 10:30',done:true,icon:'¥'},
+      {text:'仓库处理',time:'05-25 10:31',done:true,icon:'✎'},
+      {text:'已发货',time:'05-25 14:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-004', product:'Herman Miller Aeron', sku:'SKU-HM-AER-B', icon:'🪑', amount:12800, customer:'赵文婷', status:'pending', payment:'unpaid', method:'—', date:'2026-05-25 10:33:21', phone:'136****4567', addr:'杭州市西湖区文三路478号',
+    logs:[
+      {time:'10:33',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'客户提交订单，待支付',user:'系统'},
+      {time:'10:35',date:'05-25',type:'system',icon:'⏰',action:'支付提醒',detail:'系统自动发送支付提醒短信',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 10:33',done:true,icon:'＋'},
+      {text:'支付完成',time:'—',icon:'¥'},
+      {text:'仓库处理',time:'—',icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-005', product:'Leica Q3', sku:'SKU-LC-Q3-BK', icon:'📷', amount:42800, customer:'陈浩南', status:'completed', payment:'paid', method:'支付宝', date:'2026-05-25 11:08:47', phone:'135****0123', addr:'广州市天河区体育西路103号',
+    logs:[
+      {time:'11:08',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝大额订单',user:'系统'},
+      {time:'11:08',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥42,800.00（大额交易）',user:'系统'},
+      {time:'11:15',date:'05-25',type:'edit',icon:'✎',action:'风控审核',detail:'大额订单风控审核通过',user:'风控-张强'},
+      {time:'14:00',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'顺丰特快 SF2233445566',user:'仓管-王伟'},
+      {time:'10:00',date:'05-27',type:'status',icon:'✓',action:'订单完成',detail:'客户签收，7天无理由退换期开始',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 11:08',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 11:08',done:true,icon:'¥'},
+      {text:'风控审核',time:'05-25 11:15',done:true,icon:'✎'},
+      {text:'已发货',time:'05-25 14:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-27 10:00',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-006', product:'Dyson V15 Detect', sku:'SKU-DY-V15-G', icon:'🧹', amount:5990, customer:'林雪梅', status:'cancelled', payment:'refunded', method:'微信支付', date:'2026-05-25 11:25:33', phone:'158****6789', addr:'成都市锦江区春熙路120号',
+    logs:[
+      {time:'11:25',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'微信支付订单',user:'系统'},
+      {time:'11:25',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥5,990.00',user:'系统'},
+      {time:'13:00',date:'05-25',type:'cancel',icon:'✕',action:'客户申请取消',detail:'原因：不想要了',user:'客服-刘晓'},
+      {time:'13:05',date:'05-25',type:'cancel',icon:'✕',action:'取消审核通过',detail:'订单取消，发起退款',user:'客服主管-周婷'},
+      {time:'13:06',date:'05-25',type:'payment',icon:'↩',action:'退款完成',detail:'原路退回 ¥5,990.00',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 11:25',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 11:25',done:true,icon:'¥'},
+      {text:'客户取消',time:'05-25 13:00',done:true,icon:'✕'},
+      {text:'退款完成',time:'05-25 13:06',done:true,icon:'↩'},
+    ]
+  },
+  { id:'ORD-20260525-007', product:'ThinkPad X1 Carbon', sku:'SKU-TP-X1C-G12', icon:'💻', amount:11999, customer:'黄志强', status:'processing', payment:'paid', method:'银行转账', date:'2026-05-25 12:01:56', phone:'133****2345', addr:'武汉市洪山区光谷创业街6号',
+    logs:[
+      {time:'12:01',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'银行转账企业订单',user:'系统'},
+      {time:'12:30',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'企业银行转账 ¥11,999.00',user:'财务-赵丽'},
+      {time:'12:31',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 12:01',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 12:30',done:true,icon:'¥'},
+      {text:'仓库处理',time:'—',active:true,icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-008', product:'Samsung 49" OLED', sku:'SKU-SAM-OLED49', icon:'🖥️', amount:9999, customer:'周小燕', status:'pending', payment:'unpaid', method:'—', date:'2026-05-25 13:14:22', phone:'159****8901', addr:'南京市鼓楼区中山路88号',
+    logs:[
+      {time:'13:14',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'客户提交订单，等待支付',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 13:14',done:true,icon:'＋'},
+      {text:'支付完成',time:'—',icon:'¥'},
+      {text:'仓库处理',time:'—',icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-009', product:'Bose QC Ultra', sku:'SKU-BOSE-QCU', icon:'🎧', amount:2999, customer:'吴天昊', status:'shipped', payment:'paid', method:'支付宝', date:'2026-05-25 13:42:09', phone:'186****4567', addr:'重庆市渝中区解放碑步行街',
+    logs:[
+      {time:'13:42',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝订单',user:'系统'},
+      {time:'13:42',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥2,999.00',user:'系统'},
+      {time:'14:00',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+      {time:'16:00',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'中通快递 ZT7890123456',user:'仓管-李明'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 13:42',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 13:42',done:true,icon:'¥'},
+      {text:'仓库处理',time:'05-25 14:00',done:true,icon:'✎'},
+      {text:'已发货',time:'05-25 16:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-010', product:'Nespresso Lattissima', sku:'SKU-NESP-LAT', icon:'☕', amount:3588, customer:'郑雅文', status:'completed', payment:'paid', method:'微信支付', date:'2026-05-25 14:05:31', phone:'131****0123', addr:'厦门市思明区中山路步行街58号',
+    logs:[
+      {time:'14:05',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'微信支付订单',user:'系统'},
+      {time:'14:05',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥3,588.00',user:'系统'},
+      {time:'15:00',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'顺丰快递 SF3344556677',user:'仓管-王伟'},
+      {time:'09:00',date:'05-27',type:'status',icon:'✓',action:'订单完成',detail:'客户签收确认',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 14:05',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 14:05',done:true,icon:'¥'},
+      {text:'已发货',time:'05-25 15:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-27 09:00',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-011', product:'Apple Watch Ultra 2', sku:'SKU-AWU2-TIT', icon:'⌚', amount:6499, customer:'孙明辉', status:'processing', payment:'paid', method:'支付宝', date:'2026-05-25 14:28:17', phone:'177****6789', addr:'西安市碑林区南大街30号',
+    logs:[
+      {time:'14:28',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝订单',user:'系统'},
+      {time:'14:28',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥6,499.00',user:'系统'},
+      {time:'14:30',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 14:28',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 14:28',done:true,icon:'¥'},
+      {text:'仓库处理',time:'—',active:true,icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-012', product:'Aeron Chair B-size', sku:'SKU-HM-AER-B2', icon:'🪑', amount:12800, customer:'马晓峰', status:'pending', payment:'unpaid', method:'—', date:'2026-05-25 14:55:44', phone:'152****2345', addr:'长沙市岳麓区麓谷信息港',
+    logs:[
+      {time:'14:55',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'客户提交订单，等待支付',user:'系统'},
+      {time:'15:00',date:'05-25',type:'system',icon:'⏰',action:'支付提醒',detail:'超时未支付，系统自动提醒',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 14:55',done:true,icon:'＋'},
+      {text:'支付完成',time:'—',icon:'¥'},
+      {text:'仓库处理',time:'—',icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-013', product:'Kindle Paperwhite', sku:'SKU-KND-PW-32', icon:'📖', amount:998, customer:'徐丽华', status:'completed', payment:'paid', method:'微信支付', date:'2026-05-25 15:12:03', phone:'185****8901', addr:'天津市和平区滨江道118号',
+    logs:[
+      {time:'15:12',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'微信支付订单',user:'系统'},
+      {time:'15:12',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥998.00',user:'系统'},
+      {time:'16:00',date:'05-25',type:'ship',icon:'⛟',action:'已发货',detail:'圆通快递 YT1122334455',user:'仓管-李明'},
+      {time:'11:00',date:'05-27',type:'status',icon:'✓',action:'订单完成',detail:'客户签收',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 15:12',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 15:12',done:true,icon:'¥'},
+      {text:'已发货',time:'05-25 16:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-27 11:00',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-014', product:'LG 27" 4K Monitor', sku:'SKU-LG-27-4K', icon:'🖥️', amount:3299, customer:'胡嘉伟', status:'shipped', payment:'paid', method:'银行转账', date:'2026-05-25 15:38:29', phone:'130****4567', addr:'苏州市工业园区星湖街328号',
+    logs:[
+      {time:'15:38',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'银行转账订单',user:'系统'},
+      {time:'15:40',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'银行转账 ¥3,299.00',user:'财务-赵丽'},
+      {time:'09:00',date:'05-26',type:'ship',icon:'⛟',action:'已发货',detail:'德邦物流 DP9988776655（大件）',user:'仓管-王伟'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 15:38',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 15:40',done:true,icon:'¥'},
+      {text:'已发货',time:'05-26 09:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-015', product:'Bang & Olufsen A9', sku:'SKU-BO-A9-5G', icon:'🔊', amount:22998, customer:'朱芳芳', status:'completed', payment:'paid', method:'支付宝', date:'2026-05-25 16:01:55', phone:'188****0123', addr:'青岛市市南区香港中路68号',
+    logs:[
+      {time:'16:01',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝大额订单',user:'系统'},
+      {time:'16:01',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥22,998.00',user:'系统'},
+      {time:'16:10',date:'05-25',type:'edit',icon:'✎',action:'风控审核',detail:'大额订单审核通过',user:'风控-张强'},
+      {time:'10:00',date:'05-26',type:'ship',icon:'⛟',action:'已发货',detail:'顺丰特快 SF5566778899',user:'仓管-李明'},
+      {time:'15:00',date:'05-28',type:'status',icon:'✓',action:'订单完成',detail:'客户签收',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 16:01',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 16:01',done:true,icon:'¥'},
+      {text:'风控审核',time:'05-25 16:10',done:true,icon:'✎'},
+      {text:'已发货',time:'05-26 10:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-28 15:00',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-016', product:'PlayStation 5 Pro', sku:'SKU-PS5-PRO', icon:'🎮', amount:5499, customer:'郭宇航', status:'cancelled', payment:'refunded', method:'支付宝', date:'2026-05-25 16:22:41', phone:'176****6789', addr:'大连市中山区人民路23号',
+    logs:[
+      {time:'16:22',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝订单',user:'系统'},
+      {time:'16:22',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥5,499.00',user:'系统'},
+      {time:'17:00',date:'05-25',type:'cancel',icon:'✕',action:'客户申请取消',detail:'原因：地址填写错误',user:'客服-刘晓'},
+      {time:'17:05',date:'05-25',type:'cancel',icon:'✕',action:'取消审核通过',detail:'订单取消，发起退款',user:'客服主管-周婷'},
+      {time:'17:06',date:'05-25',type:'payment',icon:'↩',action:'退款完成',detail:'原路退回 ¥5,499.00',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 16:22',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 16:22',done:true,icon:'¥'},
+      {text:'客户取消',time:'05-25 17:00',done:true,icon:'✕'},
+      {text:'退款完成',time:'05-25 17:06',done:true,icon:'↩'},
+    ]
+  },
+  { id:'ORD-20260525-017', product:'Vitamix E520', sku:'SKU-VMIX-E520', icon:'🥤', amount:4299, customer:'谢婉清', status:'processing', payment:'paid', method:'微信支付', date:'2026-05-25 16:45:08', phone:'155****2345', addr:'郑州市金水区花园路39号',
+    logs:[
+      {time:'16:45',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'微信支付订单',user:'系统'},
+      {time:'16:45',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥4,299.00',user:'系统'},
+      {time:'16:46',date:'05-25',type:'status',icon:'→',action:'状态变更',detail:'待付款 → 处理中',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 16:45',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 16:45',done:true,icon:'¥'},
+      {text:'仓库处理',time:'—',active:true,icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-018', product:'Rode NT-USB Mini', sku:'SKU-RODE-NTU', icon:'🎙️', amount:799, customer:'冯家豪', status:'completed', payment:'paid', method:'支付宝', date:'2026-05-25 17:03:36', phone:'182****8901', addr:'宁波市鄞州区钱湖北路58号',
+    logs:[
+      {time:'17:03',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'支付宝订单',user:'系统'},
+      {time:'17:03',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'支付宝到账 ¥799.00',user:'系统'},
+      {time:'09:30',date:'05-26',type:'ship',icon:'⛟',action:'已发货',detail:'韵达快递 YD6677889900',user:'仓管-王伟'},
+      {time:'14:00',date:'05-28',type:'status',icon:'✓',action:'订单完成',detail:'客户签收',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 17:03',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 17:03',done:true,icon:'¥'},
+      {text:'已发货',time:'05-26 09:30',done:true,icon:'⛟'},
+      {text:'已签收',time:'05-28 14:00',done:true,icon:'✓'},
+    ]
+  },
+  { id:'ORD-20260525-019', product:'Weber Spirit II', sku:'SKU-WBR-SP2', icon:'🔥', amount:4599, customer:'韩冰冰', status:'pending', payment:'cod', method:'货到付款', date:'2026-05-25 17:28:12', phone:'170****4567', addr:'东莞市南城区鸿福路99号',
+    logs:[
+      {time:'17:28',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'货到付款订单',user:'系统'},
+      {time:'17:30',date:'05-25',type:'status',icon:'→',action:'等待确认',detail:'货到付款订单，等待仓库确认',user:'系统'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 17:28',done:true,icon:'＋'},
+      {text:'仓库确认',time:'—',icon:'✎'},
+      {text:'已发货',time:'—',icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+      {text:'收款完成',time:'—',icon:'¥'},
+    ]
+  },
+  { id:'ORD-20260525-020', product:'Ember Mug 2', sku:'SKU-EMB-MUG2', icon:'☕', amount:899, customer:'曹思远', status:'shipped', payment:'paid', method:'微信支付', date:'2026-05-25 17:50:44', phone:'189****0123', addr:'佛山市禅城区岭南天地12号',
+    logs:[
+      {time:'17:50',date:'05-25',type:'create',icon:'＋',action:'订单创建',detail:'微信支付订单',user:'系统'},
+      {time:'17:50',date:'05-25',type:'payment',icon:'¥',action:'收到支付',detail:'微信支付到账 ¥899.00',user:'系统'},
+      {time:'09:00',date:'05-26',type:'ship',icon:'⛟',action:'已发货',detail:'申通快递 ST1234432112',user:'仓管-李明'},
+    ],
+    timeline:[
+      {text:'订单创建',time:'05-25 17:50',done:true,icon:'＋'},
+      {text:'支付完成',time:'05-25 17:50',done:true,icon:'¥'},
+      {text:'已发货',time:'05-26 09:00',done:true,icon:'⛟'},
+      {text:'已签收',time:'—',icon:'✓'},
+    ]
+  },
+];
+
+const statusMap = {
+  pending: {label:'待付款', cls:'status-pending'},
+  processing: {label:'处理中', cls:'status-processing'},
+  shipped: {label:'已发货', cls:'status-shipped'},
+  completed: {label:'已完成', cls:'status-completed'},
+  cancelled: {label:'已取消', cls:'status-cancelled'},
+};
+
+// ========== INIT ==========
+const params = new URLSearchParams(window.location.search);
+const orderId = params.get('id');
+const order = orders.find(o => o.id === orderId);
+
+if (!order) {
+  document.querySelector('.main').innerHTML = `
+    <div style="text-align:center;padding:120px 0">
+      <div style="font-size:48px;margin-bottom:16px"> </div>
+      <div style="font-size:18px;font-weight:600;color:var(--text-primary);margin-bottom:8px">订单不存在</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:24px">请检查链接是否正确</div>
+      <a href="order-management.html" class="btn btn-primary" style="text-decoration:none;display:inline-flex">返回订单列表</a>
+    </div>`;
+} else {
+  render(order);
+}
+
+function render(o) {
+  document.title = o.product + ' — OrderOS';
+  document.getElementById('breadcrumbId').textContent = o.id;
+
+  // hero
+  document.getElementById('heroIcon').textContent = o.icon;
+  document.getElementById('heroName').textContent = o.product;
+  document.getElementById('heroSku').textContent = o.sku;
+  document.getElementById('heroAmount').textContent = '¥' + o.amount.toLocaleString();
+
+  const s = statusMap[o.status];
+  document.getElementById('heroStatus').innerHTML = `<span class="status ${s.cls}"><span class="status-dot"></span>${s.label}</span>`;
+  const payCls = o.payment === 'paid' ? 'paid' : o.payment === 'refunded' ? 'refunded' : 'unpaid';
+  const payLabel = o.payment === 'paid' ? '已支付' : o.payment === 'refunded' ? '已退款' : '待支付';
+  document.getElementById('heroPayment').innerHTML = `<span class="payment-tag ${payCls}">${payLabel}</span>`;
+
+  // info
+  document.getElementById('infoId').textContent = o.id;
+  document.getElementById('infoDate').textContent = o.date;
+  document.getElementById('infoMethod').textContent = o.method;
+  document.getElementById('infoCustomer').textContent = o.customer;
+  document.getElementById('infoPhone').textContent = o.phone || '—';
+  document.getElementById('infoAddr').textContent = o.addr || '—';
+  document.getElementById('infoProduct').textContent = o.product;
+  document.getElementById('infoSku').textContent = o.sku;
+  document.getElementById('infoPrice').textContent = '¥' + o.amount.toLocaleString();
+
+  // timeline
+  const tl = document.getElementById('timeline');
+  if (o.timeline && o.timeline.length) {
+    tl.innerHTML = o.timeline.map(t => `
+      <div class="timeline-step ${t.done ? 'done' : ''} ${t.active ? 'active' : ''}">
+        <div class="timeline-dot">${t.done ? '✓' : t.active ? '◉' : (t.icon || '·')}</div>
+        <div class="timeline-label">${t.text}</div>
+        <div class="timeline-time">${t.time}</div>
+      </div>
+    `).join('');
+  }
+
+  // log
+  const list = document.getElementById('logList');
+  if (o.logs && o.logs.length) {
+    list.innerHTML = o.logs.map((log, i) => `
+      <div class="log-entry" style="animation-delay:${i * 0.05}s">
+        <div class="log-time-col">
+          <span class="log-time">${log.time}</span>
+          <span class="log-date">${log.date}</span>
+        </div>
+        <div class="log-icon-col">
+          <div class="log-icon ${log.type}">${log.icon}</div>
+        </div>
+        <div class="log-content-col">
+          <div class="log-action">${log.action}</div>
+          <div class="log-detail">${log.detail}</div>
+          <span class="log-user"><span class="log-user-dot"></span>${log.user}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function scrollToLog() {
+  document.getElementById('logSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function goEdit() {
+  window.location.href = 'order-management.html?edit=' + encodeURIComponent(orderId);
+}
+</script>
+</body>
+</html>
