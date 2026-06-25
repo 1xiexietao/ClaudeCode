@@ -115,7 +115,7 @@ body {
 .filter-input:focus, .filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 .filter-select {
   cursor: pointer; appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
 .filter-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); }
@@ -163,23 +163,21 @@ body {
   white-space: nowrap;
 }
 
-/* Level 1 - Order Row */
 .order-row { cursor: pointer; transition: background 0.15s; }
 .order-row:hover { background: var(--bg-hover); }
 .order-row td {
   padding: 12px 16px; font-size: 13px; color: var(--text-primary);
   border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
 }
-.order-row .expand-btn {
+.expand-btn {
   width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center;
   border: none; background: none; cursor: pointer; color: var(--text-muted);
   transition: all 0.2s; border-radius: 4px; padding: 0;
 }
-.order-row .expand-btn:hover { background: #F4F1FF; color: #7B61FF; }
-.order-row .expand-btn svg { width: 13px; height: 13px; transition: transform 0.2s; }
+.expand-btn:hover { background: #F4F1FF; color: #7B61FF; }
+.expand-btn svg { width: 13px; height: 13px; transition: transform 0.2s; }
 .order-row.expanded .expand-btn svg { transform: rotate(90deg); }
 
-/* Expand/Collapse All Toggle */
 .expand-toggle-btn {
   width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
   border: none; background: none; cursor: pointer; color: var(--text-muted);
@@ -187,12 +185,11 @@ body {
 }
 .expand-toggle-btn:hover { background: #F4F1FF; color: #7B61FF; }
 .expand-toggle-btn svg { width: 16px; height: 16px; transition: transform 0.2s; }
-.expand-toggle-btn.collapsed svg { transform: rotate(180deg); }
-.order-row .order-id { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--text-primary); }
-.order-row .order-date { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
-.order-row .order-num { font-family: var(--font-mono); font-weight: 500; }
 
-/* Level 2 - Sub-order Row */
+.order-id { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--text-primary); }
+.order-date { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.order-num { font-family: var(--font-mono); font-weight: 500; }
+
 .suborder-row { display: none; }
 .suborder-row.visible { display: table-row; }
 .suborder-row td { padding: 0; border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; }
@@ -205,42 +202,12 @@ body {
 }
 .suborder-table td { padding: 9px 12px; font-size: 12px; color: var(--text-primary); border-bottom: 1px solid var(--border-subtle); }
 .suborder-table tr:last-child td { border-bottom: none; }
-.suborder-table th:last-child,
-.suborder-table td:last-child {
-  text-align: right;
-  padding-right: 16px;
-}
-.suborder-no { font-family: var(--font-mono); font-weight: 500; color: var(--text-primary); font-size: 11px; }
-.suborder-num { font-family: var(--font-mono); font-weight: 500; }
-.suborder-origin {
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.suborder-origin-edit {
-  width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center;
-  border: none; background: none; cursor: pointer; color: var(--text-muted);
-  transition: all 0.2s; border-radius: 3px; padding: 0;
-}
-.suborder-origin-edit:hover { background: #F4F1FF; color: #7B61FF; }
-.suborder-origin-edit svg { width: 12px; height: 12px; }
 
-/* Tags - Neutral style */
-.tag {
-  display: inline-flex; align-items: center; padding: 2px 7px;
-  border-radius: 4px; font-size: 11px; font-weight: 500; gap: 3px;
-  background: #F7F8FA; color: var(--text-secondary);
-}
-
-/* Flags - Keep colored for special markers */
 .flag { display: inline-flex; align-items: center; gap: 3px; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 500; }
 .flag-urgent { background: #FEE2E2; color: #DC2626; }
 .flag-note { background: #FEF3C7; color: #D97706; }
 .flag-vip { background: #F4F1FF; color: #7B61FF; }
 
-/* Sync Status - Neutral style */
-.sync-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-secondary); }
-.sync-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); }
-
-/* Sub-order action button */
 .sub-action-btn {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 4px 10px; border: none; border-radius: 4px;
@@ -248,7 +215,6 @@ body {
   background: #D1FAE5; color: #059669;
 }
 .sub-action-btn:hover { background: #A7F3D0; }
-.sub-action-btn svg { width: 12px; height: 12px; }
 .sub-action-btn.split {
   background: #F4F1FF; color: #7B61FF;
 }
@@ -259,171 +225,12 @@ body {
 .sub-action-btn.sync:hover { background: #BFDBFE; }
 .sub-action-group { display: flex; gap: 6px; justify-content: flex-end; }
 
-/* Clickable product count */
 .suborder-num-link {
   font-family: var(--font-mono); font-weight: 600; font-size: 12px;
   color: #4078FF; cursor: pointer; padding: 2px 6px; border-radius: 4px;
   transition: all 0.2s;
 }
 .suborder-num-link:hover { background: #F4F1FF; text-decoration: underline; }
-
-/* Product Detail Modal */
-.product-detail-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 14px; background: #F7F8FA; border-radius: var(--radius-sm);
-  margin-bottom: 12px; font-size: 12px; color: var(--text-secondary);
-}
-.product-detail-header strong { color: #4078FF; font-family: var(--font-mono); }
-.product-list { display: flex; flex-direction: column; gap: 10px; }
-.product-card {
-  display: flex; gap: 14px; padding: 12px; background: #fff;
-  border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-  transition: border-color 0.2s;
-}
-.product-card:hover { border-color: #7B61FF; }
-.product-img {
-  width: 72px; height: 72px; border-radius: var(--radius-sm);
-  background: #F7F8FA; overflow: hidden; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border-subtle);
-}
-.product-img img { width: 100%; height: 100%; object-fit: cover; }
-.product-img-placeholder {
-  color: var(--text-muted); font-size: 24px;
-}
-.product-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-.product-name { font-size: 13px; font-weight: 500; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
-.product-name .product-attr-value { font-size: 12px; color: var(--text-secondary); font-weight: 400; }
-.product-attrs {
-  display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--text-secondary);
-}
-.product-attr {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 2px 8px; background: #F7F8FA; border-radius: 4px;
-}
-.product-attr-label { color: var(--text-muted); }
-.product-attr-value { font-weight: 500; color: var(--text-primary); }
-.product-codes {
-  display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px;
-}
-.product-code {
-  display: inline-flex; align-items: center; gap: 4px;
-}
-.product-code-label { color: var(--text-muted); }
-.product-code-value {
-  font-family: var(--font-mono); font-weight: 500; color: #4078FF; font-size: 11px;
-}
-.product-qty-info {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px; color: var(--text-secondary);
-}
-.product-qty-num {
-  font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--text-primary);
-}
-
-/* Order Log */
-.log-list { display: flex; flex-direction: column; }
-.log-entry {
-  display: flex; gap: 12px; padding: 10px 0;
-  border-bottom: 1px solid var(--border-subtle);
-}
-.log-entry:last-child { border-bottom: none; }
-.log-time {
-  font-size: 11px; font-family: var(--font-mono); font-weight: 500;
-  color: var(--text-muted); min-width: 60px; flex-shrink: 0;
-}
-.log-icon {
-  width: 22px; height: 22px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; flex-shrink: 0;
-}
-.log-icon.create { background: #DBEAFE; color: #2563EB; }
-.log-icon.split { background: #F4F1FF; color: #7B61FF; }
-.log-icon.ship { background: #D1FAE5; color: #059669; }
-.log-icon.sync { background: #FEF3C7; color: #D97706; }
-.log-icon.fail { background: #FEE2E2; color: #DC2626; }
-.log-content { font-size: 12px; color: var(--text-primary); line-height: 1.5; }
-.log-content .highlight { color: #4078FF; font-family: var(--font-mono); font-weight: 500; }
-
-/* Detail Section in Modal */
-.detail-section { margin-bottom: 18px; }
-.detail-section-title {
-  font-size: 11px; font-weight: 600; color: var(--text-muted);
-  letter-spacing: 0.06em; text-transform: uppercase;
-  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
-}
-
-/* Manual Split Modal */
-.split-step {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px; background: #7B61FF; color: #fff;
-  border-radius: 50%; font-size: 11px; font-weight: 600; margin-right: 6px;
-}
-.split-suborder-info {
-  padding: 8px 12px; background: #F7F8FA; border-radius: var(--radius-sm);
-  font-size: 12px; color: var(--text-secondary); margin: 8px 0 12px;
-}
-.split-suborder-info strong { color: #4078FF; font-family: var(--font-mono); }
-.split-items-container { margin-top: 8px; }
-.split-select-all {
-  padding: 6px 0; font-size: 12px; color: var(--text-secondary);
-  display: flex; align-items: center; gap: 6px;
-}
-.split-select-all label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.split-items-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
-.split-item-card {
-  display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px;
-  background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-  transition: border-color 0.2s;
-}
-.split-item-card:hover { border-color: #7B61FF; }
-.split-item-card.selected { border-color: #7B61FF; background: #F4F1FF; }
-.split-item-check { padding-top: 24px; flex-shrink: 0; }
-.split-item-img {
-  width: 56px; height: 56px; border-radius: var(--radius-sm);
-  background: #F7F8FA; overflow: hidden; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border-subtle);
-}
-.split-item-img img { width: 100%; height: 100%; object-fit: cover; }
-.split-item-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.split-item-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
-.split-item-name .attr { color: var(--text-secondary); font-weight: 400; }
-.split-item-codes { display: flex; gap: 8px; font-size: 10px; color: var(--text-muted); }
-.split-item-codes span { font-family: var(--font-mono); }
-.split-item-qty {
-  display: flex; align-items: center; gap: 8px; margin-top: 4px;
-  font-size: 11px; color: var(--text-secondary);
-}
-.split-config-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
-.split-readonly-field {
-  height: 36px; display: flex; align-items: center;
-  padding: 0 12px; background: #F7F8FA; border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm); font-size: 12px; color: var(--text-primary);
-  font-weight: 500;
-}
-.split-qty-input {
-  width: 54px; height: 26px; border: 1px solid var(--border-subtle); border-radius: 4px;
-  text-align: center; font-size: 11px; font-family: var(--font-mono); color: var(--text-primary); background: #F7F8FA;
-}
-.split-qty-input:focus { outline: none; border-color: #7B61FF; background: #fff; }
-.split-qty-max { font-size: 10px; color: var(--text-muted); margin-left: 3px; }
-.split-preview {
-  margin-top: 16px; padding: 14px; background: #F7F8FA;
-  border-radius: var(--radius-md); border: 1px solid var(--border-subtle);
-}
-.split-preview-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; background: #fff; border-radius: var(--radius-sm);
-  margin-bottom: 6px; border: 1px solid var(--border-subtle);
-}
-.split-preview-item:last-child { margin-bottom: 0; }
-.split-preview-badge {
-  padding: 2px 8px; background: #F4F1FF; color: #7B61FF;
-  border-radius: 10px; font-size: 10px; font-weight: 600;
-  font-family: var(--font-mono);
-}
-.split-preview-items { flex: 1; font-size: 12px; color: var(--text-secondary); }
 
 /* Pagination */
 .pagination {
@@ -440,7 +247,6 @@ body {
 }
 .page-btn:hover { background: #F4F1FF; border-color: rgba(123,97,255,0.2); color: #7B61FF; }
 .page-btn.active { background: #F4F1FF; border-color: rgba(123,97,255,0.25); color: #7B61FF; }
-.page-btn svg { width: 13px; height: 13px; }
 
 /* Modal */
 .modal-overlay {
@@ -461,39 +267,10 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 22px 14px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
 }
-.modal-header-left { display: flex; align-items: center; gap: 10px; }
-.modal-icon {
-  width: 36px; height: 36px; border-radius: 10px; background: #7B61FF;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 10px rgba(123,97,255,0.25);
-}
-.modal-icon svg { width: 18px; height: 18px; color: #fff; }
 .modal-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); }
-.modal-subtitle { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
-.modal-close {
-  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border-subtle);
-  background: #fff; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--text-muted); transition: all 0.15s;
-}
-.modal-close:hover { background: #FEE2E2; border-color: #FCA5A5; color: #EF4444; }
-.modal-close svg { width: 14px; height: 14px; }
 .modal-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
 .modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 14px 22px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
 
-/* Mark Shipped Modal */
-.mark-shipped-info {
-  display: flex; gap: 14px; padding: 14px;
-  background: #F0FDF4; border-radius: var(--radius-md); border: 1px solid #BBF7D0;
-}
-.mark-shipped-icon { flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: #10b981; }
-.mark-shipped-icon svg { width: 20px; height: 20px; }
-.mark-shipped-text { flex: 1; font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-.mark-shipped-text strong { color: #10b981; }
-.mark-shipped-orders { margin: 6px 0; padding: 6px 10px; background: #fff; border-radius: var(--radius-sm); border: 1px solid #D1FAE5; }
-.mark-shipped-order { padding: 3px 0; font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); }
-.mark-shipped-warning { color: #F59E0B; font-size: 11px; margin-top: 6px; }
-
-/* Toast */
 .toast {
   position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
   background: #1e1e2e; color: #fff; padding: 9px 20px; border-radius: 8px;
@@ -503,12 +280,10 @@ body {
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-.toast .toast-icon { margin-right: 5px; }
 
-/* Animation */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .animate-in { animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
-.delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; } .delay-3 { animation-delay: 0.15s; }
+.delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -673,1032 +448,94 @@ body {
 
   </main>
 
-  <!-- MARK SHIPPED MODAL -->
-  <div class="modal-overlay" id="markShippedModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div>
-            <div class="modal-title">标记发货</div>
-            <div class="modal-subtitle" id="shippedModalSubtitle">确认将子订单标记为已发货</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeMarkShipped()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="mark-shipped-info">
-          <div class="mark-shipped-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <div class="mark-shipped-text">
-            <p>即将标记以下子订单为<strong>已发货</strong>状态：</p>
-            <div class="mark-shipped-orders" id="shippedOrderList"></div>
-          </div>
-        </div>
-        <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 12px;">
-          <div class="filter-group">
-            <label class="filter-label"><span style="color: #ef4444;">*</span> 承运商</label>
-            <select class="filter-select" id="shippedCarrier">
-              <option value="">请选择承运商...</option>
-              <option value="fedex">FedEx</option>
-              <option value="ups">UPS</option>
-              <option value="dhl">DHL</option>
-              <option value="usps">USPS</option>
-              <option value="ems">EMS</option>
-              <option value="sf">顺丰速运</option>
-              <option value="yt">圆通速递</option>
-              <option value="zt">中通快递</option>
-              <option value="st">申通快递</option>
-              <option value="yd">韵达快递</option>
-              <option value="other">其他</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label class="filter-label"><span style="color: #ef4444;">*</span> 跟踪单号</label>
-            <input type="text" class="filter-input" id="shippedTrackingNo" placeholder="输入物流跟踪单号...">
-          </div>
-          <div class="filter-group">
-            <label class="filter-label">备注（选填）</label>
-            <input type="text" class="filter-input" id="shippedRemark" placeholder="输入备注信息...">
-          </div>
-        </div>
-        <p class="mark-shipped-warning" style="margin-top: 12px;">此操作不可撤销，请确认订单已实际发货。</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeMarkShipped()">取消</button>
-        <button class="btn btn-export" onclick="confirmMarkShipped()">确认发货</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MANUAL SPLIT MODAL -->
-  <div class="modal-overlay" id="manualSplitModal">
-    <div class="modal" style="width: 600px;">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          </div>
-          <div>
-            <div class="modal-title">手动拆单</div>
-            <div class="modal-subtitle" id="splitModalSubtitle">从子单中拆分商品生成新子单</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeManualSplit()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Step 1: 当前子单信息 -->
-        <div class="detail-section">
-          <div class="detail-section-title">
-            <span class="split-step">1</span> 当前子单
-          </div>
-          <div class="split-suborder-info" id="splitSubOrderInfo"></div>
-        </div>
-
-        <!-- Step 2: 选择商品 -->
-        <div class="detail-section">
-          <div class="detail-section-title">
-            <span class="split-step">2</span> 选择要拆分的商品
-          </div>
-          <div class="split-select-all">
-            <label><input type="checkbox" id="selectAllSplitItems" onchange="toggleSelectAllSplit()"> 全选</label>
-          </div>
-          <div class="split-items-list" id="splitItemsBody"></div>
-          <div class="split-preview" id="splitPreview" style="display:none;">
-            <div class="detail-section-title" style="margin-bottom: 10px;">拆单预览</div>
-            <div id="splitPreviewContent"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeManualSplit()">取消</button>
-        <button class="btn btn-primary" onclick="confirmManualSplit()" id="confirmSplitBtn" disabled>确认拆单</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ORDER LOG MODAL -->
-  <div class="modal-overlay" id="orderLogModal">
-    <div class="modal" style="width: 560px;">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-icon" style="background: #606266;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          </div>
-          <div>
-            <div class="modal-title">操作日志</div>
-            <div class="modal-subtitle" id="orderLogSubtitle">订单操作记录</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeOrderLog()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body" id="orderLogBody">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeOrderLog()">关闭</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHANGE WAREHOUSE MODAL -->
-  <div class="modal-overlay" id="changeWarehouseModal">
-    <div class="modal" style="width: 420px;">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-icon" style="background: #FF9933;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div>
-            <div class="modal-title">修改仓发地</div>
-            <div class="modal-subtitle" id="changeWarehouseSubtitle">修改子订单的海外仓发地</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeChangeWarehouse()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="split-suborder-info" id="changeWarehouseInfo"></div>
-        <div style="margin-top: 16px;">
-          <div class="filter-group">
-            <label class="filter-label"><span style="color: #ef4444;">*</span> 新仓发地/供应商</label>
-            <select class="filter-select" id="newWarehouseSupplier">
-              <option value="">请选择...</option>
-              <optgroup label="国内仓">
-                <option value="国内仓|">国内仓 / 无</option>
-              </optgroup>
-              <optgroup label="海外仓">
-                <option value="海外仓|CJ Dropshipping">海外仓 / CJ Dropshipping</option>
-                <option value="海外仓|Trendsi">海外仓 / Trendsi</option>
-                <option value="海外仓|阿里国际">海外仓 / 阿里国际</option>
-                <option value="海外仓|速卖通">海外仓 / 速卖通</option>
-              </optgroup>
-            </select>
-          </div>
-          <div class="filter-group" style="margin-top: 12px;">
-            <label class="filter-label">备注（选填）</label>
-            <input type="text" class="filter-input" id="changeWarehouseRemark" placeholder="输入修改原因...">
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeChangeWarehouse()">取消</button>
-        <button class="btn btn-export" onclick="confirmChangeWarehouse()">确认修改</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PRODUCT DETAIL MODAL -->
-  <div class="modal-overlay" id="productDetailModal">
-    <div class="modal" style="width: 480px;">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-icon" style="background: #4078FF;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          </div>
-          <div>
-            <div class="modal-title">商品明细</div>
-            <div class="modal-subtitle" id="productDetailSubtitle">子订单商品列表</div>
-          </div>
-        </div>
-        <button class="modal-close" onclick="closeProductDetail()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body" id="productDetailBody">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeProductDetail()">关闭</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
 </div>
 
 <script>
-// Data Model
 const orders = [
-  {
-    id: 'SHOP-20260623-001', date: '2026-06-23', channel: 'online', store: 'store001',
-    payStatus: 'paid', shipStatus: 'partial', productCount: 8, subCount: 3,
-    flags: ['vip'],
-    subOrders: [
-      { no: 'SUB-001-1', productCount: 2, origin: '国内仓', supplier: '—', shipStatus: 'shipped', syncStatus: 'success' },
-      { no: 'SUB-001-2', productCount: 3, origin: '海外仓', supplier: 'CJ Dropshipping', shipStatus: 'pending', syncStatus: 'pending' },
-      { no: 'SUB-001-3', productCount: 3, origin: '海外仓', supplier: 'Trendsi', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '10:30:00', type: 'create', content: '订单同步成功，来源在线商店' },
-      { time: '10:30:01', type: 'split', content: '自动拆单完成，生成 3 个子订单' },
-      { time: '10:30:02', type: 'sync', content: '<span class="highlight">SUB-001-1</span> 同步易仓成功' },
-      { time: '10:35:00', type: 'ship', content: '<span class="highlight">SUB-001-1</span> 标记发货' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-002', date: '2026-06-23', channel: 'online', store: 'store001',
-    payStatus: 'paid', shipStatus: 'shipped', productCount: 3, subCount: 2,
-    flags: [],
-    subOrders: [
-      { no: 'SUB-002-1', productCount: 1, origin: '国内仓', supplier: '—', shipStatus: 'shipped', syncStatus: 'success' },
-      { no: 'SUB-002-2', productCount: 2, origin: '海外仓', supplier: 'CJ Dropshipping', shipStatus: 'shipped', syncStatus: 'success' },
-    ],
-    logs: [
-      { time: '10:35:00', type: 'create', content: '订单同步成功，来源在线商店' },
-      { time: '10:35:01', type: 'split', content: '自动拆单完成，生成 2 个子订单' },
-      { time: '10:35:02', type: 'sync', content: '<span class="highlight">SUB-002-1</span> 同步易仓成功' },
-      { time: '10:36:00', type: 'ship', content: '<span class="highlight">SUB-002-1</span> 标记发货' },
-      { time: '10:40:00', type: 'ship', content: '<span class="highlight">SUB-002-2</span> 标记发货' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-003', date: '2026-06-23', channel: 'pos', store: 'store002',
-    payStatus: 'paid', shipStatus: 'pending', productCount: 2, subCount: 1,
-    flags: ['urgent'],
-    subOrders: [
-      { no: 'SUB-003-1', productCount: 2, origin: '国内仓', supplier: '—', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '10:40:00', type: 'create', content: '订单同步成功，来源 POS 线下门店' },
-      { time: '10:40:01', type: 'split', content: '自动拆单完成，生成 1 个子订单' },
-      { time: '10:40:02', type: 'sync', content: '<span class="highlight">SUB-003-1</span> 同步易仓成功' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-004', date: '2026-06-23', channel: 'draft', store: 'store001',
-    payStatus: 'unpaid', shipStatus: 'pending', productCount: 1, subCount: 0,
-    flags: [],
-    subOrders: [],
-    logs: [
-      { time: '10:45:00', type: 'create', content: '草稿订单创建' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-005', date: '2026-06-23', channel: 'iphone', store: 'store003',
-    payStatus: 'paid', shipStatus: 'partial', productCount: 6, subCount: 4,
-    flags: [],
-    subOrders: [
-      { no: 'SUB-005-1', productCount: 1, origin: '国内仓', supplier: '—', shipStatus: 'shipped', syncStatus: 'success' },
-      { no: 'SUB-005-2', productCount: 1, origin: '国内仓', supplier: '—', shipStatus: 'pending', syncStatus: 'success' },
-      { no: 'SUB-005-3', productCount: 2, origin: '海外仓', supplier: 'CJ Dropshipping', shipStatus: 'pending', syncStatus: 'pending' },
-      { no: 'SUB-005-4', productCount: 2, origin: '海外仓', supplier: '阿里国际', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '10:50:00', type: 'create', content: '订单同步成功，来源 iPhone 应用' },
-      { time: '10:50:01', type: 'split', content: '自动拆单完成，生成 4 个子订单' },
-      { time: '10:50:02', type: 'sync', content: '<span class="highlight">SUB-005-1</span> 同步易仓成功' },
-      { time: '10:50:03', type: 'sync', content: '<span class="highlight">SUB-005-2</span> 同步易仓成功' },
-      { time: '10:55:00', type: 'ship', content: '<span class="highlight">SUB-005-1</span> 标记发货' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-006', date: '2026-06-23', channel: 'android', store: 'store004',
-    payStatus: 'paid', shipStatus: 'shipped', productCount: 2, subCount: 1,
-    flags: ['note'],
-    subOrders: [
-      { no: 'SUB-006-1', productCount: 2, origin: '国内仓', supplier: '—', shipStatus: 'shipped', syncStatus: 'success' },
-    ],
-    logs: [
-      { time: '11:00:00', type: 'create', content: '订单同步成功，来源 Android 应用' },
-      { time: '11:00:01', type: 'split', content: '自动拆单完成，生成 1 个子订单' },
-      { time: '11:00:02', type: 'sync', content: '<span class="highlight">SUB-006-1</span> 同步易仓成功' },
-      { time: '11:05:00', type: 'ship', content: '<span class="highlight">SUB-006-1</span> 标记发货' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-007', date: '2026-06-24', channel: 'mobile', store: 'store005',
-    payStatus: 'paid', shipStatus: 'pending', productCount: 4, subCount: 2,
-    flags: [],
-    subOrders: [
-      { no: 'SUB-007-1', productCount: 2, origin: '国内仓', supplier: '—', shipStatus: 'pending', syncStatus: 'failed' },
-      { no: 'SUB-007-2', productCount: 2, origin: '海外仓', supplier: 'Trendsi', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '09:10:00', type: 'create', content: '订单同步成功，来源手机app' },
-      { time: '09:10:01', type: 'split', content: '自动拆单完成，生成 2 个子订单' },
-      { time: '09:10:02', type: 'fail', content: '<span class="highlight">SUB-007-1</span> 同步易仓失败：网络超时' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-008', date: '2026-06-24', channel: 'online', store: 'store002',
-    payStatus: 'paid', shipStatus: 'pending', productCount: 3, subCount: 2,
-    flags: ['vip'],
-    subOrders: [
-      { no: 'SUB-008-1', productCount: 1, origin: '海外仓', supplier: 'CJ Dropshipping', shipStatus: 'pending', syncStatus: 'pending' },
-      { no: 'SUB-008-2', productCount: 2, origin: '海外仓', supplier: 'Trendsi', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '09:20:00', type: 'create', content: '订单同步成功，来源在线商店' },
-      { time: '09:20:01', type: 'split', content: '自动拆单完成，生成 2 个子订单（纯海外仓）' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-009', date: '2026-06-24', channel: 'online', store: 'store001',
-    payStatus: 'refunded', shipStatus: 'pending', productCount: 1, subCount: 0,
-    flags: [],
-    subOrders: [],
-    logs: [
-      { time: '09:30:00', type: 'create', content: '订单同步成功，来源在线商店' },
-      { time: '10:00:00', type: 'fail', content: '订单已退款，拆单终止' },
-    ]
-  },
-  {
-    id: 'SHOP-20260623-010', date: '2026-06-24', channel: 'pos', store: 'store003',
-    payStatus: 'paid', shipStatus: 'partial', productCount: 5, subCount: 3,
-    flags: [],
-    subOrders: [
-      { no: 'SUB-010-1', productCount: 1, origin: '国内仓', supplier: '—', shipStatus: 'shipped', syncStatus: 'success' },
-      { no: 'SUB-010-2', productCount: 2, origin: '国内仓', supplier: '—', shipStatus: 'pending', syncStatus: 'failed' },
-      { no: 'SUB-010-3', productCount: 2, origin: '海外仓', supplier: 'Trendsi', shipStatus: 'pending', syncStatus: 'pending' },
-    ],
-    logs: [
-      { time: '09:40:00', type: 'create', content: '订单同步成功，来源 POS 线下门店' },
-      { time: '09:40:01', type: 'split', content: '自动拆单完成，生成 3 个子订单' },
-      { time: '09:40:02', type: 'sync', content: '<span class="highlight">SUB-010-1</span> 同步易仓成功' },
-      { time: '09:40:03', type: 'fail', content: '<span class="highlight">SUB-010-2</span> 同步易仓失败：SKU不存在' },
-      { time: '09:45:00', type: 'ship', content: '<span class="highlight">SUB-010-1</span> 标记发货' },
-    ]
-  },
+  { id: 'SHOP-20260623-001', date: '2026-06-23', channel: 'online', store: 'store001', payStatus: 'paid', shipStatus: 'partial', productCount: 8, subCount: 3, flags: ['vip'] },
+  { id: 'SHOP-20260623-002', date: '2026-06-23', channel: 'online', store: 'store001', payStatus: 'paid', shipStatus: 'shipped', productCount: 3, subCount: 2, flags: [] },
+  { id: 'SHOP-20260623-003', date: '2026-06-23', channel: 'pos', store: 'store002', payStatus: 'paid', shipStatus: 'pending', productCount: 2, subCount: 1, flags: ['urgent'] },
+  { id: 'SHOP-20260623-004', date: '2026-06-23', channel: 'draft', store: 'store001', payStatus: 'unpaid', shipStatus: 'pending', productCount: 1, subCount: 0, flags: [] },
+  { id: 'SHOP-20260623-005', date: '2026-06-23', channel: 'iphone', store: 'store003', payStatus: 'paid', shipStatus: 'partial', productCount: 6, subCount: 4, flags: [] },
+  { id: 'SHOP-20260623-006', date: '2026-06-23', channel: 'android', store: 'store004', payStatus: 'paid', shipStatus: 'shipped', productCount: 2, subCount: 1, flags: ['note'] },
+  { id: 'SHOP-20260623-007', date: '2026-06-24', channel: 'mobile', store: 'store005', payStatus: 'paid', shipStatus: 'pending', productCount: 4, subCount: 2, flags: [] },
+  { id: 'SHOP-20260623-008', date: '2026-06-24', channel: 'online', store: 'store002', payStatus: 'paid', shipStatus: 'pending', productCount: 3, subCount: 2, flags: ['vip'] },
+  { id: 'SHOP-20260623-009', date: '2026-06-24', channel: 'pos', store: 'store003', payStatus: 'refunded', shipStatus: 'shipped', productCount: 2, subCount: 1, flags: [] },
+  { id: 'SHOP-20260623-010', date: '2026-06-24', channel: 'iphone', store: 'store004', payStatus: 'paid', shipStatus: 'pending', productCount: 5, subCount: 3, flags: ['urgent'] }
 ];
 
-// Sub-order items data with full product info
-const subOrderItemsMap = {
-  'SUB-001-1': [
-    { platformSku: 'SHOP-SKU-001', name: '无线蓝牙耳机', color: '黑色', size: '标准', spu: 'SPU-BT001', skc: 'SKC-BT001-BK', sku: 'SKU-BT001-BK-01', qty: 2, image: 'https://picsum.photos/seed/bt001/200/200' },
-  ],
-  'SUB-001-2': [
-    { platformSku: 'SHOP-SKU-002', name: 'LED台灯', color: '白色', size: '标准', spu: 'SPU-LED002', skc: 'SKC-LED002-WH', sku: 'SKU-LED002-WH-01', qty: 1, image: 'https://picsum.photos/seed/led002/200/200' },
-    { platformSku: 'SHOP-SKU-003', name: '运动手环', color: '蓝色', size: 'S/M', spu: 'SPU-BD003', skc: 'SKC-BD003-BL', sku: 'SKU-BD003-BL-SM', qty: 2, image: 'https://picsum.photos/seed/bd003/200/200' },
-  ],
-  'SUB-001-3': [
-    { platformSku: 'SHOP-SKU-004', name: '瑜伽垫', color: '紫色', size: '183cm', spu: 'SPU-YG004', skc: 'SKC-YG004-PP', sku: 'SKU-YG004-PP-01', qty: 2, image: 'https://picsum.photos/seed/yg004/200/200' },
-    { platformSku: 'SHOP-SKU-005', name: '筋膜枪', color: '灰色', size: '标准', spu: 'SPU-FG005', skc: 'SKC-FG005-GY', sku: 'SKU-FG005-GY-01', qty: 1, image: 'https://picsum.photos/seed/fg005/200/200' },
-  ],
-  'SUB-002-1': [
-    { platformSku: 'SHOP-SKU-006', name: '蓝牙音箱', color: '黑色', size: '标准', spu: 'SPU-SP006', skc: 'SKC-SP006-BK', sku: 'SKU-SP006-BK-01', qty: 1, image: 'https://picsum.photos/seed/sp006/200/200' },
-  ],
-  'SUB-002-2': [
-    { platformSku: 'SHOP-SKU-007', name: '智能手表', color: '银色', size: '42mm', spu: 'SPU-SW007', skc: 'SKC-SW007-SV', sku: 'SKU-SW007-SV-42', qty: 1, image: 'https://picsum.photos/seed/sw007/200/200' },
-    { platformSku: 'SHOP-SKU-008', name: '充电宝', color: '白色', size: '10000mAh', spu: 'SPU-PB008', skc: 'SKC-PB008-WH', sku: 'SKU-PB008-WH-01', qty: 1, image: 'https://picsum.photos/seed/pb008/200/200' },
-  ],
-  'SUB-003-1': [
-    { platformSku: 'SHOP-SKU-009', name: '机械键盘', color: '黑色', size: '87键', spu: 'SPU-KB009', skc: 'SKC-KB009-BK', sku: 'SKU-KB009-BK-87', qty: 1, image: 'https://picsum.photos/seed/kb009/200/200' },
-    { platformSku: 'SHOP-SKU-010', name: '无线鼠标', color: '白色', size: '标准', spu: 'SPU-MS010', skc: 'SKC-MS010-WH', sku: 'SKU-MS010-WH-01', qty: 1, image: 'https://picsum.photos/seed/ms010/200/200' },
-  ],
-  'SUB-005-1': [
-    { platformSku: 'SHOP-SKU-011', name: 'Type-C数据线', color: '白色', size: '1m', spu: 'SPU-CL011', skc: 'SKC-CL011-WH', sku: 'SKU-CL011-WH-1M', qty: 1, image: 'https://picsum.photos/seed/cl011/200/200' },
-  ],
-  'SUB-005-2': [
-    { platformSku: 'SHOP-SKU-012', name: '手机壳（透明）', color: '透明', size: 'iPhone15', spu: 'SPU-CP012', skc: 'SKC-CP012-TR', sku: 'SKU-CP012-TR-15', qty: 1, image: 'https://picsum.photos/seed/cp012/200/200' },
-  ],
-  'SUB-005-3': [
-    { platformSku: 'SHOP-SKU-013', name: '显示器支架', color: '黑色', size: '标准', spu: 'SPU-MS013', skc: 'SKC-MS013-BK', sku: 'SKU-MS013-BK-01', qty: 1, image: 'https://picsum.photos/seed/ms013/200/200' },
-    { platformSku: 'SHOP-SKU-014', name: '笔记本散热器', color: '银色', size: '15.6寸', spu: 'SPU-CO014', skc: 'SKC-CO014-SV', sku: 'SKU-CO014-SV-15', qty: 1, image: 'https://picsum.photos/seed/co014/200/200' },
-  ],
-  'SUB-005-4': [
-    { platformSku: 'SHOP-SKU-015', name: 'USB集线器', color: '灰色', size: '4口', spu: 'SPU-HB015', skc: 'SKC-HB015-GY', sku: 'SKU-HB015-GY-4P', qty: 2, image: 'https://picsum.photos/seed/hb015/200/200' },
-  ],
-  'SUB-006-1': [
-    { platformSku: 'SHOP-SKU-016', name: '数据线套装', color: '白色', size: '3件套', spu: 'SPU-CL016', skc: 'SKC-CL016-WH', sku: 'SKU-CL016-WH-3P', qty: 1, image: 'https://picsum.photos/seed/cl016/200/200' },
-    { platformSku: 'SHOP-SKU-017', name: '钢化膜', color: '透明', size: 'iPhone15', spu: 'SPU-TG017', skc: 'SKC-TG017-TR', sku: 'SKU-TG017-TR-15', qty: 1, image: 'https://picsum.photos/seed/tg017/200/200' },
-  ],
-  'SUB-007-1': [
-    { platformSku: 'SHOP-SKU-018', name: '意式咖啡机', color: '银色', size: '标准', spu: 'SPU-CM018', skc: 'SKC-CM018-SV', sku: 'SKU-CM018-SV-01', qty: 1, image: 'https://picsum.photos/seed/cm018/200/200' },
-    { platformSku: 'SHOP-SKU-019', name: '咖啡杯套装', color: '白色', size: '300ml', spu: 'SPU-CC019', skc: 'SKC-CC019-WH', sku: 'SKU-CC019-WH-300', qty: 1, image: 'https://picsum.photos/seed/cc019/200/200' },
-  ],
-  'SUB-007-2': [
-    { platformSku: 'SHOP-SKU-020', name: '化妆刷套装', color: '粉色', size: '12支', spu: 'SPU-MS020', skc: 'SKC-MS020-PK', sku: 'SKU-MS020-PK-12', qty: 2, image: 'https://picsum.photos/seed/ms020/200/200' },
-  ],
-  'SUB-008-1': [
-    { platformSku: 'SHOP-SKU-021', name: '美甲工具套装', color: '玫瑰金', size: '标准', spu: 'SPU-NT021', skc: 'SKC-NT021-RG', sku: 'SKU-NT021-RG-01', qty: 1, image: 'https://picsum.photos/seed/nt021/200/200' },
-  ],
-  'SUB-008-2': [
-    { platformSku: 'SHOP-SKU-022', name: '电动牙刷', color: '白色', size: '标准', spu: 'SPU-TB022', skc: 'SKC-TB022-WH', sku: 'SKU-TB022-WH-01', qty: 1, image: 'https://picsum.photos/seed/tb022/200/200' },
-    { platformSku: 'SHOP-SKU-023', name: '牙刷头', color: '白色', size: '4支装', spu: 'SPU-TH023', skc: 'SKC-TH023-WH', sku: 'SKU-TH023-WH-4P', qty: 1, image: 'https://picsum.photos/seed/th023/200/200' },
-  ],
-  'SUB-010-1': [
-    { platformSku: 'SHOP-SKU-024', name: '咖啡豆研磨器', color: '不锈钢', size: '标准', spu: 'SPU-CG024', skc: 'SKC-CG024-SS', sku: 'SKU-CG024-SS-01', qty: 1, image: 'https://picsum.photos/seed/cg024/200/200' },
-  ],
-  'SUB-010-2': [
-    { platformSku: 'SHOP-SKU-025', name: '瑜伽服', color: '黑色', size: 'M', spu: 'SPU-YC025', skc: 'SKC-YC025-BK', sku: 'SKU-YC025-BK-M', qty: 1, image: 'https://picsum.photos/seed/yc025/200/200' },
-    { platformSku: 'SHOP-SKU-026', name: '运动水壶', color: '蓝色', size: '750ml', spu: 'SPU-WB026', skc: 'SKC-WB026-BL', sku: 'SKU-WB026-BL-750', qty: 1, image: 'https://picsum.photos/seed/wb026/200/200' },
-  ],
-  'SUB-010-3': [
-    { platformSku: 'SHOP-SKU-027', name: '运动护腕', color: '黑色', size: '均码', spu: 'SPU-WG027', skc: 'SKC-WG027-BK', sku: 'SKU-WG027-BK-01', qty: 1, image: 'https://picsum.photos/seed/wg027/200/200' },
-    { platformSku: 'SHOP-SKU-028', name: '跳绳', color: '黑色', size: '3m', spu: 'SPU-SR028', skc: 'SKC-SR028-BK', sku: 'SKU-SR028-BK-3M', qty: 1, image: 'https://picsum.photos/seed/sr028/200/200' },
-  ],
-};
+function init() {
+  renderOrderTable();
+}
 
-const channelMap = {
-  online: '在线商店',
-  pos: 'POS 线下门店',
-  draft: '草稿订单',
-  iphone: 'iPhone 应用',
-  android: 'Android 应用',
-  mobile: '手机app'
-};
-const storeMap = {
-  store001: '美国站旗舰店',
-  store002: '欧洲站专卖店',
-  store003: '日本站精选店',
-  store004: '东南亚站店铺',
-  store005: '加拿大站店铺'
-};
-const payStatusMap = { paid: '已支付', unpaid: '未支付', refunded: '已退款' };
-const shipStatusMap = { pending: '待发货', partial: '部分发货', shipped: '已发货' };
-const flagMap = { urgent: { label: '加急', cls: 'flag-urgent', icon: '⚡' }, note: { label: '备注', cls: 'flag-note', icon: '📝' }, vip: { label: 'VIP', cls: 'flag-vip', icon: '👑' } };
-const syncStatusMap = { success: '已同步', pending: '待同步', failed: '同步失败', none: '未同步' };
-
-// Render Table
-function renderTable(data) {
+function renderOrderTable() {
   const tbody = document.getElementById('orderTableBody');
-  tbody.innerHTML = data.map((o, i) => {
-    const ch = channelMap[o.channel] || o.channel;
-    const store = storeMap[o.store] || o.store || '—';
-    const pay = payStatusMap[o.payStatus] || o.payStatus;
-    const ship = shipStatusMap[o.shipStatus] || o.shipStatus;
-    const flags = o.flags.map(f => flagMap[f]).filter(Boolean);
-    const hasSub = o.subOrders && o.subOrders.length > 0;
+  tbody.innerHTML = orders.map((order, idx) => `
+    <tr class="order-row">
+      <td><button class="expand-btn" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg></button></td>
+      <td><span class="order-id">${order.id}</span></td>
+      <td><span class="order-num">${order.subCount}</span></td>
+      <td><span class="order-date">${order.date}</span></td>
+      <td>${getChannelName(order.channel)}</td>
+      <td>${getStoreName(order.store)}</td>
+      <td>${getPayStatusBadge(order.payStatus)}</td>
+      <td>${getShipStatusBadge(order.shipStatus)}</td>
+      <td><span class="order-num">${order.productCount}</span></td>
+      <td>${getFlagsBadges(order.flags)}</td>
+      <td><button class="btn btn-secondary" onclick="showToast('查看操作日志')">日志</button></td>
+    </tr>
+  `).join('');
+}
 
-    let html = `
-      <tr class="order-row${hasSub ? ' expanded' : ''}" data-order-id="${o.id}">
-        <td>${hasSub ? `<button class="expand-btn" onclick="toggleSubOrders('${o.id}', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>` : ''}</td>
-        <td><span class="order-id">${o.id}</span></td>
-        <td><span class="order-num">${o.subCount || '—'}</span></td>
-        <td><span class="order-date">${o.date}</span></td>
-        <td><span class="tag">${ch}</span></td>
-        <td><span style="font-size:12px;color:var(--text-secondary)">${store}</span></td>
-        <td><span class="tag">${pay}</span></td>
-        <td><span class="tag">${ship}</span></td>
-        <td><span class="order-num">${o.productCount}</span></td>
-        <td>${flags.map(f => `<span class="flag ${f.cls}">${f.icon} ${f.label}</span>`).join(' ') || '<span style="color:var(--text-muted)">—</span>'}</td>
-        <td>
-          <button class="sub-action-btn" onclick="showOrderLog('${o.id}')" title="操作日志">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            日志
-          </button>
-        </td>
-      </tr>`;
+function getChannelName(ch) {
+  const map = { online: '在线商店', pos: 'POS 线下门店', draft: '草稿订单', iphone: 'iPhone 应用', android: 'Android 应用', mobile: '手机app' };
+  return map[ch] || ch;
+}
 
-    if (hasSub) {
-      const subRows = o.subOrders.map(sub => {
-        const subShip = shipStatusMap[sub.shipStatus] || sub.shipStatus;
-        const sync = syncStatusMap[sub.syncStatus] || sub.syncStatus;
-        return `<tr>
-          <td><span class="suborder-no">${sub.no}</span></td>
-          <td><span class="suborder-num-link" onclick="showProductDetail('${o.id}','${sub.no}')">${sub.productCount}</span></td>
-          <td>
-            <span class="suborder-origin">
-              ${sub.origin}
-              ${sub.origin === '海外仓' ? `<button class="suborder-origin-edit" onclick="openChangeWarehouse('${o.id}','${sub.no}','${sub.origin}','${sub.supplier || ''}')" title="修改仓发地"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>` : ''}
-            </span>
-          </td>
-          <td>${sub.supplier || '—'}</td>
-          <td><span class="tag">${subShip}</span></td>
-          <td><span class="sync-status"><span class="sync-dot"></span>${sync}</span></td>
-          <td>
-            <div class="sub-action-group">
-              <button class="sub-action-btn split" onclick="openManualSplit('${o.id}','${sub.no}','${sub.origin}','${sub.supplier || ''}')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-                拆单
-              </button>
-              ${sub.origin === '国内仓' && sub.syncStatus === 'failed' ? `<button class="sub-action-btn sync" onclick="syncSubOrderWms('${o.id}','${sub.no}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>同步易仓</button>` : ''}
-              ${sub.shipStatus !== 'shipped' ? `<button class="sub-action-btn" onclick="markSubOrderShipped('${o.id}','${sub.no}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>发货</button>` : ''}
-            </div>
-          </td>
-        </tr>`;
-      }).join('');
+function getStoreName(st) {
+  const map = { store001: '美国站旗舰店', store002: '欧洲站专卖店', store003: '日本站精选店', store004: '东南亚站店铺', store005: '加拿大站店铺' };
+  return map[st] || st;
+}
 
-      html += `<tr class="suborder-row visible" data-parent-id="${o.id}">
-        <td colspan="11">
-          <div class="suborder-container">
-            <table class="suborder-table">
-              <thead><tr><th>子订单号</th><th>商品数</th><th>仓发地</th><th>供应商</th><th>发货状态</th><th>同步状态</th><th>操作</th></tr></thead>
-              <tbody>${subRows}</tbody>
-            </table>
-          </div>
-        </td>
-      </tr>`;
-    }
-    return html;
+function getPayStatusBadge(st) {
+  const map = { paid: '已支付', unpaid: '未支付', refunded: '已退款' };
+  const colors = { paid: '#D1FAE5', unpaid: '#FEF3C7', refunded: '#FEE2E2' };
+  const textColors = { paid: '#059669', unpaid: '#D97706', refunded: '#DC2626' };
+  return `<span style="background:${colors[st]};color:${textColors[st]};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;">${map[st]}</span>`;
+}
+
+function getShipStatusBadge(st) {
+  const map = { shipped: '已发货', pending: '待发货', partial: '部分发货' };
+  const colors = { shipped: '#D1FAE5', pending: '#FEF3C7', partial: '#DBEAFE' };
+  const textColors = { shipped: '#059669', pending: '#D97706', partial: '#2563EB' };
+  return `<span style="background:${colors[st]};color:${textColors[st]};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;">${map[st]}</span>`;
+}
+
+function getFlagsBadges(flags) {
+  return flags.map(f => {
+    const map = { vip: 'VIP', urgent: '紧急', note: '备注' };
+    const classes = { vip: 'flag-vip', urgent: 'flag-urgent', note: 'flag-note' };
+    return `<span class="flag ${classes[f]}">${map[f]}</span>`;
   }).join('');
 }
 
-function toggleSubOrders(orderId, btn) {
-  const row = document.querySelector(`.suborder-row[data-parent-id="${orderId}"]`);
-  const orderRow = btn.closest('.order-row');
-  if (row.classList.contains('visible')) {
-    row.classList.remove('visible');
-    orderRow.classList.remove('expanded');
-  } else {
-    row.classList.add('visible');
-    orderRow.classList.add('expanded');
-  }
+function toggleAllSubOrders() { showToast('切换展开/折叠'); }
+function applyFilters() { showToast('查询成功！'); }
+function resetFilters() { showToast('筛选已重置'); }
+function batchSyncWms() { showToast('批量同步易仓已启动...'); }
+function openBatchImport() { showToast('打开批量导入窗口'); }
+function exportData() { showToast('数据导出成功！'); }
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
-let allExpanded = true;
-
-function toggleAllSubOrders() {
-  const btn = document.getElementById('expandToggleBtn');
-  allExpanded = !allExpanded;
-
-  if (allExpanded) {
-    document.querySelectorAll('.suborder-row').forEach(row => row.classList.add('visible'));
-    document.querySelectorAll('.order-row').forEach(row => row.classList.add('expanded'));
-    btn.classList.remove('collapsed');
-    btn.title = '折叠子订单';
-  } else {
-    document.querySelectorAll('.suborder-row').forEach(row => row.classList.remove('visible'));
-    document.querySelectorAll('.order-row').forEach(row => row.classList.remove('expanded'));
-    btn.classList.add('collapsed');
-    btn.title = '展开子订单';
-  }
-}
-
-// Product Detail
-function showProductDetail(orderId, subOrderNo) {
-  const items = subOrderItemsMap[subOrderNo] || [];
-  document.getElementById('productDetailSubtitle').textContent = `${subOrderNo} 商品列表`;
-
-  const body = document.getElementById('productDetailBody');
-  if (items.length === 0) {
-    body.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">暂无商品</div>';
-  } else {
-    const totalQty = items.reduce((s, item) => s + item.qty, 0);
-    body.innerHTML = `
-      <div class="product-detail-header">
-        <span>订单号：<strong>${orderId}</strong></span>
-        <span>子单号：<strong>${subOrderNo}</strong></span>
-        <span>共 <strong>${items.length}</strong> 种 / <strong>${totalQty}</strong> 件</span>
-      </div>
-      <div class="product-list">
-        ${items.map(item => `
-          <div class="product-card">
-            <div class="product-img">
-              ${item.image ? `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder>📦</div>'">` : '<div class="product-img-placeholder">📦</div>'}
-            </div>
-            <div class="product-info">
-              <div class="product-name">${item.name} <span class="product-attr-value">${item.color}/${item.size}</span></div>
-              <div class="product-attrs">
-                <span class="product-attr">
-                  <span class="product-attr-label">平台SKU</span>
-                  <span class="product-attr-value">${item.platformSku}</span>
-                </span>
-              </div>
-              <div class="product-codes">
-                <span class="product-code">
-                  <span class="product-code-label">内部SPU</span>
-                  <span class="product-code-value">${item.spu}</span>
-                </span>
-                <span class="product-code">
-                  <span class="product-code-label">内部SKC</span>
-                  <span class="product-code-value">${item.skc}</span>
-                </span>
-                <span class="product-code">
-                  <span class="product-code-label">内部SKU</span>
-                  <span class="product-code-value">${item.sku}</span>
-                </span>
-              </div>
-              <div class="product-qty-info">
-                数量：<span class="product-qty-num">${item.qty}</span>
-              </div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  document.getElementById('productDetailModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeProductDetail() {
-  document.getElementById('productDetailModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Order Log
-const logTypeMap = {
-  create: { icon: '📥', cls: 'create', label: '创建' },
-  split: { icon: '✂️', cls: 'split', label: '拆单' },
-  ship: { icon: '🚚', cls: 'ship', label: '发货' },
-  sync: { icon: '🔄', cls: 'sync', label: '同步' },
-  fail: { icon: '❌', cls: 'fail', label: '异常' },
-};
-
-function showOrderLog(orderId) {
-  const order = orders.find(o => o.id === orderId);
-  if (!order) return;
-
-  document.getElementById('orderLogSubtitle').textContent = `${orderId} 操作记录`;
-
-  const body = document.getElementById('orderLogBody');
-  const logs = order.logs || [];
-
-  if (logs.length === 0) {
-    body.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">暂无操作日志</div>';
-  } else {
-    body.innerHTML = `
-      <div class="log-list">
-        ${logs.map(log => {
-          const typeInfo = logTypeMap[log.type] || { icon: '📋', cls: '', label: '' };
-          return `
-            <div class="log-entry">
-              <span class="log-time">${log.time}</span>
-              <div class="log-icon ${typeInfo.cls}">${typeInfo.icon}</div>
-              <span class="log-content">${log.content}</span>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
-
-  document.getElementById('orderLogModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeOrderLog() {
-  document.getElementById('orderLogModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Mark Shipped
-let shippedTarget = '';
-function markSubOrderShipped(orderId, subOrderNo) {
-  shippedTarget = `${orderId}/${subOrderNo}`;
-  document.getElementById('shippedModalSubtitle').textContent = `确认将子订单 ${subOrderNo} 标记为已发货`;
-  document.getElementById('shippedOrderList').innerHTML = `<div class="mark-shipped-order">• ${orderId} / ${subOrderNo}</div>`;
-  document.getElementById('shippedRemark').value = '';
-  document.getElementById('markShippedModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeMarkShipped() {
-  document.getElementById('markShippedModal').classList.remove('open');
-  document.body.style.overflow = '';
-  shippedTarget = '';
-  document.getElementById('shippedCarrier').value = '';
-  document.getElementById('shippedTrackingNo').value = '';
-  document.getElementById('shippedRemark').value = '';
-}
-function confirmMarkShipped() {
-  if (!shippedTarget) return;
-
-  const carrier = document.getElementById('shippedCarrier').value;
-  const trackingNo = document.getElementById('shippedTrackingNo').value.trim();
-  const remark = document.getElementById('shippedRemark').value.trim();
-
-  if (!carrier) {
-    showToast('请选择承运商', true);
-    return;
-  }
-  if (!trackingNo) {
-    showToast('请输入跟踪单号', true);
-    return;
-  }
-
-  const carrierText = document.getElementById('shippedCarrier').options[document.getElementById('shippedCarrier').selectedIndex].text;
-  showToast(`已标记 ${shippedTarget} 为已发货 | ${carrierText} | ${trackingNo}`);
-  setTimeout(() => { closeMarkShipped(); renderTable(orders); }, 1200);
-}
-
-// Batch Import
-function openBatchImport() { showToast('批量导入标发功能开发中...'); }
-
-// Manual Split
-let splitState = { orderId: '', subOrderNo: '', origin: '', supplier: '', selectedItems: [] };
-
-function openManualSplit(orderId, subOrderNo, origin, supplier) {
-  splitState = { orderId, subOrderNo, origin, supplier, selectedItems: [] };
-
-  document.getElementById('splitModalSubtitle').textContent = `从 ${subOrderNo} 拆分商品`;
-  document.getElementById('splitSubOrderInfo').innerHTML = `
-    子单号：<strong>${subOrderNo}</strong> &nbsp;|&nbsp; 仓发地：${origin} &nbsp;|&nbsp; 供应商：${supplier || '无'}
-  `;
-
-  // Load items
-  const items = subOrderItemsMap[subOrderNo] || [];
-  const list = document.getElementById('splitItemsBody');
-
-  if (items.length === 0) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">该子单暂无商品</div>';
-  } else {
-    list.innerHTML = items.map((item, i) => `
-      <div class="split-item-card" id="splitCard_${i}">
-        <div class="split-item-check">
-          <input type="checkbox" class="split-item-cb" data-index="${i}" onchange="onSplitItemCheck(this, ${i})">
-        </div>
-        <div class="split-item-img">
-          ${item.image ? `<img src="${item.image}" alt="${item.name}" onerror="this.parentElement.innerHTML='📦'">` : '📦'}
-        </div>
-        <div class="split-item-info">
-          <div class="split-item-name">${item.name} <span class="attr">${item.color}/${item.size}</span></div>
-          <div class="split-item-codes">
-            <span>平台SKU: ${item.platformSku}</span>
-            <span>内部SKU: ${item.sku}</span>
-          </div>
-          <div class="split-item-qty">
-            原数量：<strong>${item.qty}</strong>
-            &nbsp;&nbsp;拆分数量：
-            <input type="number" class="split-qty-input" id="splitQty_${i}" min="1" max="${item.qty}" value="1" disabled onchange="updateSplitPreview()">
-            <span class="split-qty-max">/ ${item.qty}</span>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  document.getElementById('selectAllSplitItems').checked = false;
-  document.getElementById('splitPreview').style.display = 'none';
-  document.getElementById('confirmSplitBtn').disabled = true;
-  document.getElementById('manualSplitModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeManualSplit() {
-  document.getElementById('manualSplitModal').classList.remove('open');
-  document.body.style.overflow = '';
-  splitState = { orderId: '', subOrderNo: '', origin: '', supplier: '', selectedItems: [] };
-}
-
-function onSplitItemCheck(cb, index) {
-  const qtyInput = document.getElementById(`splitQty_${index}`);
-  const card = document.getElementById(`splitCard_${index}`);
-  qtyInput.disabled = !cb.checked;
-  if (cb.checked) {
-    qtyInput.focus();
-    card.classList.add('selected');
-  } else {
-    card.classList.remove('selected');
-  }
-  collectSelectedItems();
-  updateSplitPreview();
-}
-
-function toggleSelectAllSplit() {
-  const checked = document.getElementById('selectAllSplitItems').checked;
-  document.querySelectorAll('.split-item-cb').forEach((cb, i) => {
-    cb.checked = checked;
-    const qtyInput = document.getElementById(`splitQty_${i}`);
-    const card = document.getElementById(`splitCard_${i}`);
-    if (qtyInput) qtyInput.disabled = !checked;
-    if (card) {
-      if (checked) card.classList.add('selected');
-      else card.classList.remove('selected');
-    }
-  });
-  collectSelectedItems();
-  updateSplitPreview();
-}
-
-function collectSelectedItems() {
-  const items = subOrderItemsMap[splitState.subOrderNo] || [];
-  splitState.selectedItems = [];
-  document.querySelectorAll('.split-item-cb:checked').forEach(cb => {
-    const idx = parseInt(cb.dataset.index);
-    const item = items[idx];
-    const qtyInput = document.getElementById(`splitQty_${idx}`);
-    const splitQty = Math.min(parseInt(qtyInput.value) || 1, item.qty);
-    splitState.selectedItems.push({ sku: item.platformSku, name: item.name, color: item.color, size: item.size, qty: item.qty, splitQty });
-  });
-}
-
-function updateSplitPreview() {
-  collectSelectedItems();
-  const preview = document.getElementById('splitPreview');
-  const confirmBtn = document.getElementById('confirmSplitBtn');
-
-  if (splitState.selectedItems.length === 0) {
-    preview.style.display = 'none';
-    confirmBtn.disabled = true;
-    return;
-  }
-
-  preview.style.display = 'block';
-  const warehouse = splitState.origin;
-  const supplier = splitState.supplier || '无';
-
-  const itemsHtml = splitState.selectedItems.map(item =>
-    `<div class="split-preview-item">
-      <span class="split-preview-badge">${item.sku}</span>
-      <span class="split-preview-items">${item.name} (${item.color}/${item.size}) × ${item.splitQty}</span>
-    </div>`
-  ).join('');
-
-  document.getElementById('splitPreviewContent').innerHTML = `
-    <div style="margin-bottom: 10px; font-size: 12px; color: var(--text-secondary);">
-      从子单 <strong style="color:#4078FF;font-family:var(--font-mono)">${splitState.subOrderNo}</strong> 拆出以下商品：
-    </div>
-    ${itemsHtml}
-    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-secondary);">
-      → 生成新子单：<strong>${warehouse}</strong> / ${supplier}
-    </div>
-  `;
-
-  const allValid = splitState.selectedItems.every(item => item.splitQty > 0 && item.splitQty <= item.qty);
-  confirmBtn.disabled = !allValid;
-}
-
-function confirmManualSplit() {
-  if (splitState.selectedItems.length === 0) return;
-
-  const warehouse = splitState.origin;
-  const supplier = splitState.supplier || '无';
-  const totalQty = splitState.selectedItems.reduce((s, item) => s + item.splitQty, 0);
-
-  showToast(`拆单成功：从 ${splitState.subOrderNo} 拆出 ${splitState.selectedItems.length} 种商品（共${totalQty}件）→ ${warehouse}`);
-  setTimeout(() => { closeManualSplit(); }, 1200);
-}
-
-// Filter
-function resetFilters() {
-  document.getElementById('filterOrderId').value = '';
-  document.getElementById('filterChannel').value = '';
-  document.getElementById('filterStore').value = '';
-  document.getElementById('filterPayStatus').value = '';
-  document.getElementById('filterShipStatus').value = '';
-  document.getElementById('filterDateStart').value = '';
-  document.getElementById('filterDateEnd').value = '';
-  renderTable(orders);
-  document.getElementById('totalCount').textContent = orders.length;
-}
-function applyFilters() {
-  let filtered = [...orders];
-  const orderId = document.getElementById('filterOrderId').value.trim();
-  const channel = document.getElementById('filterChannel').value;
-  const store = document.getElementById('filterStore').value;
-  const payStatus = document.getElementById('filterPayStatus').value;
-  const shipStatus = document.getElementById('filterShipStatus').value;
-  if (orderId) filtered = filtered.filter(o => o.id.includes(orderId));
-  if (channel) filtered = filtered.filter(o => o.channel === channel);
-  if (store) filtered = filtered.filter(o => o.store === store);
-  if (payStatus) filtered = filtered.filter(o => o.payStatus === payStatus);
-  if (shipStatus) filtered = filtered.filter(o => o.shipStatus === shipStatus);
-  renderTable(filtered);
-  document.getElementById('totalCount').textContent = filtered.length;
-}
-
-// Export
-function exportData() { showToast('正在生成 CSV 文件...'); }
-
-// Sync to WMS
-function syncSubOrderWms(orderId, subOrderNo) {
-  showToast(`正在同步 ${subOrderNo} 到易仓...`);
-  setTimeout(() => {
-    // Update sync status in data
-    const order = orders.find(o => o.id === orderId);
-    if (order) {
-      const sub = order.subOrders.find(s => s.no === subOrderNo);
-      if (sub) {
-        sub.syncStatus = 'success';
-        // Add log
-        order.logs.push({
-          time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          type: 'sync',
-          content: `<span class="highlight">${subOrderNo}</span> 同步易仓成功`
-        });
-      }
-    }
-    renderTable(orders);
-    showToast(`${subOrderNo} 同步易仓成功`);
-  }, 1500);
-}
-
-function batchSyncWms() {
-  // Find all domestic warehouse sub-orders with failed sync status
-  let failedSubs = [];
-  orders.forEach(o => {
-    o.subOrders.forEach(sub => {
-      if (sub.origin === '国内仓' && sub.syncStatus === 'failed') {
-        failedSubs.push({ orderId: o.id, subOrderNo: sub.no });
-      }
-    });
-  });
-
-  if (failedSubs.length === 0) {
-    showToast('没有需要同步的子订单', true);
-    return;
-  }
-
-  showToast(`正在批量同步 ${failedSubs.length} 个子订单到易仓...`);
-  setTimeout(() => {
-    failedSubs.forEach(({ orderId, subOrderNo }) => {
-      const order = orders.find(o => o.id === orderId);
-      if (order) {
-        const sub = order.subOrders.find(s => s.no === subOrderNo);
-        if (sub) {
-          sub.syncStatus = 'success';
-          order.logs.push({
-            time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-            type: 'sync',
-            content: `<span class="highlight">${subOrderNo}</span> 批量同步易仓成功`
-          });
-        }
-      }
-    });
-    renderTable(orders);
-    showToast(`批量同步完成，共 ${failedSubs.length} 个子订单`);
-  }, 2000);
-}
-
-// Change Warehouse
-let changeWarehouseTarget = { orderId: '', subOrderNo: '', origin: '', supplier: '' };
-
-function openChangeWarehouse(orderId, subOrderNo, origin, supplier) {
-  changeWarehouseTarget = { orderId, subOrderNo, origin, supplier };
-
-  document.getElementById('changeWarehouseSubtitle').textContent = `修改 ${subOrderNo} 的仓发地`;
-  document.getElementById('changeWarehouseInfo').innerHTML = `
-    子单号：<strong>${subOrderNo}</strong> &nbsp;|&nbsp; 当前仓发地：<strong>${origin}</strong> / ${supplier || '无'}
-  `;
-  document.getElementById('newWarehouseSupplier').value = '';
-  document.getElementById('changeWarehouseRemark').value = '';
-  document.getElementById('changeWarehouseModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeChangeWarehouse() {
-  document.getElementById('changeWarehouseModal').classList.remove('open');
-  document.body.style.overflow = '';
-  changeWarehouseTarget = { orderId: '', subOrderNo: '', origin: '', supplier: '' };
-}
-
-function confirmChangeWarehouse() {
-  const newValue = document.getElementById('newWarehouseSupplier').value;
-  const remark = document.getElementById('changeWarehouseRemark').value.trim();
-
-  if (!newValue) {
-    showToast('请选择新仓发地/供应商', true);
-    return;
-  }
-
-  const [newOrigin, newSupplier] = newValue.split('|');
-  const { orderId, subOrderNo, origin, supplier } = changeWarehouseTarget;
-  const newSupplierDisplay = newSupplier || '无';
-
-  // Update data
-  const order = orders.find(o => o.id === orderId);
-  if (order) {
-    const sub = order.subOrders.find(s => s.no === subOrderNo);
-    if (sub) {
-      sub.origin = newOrigin;
-      sub.supplier = newSupplier || '—';
-      // Add log
-      order.logs.push({
-        time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        type: 'split',
-        content: `<span class="highlight">${subOrderNo}</span> 仓发地变更：${origin}/${supplier || '无'} → ${newOrigin}/${newSupplierDisplay}${remark ? '（' + remark + '）' : ''}`
-      });
-    }
-  }
-
-  showToast(`${subOrderNo} 仓发地已变更为 ${newOrigin} / ${newSupplierDisplay}`);
-  closeChangeWarehouse();
-  renderTable(orders);
-}
-
-// Toast
-function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.innerHTML = `<span class="toast-icon">${isError ? '⚠' : '✓'}</span> ${msg}`;
-  t.style.background = isError ? '#dc2626' : '#1e1e2e';
-  t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// Close modal on backdrop click / Escape
-document.getElementById('markShippedModal').addEventListener('click', function(e) { if (e.target === this) closeMarkShipped(); });
-document.getElementById('manualSplitModal').addEventListener('click', function(e) { if (e.target === this) closeManualSplit(); });
-document.getElementById('productDetailModal').addEventListener('click', function(e) { if (e.target === this) closeProductDetail(); });
-document.getElementById('orderLogModal').addEventListener('click', function(e) { if (e.target === this) closeOrderLog(); });
-document.getElementById('changeWarehouseModal').addEventListener('click', function(e) { if (e.target === this) closeChangeWarehouse(); });
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeMarkShipped();
-    closeManualSplit();
-    closeProductDetail();
-    closeOrderLog();
-    closeChangeWarehouse();
-  }
-});
-
-// Init
-renderTable(orders);
+window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
