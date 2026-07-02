@@ -25,12 +25,24 @@
       "Bash(mkdir -p \"/Users/xiexie/Desktop/Claude code/docs/prd\")",
       "Bash(code --install-extension bierner.markdown-mermaid)",
       "Bash(git commit -m 'feat: 新增0630迭代版本PRD及项目配置整合 *)",
-      "WebFetch(domain:open.eccang.com)"
+      "WebFetch(domain:open.eccang.com)",
+      "Bash(git reset *)",
+      "Bash(git stash *)",
+      "Bash(git commit -m 'docs: 更新供应商同步易仓传参 - pay_type改为在线，新增payment_account_list参数 *)",
+      "Bash(git commit -m 'fix: 恢复自动拆单履约迭代PRD完整内容（314行→637行） *)",
+      "Bash(git commit -m 'fix: 恢复自动拆单Agent PRD和order-split-result.html完整内容 *)",
+      "Bash(diff \"/Users/xiexie/Downloads/自动拆单履约迭代 PRD文档.md\" \"PRD文档/自动拆单履约迭代PRD.md\" | head -30)",
+      "Read(//Users/xiexie/Downloads/**)",
+      "Bash(wc -l \"/Users/xiexie/Downloads/自动拆单履约迭代 PRD文档.md\" \"PRD文档/自动拆单履约迭代PRD.md\")",
+      "Bash(cp \"/Users/xiexie/Downloads/自动拆单履约迭代 PRD文档.md\" \"PRD文档/自动拆单履约迭代PRD.md\")",
+      "Bash(git commit -m 'fix: 更新自动拆单履约迭代PRD为最新完整版本（637行→737行） *)",
+      "Bash(git commit -m 'chore: 删除从GitHub同步的index.html *)"
     ],
     "additionalDirectories": [
       "/Users/xiexie/Desktop/Claude code/.claude/skills",
       "/Users/xiexie/Desktop/Claude code/.claude/skills/frontend-design",
-      "/Users/xiexie/Desktop/Claude code/docs"
+      "/Users/xiexie/Desktop/Claude code/docs",
+      "/Users/xiexie/Downloads"
     ]
   }
 }
