@@ -507,12 +507,29 @@ body {
 .split-qty-input:focus { outline: none; border-color: #7B61FF; background: #fff; }
 .split-qty-max { font-size: 10px; color: var(--text-muted); margin-left: 3px; }
 .split-preview {
-  margin-top: 16px; padding: 14px; background: #F7F8FA;
-  border-radius: var(--radius-md); border: 1px solid var(--border-subtle);
+  margin-top: 16px; padding: 0; background: transparent;
+  border-radius: var(--radius-md); border: none;
+}
+.split-preview-section {
+  margin-bottom: 12px; border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+.split-preview-section:last-child { margin-bottom: 0; }
+.split-preview-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; font-size: 12px; font-weight: 600;
+  background: #F7F8FA; border-bottom: 1px solid var(--border-subtle);
+}
+.split-preview-section-header .badge {
+  padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;
+  font-family: var(--font-mono); background: #F4F1FF; color: #7B61FF;
+}
+.split-preview-section-body {
+  padding: 10px 14px; background: #fff;
 }
 .split-preview-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; background: #fff; border-radius: var(--radius-sm);
+  padding: 8px 10px; background: #F7F8FA; border-radius: var(--radius-sm);
   margin-bottom: 6px; border: 1px solid var(--border-subtle);
 }
 .split-preview-item:last-child { margin-bottom: 0; }
@@ -522,6 +539,9 @@ body {
   font-family: var(--font-mono);
 }
 .split-preview-items { flex: 1; font-size: 12px; color: var(--text-secondary); }
+.split-preview-empty {
+  padding: 16px; text-align: center; font-size: 12px; color: var(--text-muted);
+}
 
 /* Pagination */
 .pagination {
@@ -714,6 +734,16 @@ body {
             <option value="Trendsi">Trendsi</option>
             <option value="阿里国际">阿里国际</option>
             <option value="速卖通">速卖通</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">同步状态</label>
+          <select class="filter-select" id="filterSyncStatus">
+            <option value="">全部</option>
+            <option value="success">已同步</option>
+            <option value="pending">待同步</option>
+            <option value="failed">同步失败</option>
+            <option value="none">未同步</option>
           </select>
         </div>
         <div class="filter-group">
@@ -1842,7 +1872,12 @@ function updateSplitPreview() {
   const warehouse = splitState.origin;
   const supplier = splitState.supplier || '无';
 
-  const itemsHtml = splitState.selectedItems.map(item =>
+  // 获取所有商品
+  const allItems = subOrderItemsMap[splitState.subOrderNo] || [];
+  const selectedSkus = new Set(splitState.selectedItems.map(item => item.sku));
+
+  // 选中的商品（生成新子单）
+  const selectedItemsHtml = splitState.selectedItems.map(item =>
     `<div class="split-preview-item">
       <span class="split-preview-badge">${item.sku}</span>
       <span class="split-preview-items">${item.name} (${item.color}/${item.size}) × ${item.splitQty}</span>
@@ -1850,12 +1885,14 @@ function updateSplitPreview() {
   ).join('');
 
   document.getElementById('splitPreviewContent').innerHTML = `
-    <div style="margin-bottom: 10px; font-size: 12px; color: var(--text-secondary);">
-      从子单 <strong style="color:#4078FF;font-family:var(--font-mono)">${splitState.subOrderNo}</strong> 拆出以下商品：
-    </div>
-    ${itemsHtml}
-    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-secondary);">
-      → 生成新子单：<strong>${warehouse}</strong> / ${supplier}
+    <div class="split-preview-section">
+      <div class="split-preview-section-header">
+        <span>拆单后子订单</span>
+        <span class="badge">${splitState.selectedItems.length} 种商品</span>
+      </div>
+      <div class="split-preview-section-body">
+        ${selectedItemsHtml}
+      </div>
     </div>
   `;
 
@@ -1890,6 +1927,7 @@ function resetFilters() {
   document.getElementById('filterShipStatus').value = '';
   document.getElementById('filterOrigin').value = '';
   document.getElementById('filterSupplier').value = '';
+  document.getElementById('filterSyncStatus').value = '';
   document.getElementById('filterTrackingNo').value = '';
   document.getElementById('filterDateStart').value = '';
   document.getElementById('filterDateEnd').value = '';
@@ -1906,6 +1944,7 @@ function applyFilters() {
   const shipStatus = document.getElementById('filterShipStatus').value;
   const origin = document.getElementById('filterOrigin').value;
   const supplier = document.getElementById('filterSupplier').value;
+  const syncStatus = document.getElementById('filterSyncStatus').value;
   const trackingNo = document.getElementById('filterTrackingNo').value.trim();
 
   if (orderId) filtered = filtered.filter(o => o.id.includes(orderId));
@@ -1915,12 +1954,13 @@ function applyFilters() {
   if (shipStatus) filtered = filtered.filter(o => o.shipStatus === shipStatus);
 
   // Sub-order level filters
-  if (subOrderId || origin || supplier || trackingNo) {
+  if (subOrderId || origin || supplier || syncStatus || trackingNo) {
     filtered = filtered.filter(o => {
       return o.subOrders.some(sub => {
         if (subOrderId && !sub.no.includes(subOrderId)) return false;
         if (origin && sub.origin !== origin) return false;
         if (supplier && sub.supplier !== supplier) return false;
+        if (syncStatus && sub.syncStatus !== syncStatus) return false;
         if (trackingNo && (!sub.trackingNo || !sub.trackingNo.includes(trackingNo))) return false;
         return true;
       });

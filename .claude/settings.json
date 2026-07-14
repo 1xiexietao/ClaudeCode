@@ -36,7 +36,10 @@
       "Bash(wc -l \"/Users/xiexie/Downloads/自动拆单履约迭代 PRD文档.md\" \"PRD文档/自动拆单履约迭代PRD.md\")",
       "Bash(cp \"/Users/xiexie/Downloads/自动拆单履约迭代 PRD文档.md\" \"PRD文档/自动拆单履约迭代PRD.md\")",
       "Bash(git commit -m 'fix: 更新自动拆单履约迭代PRD为最新完整版本（637行→737行） *)",
-      "Bash(git commit -m 'chore: 删除从GitHub同步的index.html *)"
+      "Bash(git commit -m 'chore: 删除从GitHub同步的index.html *)",
+      "Bash(python3 -c ' *)",
+      "Bash(git commit -m 'docs: 新增724迭代需求PRD文档和供应商工作台页面 *)",
+      "Bash(git commit -m 'feat: 更新拆单PRD和页面交互 *)"
     ],
     "additionalDirectories": [
       "/Users/xiexie/Desktop/Claude code/.claude/skills",
