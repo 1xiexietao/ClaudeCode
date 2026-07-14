@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>供应商工作台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #F7F8FA;
+  --bg-primary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #F7F8FA;
+  --bg-hover: #F4F1FF;
+  --bg-input: #F7F8FA;
+  --border-subtle: #E4E7ED;
+  --border-medium: #DCDFE6;
+  --border-strong: #C0C4CC;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+  --text-muted: #C0C4CC;
+  --accent: #7B61FF;
+  --accent-soft: #F4F1FF;
+  --green: #10b981;
+  --red: #ef4444;
+  --blue: #4078FF;
+  --orange: #FF9933;
+  --btn-primary: #425BE0;
+  --btn-export: #FF9933;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.app { position: relative; z-index: 1; }
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 28px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 30px; height: 30px;
+  background: #7B61FF;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  font-family: var(--font-display);
+}
+.logo-text { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--text-primary); }
+.logo-divider { width: 1px; height: 20px; background: var(--border-medium); }
+.page-title { font-size: 13px; color: var(--text-muted); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-badge { padding: 3px 9px; background: #F4F1FF; color: #7B61FF; border-radius: 16px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); }
+.topbar-avatar { width: 30px; height: 30px; border-radius: 50%; background: #7B61FF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
+
+/* Main */
+.main { padding: 24px 28px 40px; max-width: 1600px; margin: 0 auto; }
+
+/* Welcome Section */
+.welcome-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.welcome-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.welcome-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.welcome-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.welcome-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.welcome-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.welcome-right {
+  text-align: right;
+}
+
+.welcome-update {
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.update-value {
+  color: #666;
+  font-weight: 500;
+}
+
+.refresh-icon {
+  color: #999;
+}
+
+.welcome-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.welcome-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.supplier-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.supplier-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.supplier-select {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-family: var(--font-body);
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.supplier-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Status Section */
+.status-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.status-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.status-total {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.status-card {
+  flex: 1;
+  min-width: 100px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.status-count {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.status-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Invitation Section */
+.invitation-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.invitation-header {
+  margin-bottom: 16px;
+}
+
+.invitation-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.invitation-title::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: var(--green);
+  border-radius: 2px;
+}
+
+.invitation-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.invitation-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+
+.invitation-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.invitation-card-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.invitation-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.invitation-icon.blue { background: #EBF0FF; color: var(--blue); }
+.invitation-icon.green { background: #E8F8F0; color: var(--green); }
+.invitation-icon.orange { background: #FFF3E0; color: var(--orange); }
+.invitation-icon.purple { background: var(--accent-soft); color: var(--accent); }
+
+.invitation-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.invitation-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Card Section */
+.card-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-title .badge {
+  padding: 2px 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Filter */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-input {
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-family: var(--font-body);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: all 0.2s;
+  min-width: 180px;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(123,97,255,0.1);
+}
+
+.filter-input::placeholder {
+  color: var(--text-muted);
+}
+
+.btn {
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--btn-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #3650D0;
+}
+
+.btn-sm {
+  height: 26px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+th:hover {
+  background: var(--bg-hover);
+}
+
+th .sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+th:hover .sort-icon {
+  opacity: 0.6;
+}
+
+th.sorted .sort-icon {
+  opacity: 1;
+  color: var(--accent);
+}
+
+td {
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: var(--bg-hover);
+}
+
+.sku-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sku-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sku-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.sku-code {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.number-cell {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.number-cell.high { color: var(--green); }
+.number-cell.medium { color: var(--orange); }
+.number-cell.low { color: var(--red); }
+
+.status-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status-tag.pending { background: #FFF3E0; color: #F57C00; }
+.status-tag.review { background: #E3F2FD; color: #1976D2; }
+.status-tag.accepted { background: #E8F5E9; color: #388E3C; }
+.status-tag.partial { background: #FFF8E1; color: #FFA000; }
+.status-tag.shipped { background: #E0F7FA; color: #00838F; }
+.status-tag.completed { background: #E8F8F0; color: var(--green); }
+.status-tag.partial-inbound { background: #F3E5F5; color: #7B1FA2; }
+.status-tag.cancelled { background: var(--bg-elevated); color: var(--text-muted); }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.pagination-info {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pagination-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.link {
+  color: var(--blue);
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <div class="logo-icon">S</div>
+        <span class="logo-text">供应商门户</span>
+      </div>
+      <div class="logo-divider"></div>
+      <span class="page-title">工作台</span>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-avatar">A</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <div class="welcome-header">
+        <div>
+          <div class="welcome-title">
+            欢迎回来，<span id="username">张三</span>
+          </div>
+          <div class="welcome-date">2026年7月8日 星期二</div>
+        </div>
+        <div class="welcome-right">
+          <div class="welcome-update">
+            <span class="update-value">每小时自动刷新</span>
+          </div>
+          <div class="welcome-update">
+            <svg class="refresh-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+            </svg>
+            <span class="update-value" id="lastRefresh">2026-07-08 14:30:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="welcome-bottom">
+        <div class="welcome-info">
+          <span>您当前可查看</span>
+          <span class="supplier-name" id="supplierName">全部供应商</span>
+          <span>的商品数据和仓发邀约数据</span>
+        </div>
+        <div class="supplier-filter" id="supplierFilter">
+          <label class="filter-label">供应商筛选：</label>
+          <select class="supplier-select" id="supplierSelect" onchange="handleSupplierChange()">
+            <option value="all">全部供应商</option>
+            <option value="supplier-a">供应商A</option>
+            <option value="supplier-b">供应商B</option>
+            <option value="supplier-c">供应商C</option>
+            <option value="supplier-d">供应商D</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Stats -->
+    <div class="status-section">
+      <div class="status-header">
+        <h3 class="status-title">商品状态统计</h3>
+        <span class="status-total">共 1,234 件商品</span>
+      </div>
+      <div class="status-stats">
+        <div class="status-card">
+          <div class="status-count">1,234</div>
+          <div class="status-label">全部</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">56</div>
+          <div class="status-label">草稿</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">128</div>
+          <div class="status-label">已推品</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">456</div>
+          <div class="status-label">已选品</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">89</div>
+          <div class="status-label">已选品-待审核</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">234</div>
+          <div class="status-label">待完善</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">178</div>
+          <div class="status-label">未选中</div>
+        </div>
+        <div class="status-card">
+          <div class="status-count">48</div>
+          <div class="status-label">已取消推品</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invitation Stats -->
+    <div class="invitation-section">
+      <div class="invitation-header">
+        <h3 class="invitation-title">仓发邀约数据统计</h3>
+      </div>
+      <div class="invitation-stats">
+        <div class="invitation-card">
+          <div class="invitation-card-header">
+            <span class="invitation-card-title">邀约SKU数</span>
+            <div class="invitation-icon blue">📦</div>
+          </div>
+          <div class="invitation-value">1,234</div>
+          <div class="invitation-desc">涉及 56 个SPU</div>
+        </div>
+        <div class="invitation-card">
+          <div class="invitation-card-header">
+            <span class="invitation-card-title">邀约库存数</span>
+            <div class="invitation-icon green">📋</div>
+          </div>
+          <div class="invitation-value">8,567</div>
+          <div class="invitation-desc">采购订单数量之和</div>
+        </div>
+        <div class="invitation-card">
+          <div class="invitation-card-header">
+            <span class="invitation-card-title">邀约入库数</span>
+            <div class="invitation-icon orange">📥</div>
+          </div>
+          <div class="invitation-value">6,234</div>
+          <div class="invitation-desc">采购订单已入库数量</div>
+        </div>
+        <div class="invitation-card">
+          <div class="invitation-card-header">
+            <span class="invitation-card-title">邀约可用库存</span>
+            <div class="invitation-icon purple">📊</div>
+          </div>
+          <div class="invitation-value">4,890</div>
+          <div class="invitation-desc">易仓可用库存</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Left: SKU库存与销售数据 -->
+      <div class="card-section">
+        <div class="card-header">
+          <div class="card-title">
+            <h3>SKU库存与销售数据</h3>
+            <span class="badge">1,234 条</span>
+          </div>
+          <div class="card-actions">
+            <div class="filter-group">
+              <input type="text" class="filter-input" placeholder="搜索SPU货号、SKU货号、SKU编码..." id="skuSearch">
+              <button class="btn btn-primary btn-sm" onclick="handleSearch()">查询</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU信息</th>
+                <th>邀约库存数</th>
+                <th>邀约入库数</th>
+                <th onclick="handleSort('available')">
+                  邀约可用库存
+                  <span class="sort-icon">↕</span>
+                </th>
+                <th onclick="handleSort('sales7d')" class="sorted">
+                  近7日销量
+                  <span class="sort-icon">↓</span>
+                </th>
+                <th onclick="handleSort('sales14d')">
+                  近14日销量
+                  <span class="sort-icon">↕</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="sku-cell">
+                    <div class="sku-info">
+                      <span class="sku-name">白色/S</span>
+                      <span class="sku-code">SPU: SPU-LZ-001 | SKU: SKU-LZ-001-S</span>
+                      <span class="sku-code">SKU编码: LZ-S</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="number-cell">500</td>
+                <td class="number-cell">450</td>
+                <td class="number-cell high">380</td>
+                <td class="number-cell">156</td>
+                <td class="number-cell">289</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sku-cell">
+                    <div class="sku-info">
+                      <span class="sku-name">白色/M</span>
+                      <span class="sku-code">SPU: SPU-LZ-001 | SKU: SKU-LZ-001-M</span>
+                      <span class="sku-code">SKU编码: LZ-M</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="number-cell">300</td>
+                <td class="number-cell">280</td>
+                <td class="number-cell medium">45</td>
+                <td class="number-cell">98</td>
+                <td class="number-cell">176</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sku-cell">
+                    <div class="sku-info">
+                      <span class="sku-name">白色/L</span>
+                      <span class="sku-code">SPU: SPU-LZ-001 | SKU: SKU-LZ-001-L</span>
+                      <span class="sku-code">SKU编码: LZ-L</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="number-cell">200</td>
+                <td class="number-cell">150</td>
+                <td class="number-cell low">12</td>
+                <td class="number-cell">134</td>
+                <td class="number-cell">245</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sku-cell">
+                    <div class="sku-info">
+                      <span class="sku-name">透明/iPhone15</span>
+                      <span class="sku-code">SPU: SPU-CP-001 | SKU: SKU-CP-001-15</span>
+                      <span class="sku-code">SKU编码: CP-15</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="number-cell">1000</td>
+                <td class="number-cell">850</td>
+                <td class="number-cell high">620</td>
+                <td class="number-cell">234</td>
+                <td class="number-cell">412</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="sku-cell">
+                    <div class="sku-info">
+                      <span class="sku-name">白色/标准</span>
+                      <span class="sku-code">SPU: SPU-LED-001 | SKU: SKU-LED-001-WH</span>
+                      <span class="sku-code">SKU编码: LED-WH</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="number-cell">400</td>
+                <td class="number-cell">350</td>
+                <td class="number-cell medium">28</td>
+                <td class="number-cell">67</td>
+                <td class="number-cell">123</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <div class="pagination-info">显示 1-20 条，共 1,234 条</div>
+          <div class="pagination-actions">
+            <button class="page-btn" disabled>‹</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">...</button>
+            <button class="page-btn">62</button>
+            <button class="page-btn">›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: 邀约采购订单 -->
+      <div class="card-section">
+        <div class="card-header">
+          <div class="card-title">
+            <h3>邀约采购订单</h3>
+            <span class="badge">28 条</span>
+          </div>
+          <div class="card-actions">
+            <div class="filter-group">
+              <input type="text" class="filter-input" placeholder="搜索采购订单号..." id="orderSearch">
+              <button class="btn btn-primary btn-sm" onclick="handleOrderSearch()">查询</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>采购订单号</th>
+                <th>SKU数量</th>
+                <th>邀约数量</th>
+                <th>邀约入库数</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="link">PO-20260708-001</span></td>
+                <td class="number-cell">12</td>
+                <td class="number-cell">500</td>
+                <td class="number-cell">450</td>
+                <td><span class="status-tag completed">已入库</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260708-002</span></td>
+                <td class="number-cell">8</td>
+                <td class="number-cell">300</td>
+                <td class="number-cell">280</td>
+                <td><span class="status-tag partial">部分发货</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260708-003</span></td>
+                <td class="number-cell">15</td>
+                <td class="number-cell">800</td>
+                <td class="number-cell">150</td>
+                <td><span class="status-tag pending">待接单</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260708-004</span></td>
+                <td class="number-cell">6</td>
+                <td class="number-cell">200</td>
+                <td class="number-cell">0</td>
+                <td><span class="status-tag review">审核中</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260707-001</span></td>
+                <td class="number-cell">10</td>
+                <td class="number-cell">400</td>
+                <td class="number-cell">400</td>
+                <td><span class="status-tag accepted">已接单</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260707-002</span></td>
+                <td class="number-cell">5</td>
+                <td class="number-cell">250</td>
+                <td class="number-cell">250</td>
+                <td><span class="status-tag shipped">已发货</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260706-001</span></td>
+                <td class="number-cell">9</td>
+                <td class="number-cell">450</td>
+                <td class="number-cell">200</td>
+                <td><span class="status-tag partial-inbound">部分入库/已退货</span></td>
+              </tr>
+              <tr>
+                <td><span class="link">PO-20260706-002</span></td>
+                <td class="number-cell">7</td>
+                <td class="number-cell">350</td>
+                <td class="number-cell">0</td>
+                <td><span class="status-tag cancelled">已取消</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <div class="pagination-info">显示 1-10 条，共 28 条</div>
+          <div class="pagination-actions">
+            <button class="page-btn" disabled>‹</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sort state
+let currentSort = { field: 'sales7d', direction: 'desc' };
+
+// Handle sort for SKU table
+function handleSort(field) {
+  if (currentSort.field === field) {
+    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.field = field;
+    currentSort.direction = 'desc';
+  }
+
+  const skuTable = document.querySelector('.card-section:first-child');
+  if (skuTable) {
+    skuTable.querySelectorAll('th').forEach(th => {
+      th.classList.remove('sorted');
+      const icon = th.querySelector('.sort-icon');
+      if (icon) icon.textContent = '↕';
+    });
+
+    const sortedTh = event.currentTarget;
+    sortedTh.classList.add('sorted');
+    const icon = sortedTh.querySelector('.sort-icon');
+    if (icon) {
+      icon.textContent = currentSort.direction === 'asc' ? '↑' : '↓';
+    }
+  }
+
+  console.log('Sort by:', currentSort);
+}
+
+// Handle search
+function handleSearch() {
+  const skuSearch = document.getElementById('skuSearch').value;
+  console.log('Search:', skuSearch);
+  // TODO: Call API to search SPU货号、SKU货号、SKU编码
+}
+
+// Handle order search
+function handleOrderSearch() {
+  const orderSearch = document.getElementById('orderSearch').value;
+  console.log('Order Search:', orderSearch);
+}
+
+// Auto refresh every hour
+function updateRefreshTime() {
+  const now = new Date();
+  const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  const dateStr = now.getFullYear() + '年' +
+    (now.getMonth() + 1) + '月' +
+    now.getDate() + '日 ' +
+    days[now.getDay()];
+  document.querySelector('.welcome-date').textContent = dateStr;
+}
+
+updateRefreshTime();
+
+setInterval(() => {
+  console.log('Auto refreshing data...');
+  updateRefreshTime();
+}, 3600000);
+
+// Handle supplier change
+function handleSupplierChange() {
+  const select = document.getElementById('supplierSelect');
+  const supplierName = document.getElementById('supplierName');
+  const selectedValue = select.value;
+  const selectedText = select.options[select.selectedIndex].text;
+
+  // Update supplier name display
+  supplierName.textContent = selectedText;
+
+  // TODO: Refresh data based on selected supplier
+  console.log('Selected supplier:', selectedValue, selectedText);
+}
+
+// Initialize page
+function initPage(userRole, userName) {
+  const username = document.getElementById('username');
+  const supplierFilter = document.getElementById('supplierFilter');
+
+  // Set username
+  username.textContent = userName || '张三';
+
+  // Show/hide supplier filter based on role
+  if (userRole === 'supplier') {
+    supplierFilter.style.display = 'none';
+  } else {
+    supplierFilter.style.display = 'flex';
+  }
+}
+
+// Initialize as admin by default
+initPage('admin', '张三');
+</script>
+</body>
+</html>
