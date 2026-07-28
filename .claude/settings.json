@@ -39,7 +39,9 @@
       "Bash(git commit -m 'chore: 删除从GitHub同步的index.html *)",
       "Bash(python3 -c ' *)",
       "Bash(git commit -m 'docs: 新增724迭代需求PRD文档和供应商工作台页面 *)",
-      "Bash(git commit -m 'feat: 更新拆单PRD和页面交互 *)"
+      "Bash(git commit -m 'feat: 更新拆单PRD和页面交互 *)",
+      "Bash(grep -oP '\\(#[0-9a-fA-F]{3,8}\\)')",
+      "Bash(git commit -m 'feat: 代发订单页面优化 - 增加供应商筛选和字段调整 *)"
     ],
     "additionalDirectories": [
       "/Users/xiexie/Desktop/Claude code/.claude/skills",
