@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代发订单管理 - 供应商门户</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #F7F8FA;
+  --bg-primary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #F7F8FA;
+  --bg-hover: #F4F1FF;
+  --bg-input: #F7F8FA;
+  --border-subtle: #E4E7ED;
+  --border-medium: #DCDFE6;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+  --text-muted: #C0C4CC;
+  --accent: #7B61FF;
+  --accent-soft: #F4F1FF;
+  --green: #10b981;
+  --red: #ef4444;
+  --blue: #4078FF;
+  --orange: #FF9933;
+  --btn-primary: #425BE0;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.app { position: relative; z-index: 1; }
+
+/* Topbar */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; background: #fff;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 30px; height: 30px; background: #7B61FF;
+  border-radius: 7px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-display);
+}
+.logo-text { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--text-primary); }
+.logo-divider { width: 1px; height: 20px; background: var(--border-medium); }
+.page-title { font-size: 13px; color: var(--text-muted); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.topbar-badge { padding: 3px 9px; background: #F4F1FF; color: #7B61FF; border-radius: 16px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); }
+.topbar-avatar { width: 30px; height: 30px; border-radius: 50%; background: #7B61FF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; cursor: pointer; }
+
+/* Main */
+.main { padding: 20px 28px 40px; max-width: 1400px; margin: 0 auto; }
+
+/* Status Tabs */
+.status-tabs {
+  display: inline-flex; gap: 2px;
+  background: var(--bg-input); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 3px;
+}
+.status-tab {
+  padding: 6px 14px; border-radius: 4px;
+  font-size: 12px; font-weight: 500; color: var(--text-secondary);
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+  border: none; background: none; font-family: var(--font-body); white-space: nowrap;
+}
+.status-tab:hover { background: var(--bg-hover); color: #7B61FF; }
+.status-tab.active { background: #fff; color: #7B61FF; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.tab-count {
+  padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;
+  font-family: var(--font-mono); background: rgba(0,0,0,0.06);
+}
+.status-tab.active .tab-count { background: #F4F1FF; color: #7B61FF; }
+
+/* Filter & Table Section - 合在一起 */
+.list-section {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card);
+}
+
+/* Filter Area */
+.filter-area {
+  padding: 18px 22px; border-bottom: 1px solid var(--border-subtle);
+}
+.filter-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.filter-title {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.filter-title svg { width: 15px; height: 15px; color: #7B61FF; }
+.filter-reset { font-size: 12px; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: var(--font-body); transition: color 0.2s; }
+.filter-reset:hover { color: #7B61FF; }
+.filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.filter-group { display: flex; flex-direction: column; gap: 5px; }
+.filter-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+.filter-input, .filter-select {
+  height: 36px; background: var(--bg-input); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 0 12px; color: var(--text-primary);
+  font-size: 12px; font-family: var(--font-body); outline: none; width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-input::placeholder { color: var(--text-muted); }
+.filter-input:focus, .filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.filter-select {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+}
+.filter-actions { display: flex; gap: 8px; margin-top: 14px; }
+
+/* Status Tabs Area - 在筛选下方 */
+.status-area {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 22px; border-bottom: 1px solid var(--border-subtle);
+  background: #FAFBFC;
+}
+
+/* Table Scroll */
+.table-scroll { overflow-x: auto; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 16px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 500; font-family: var(--font-body);
+  cursor: pointer; transition: all 0.2s; border: none;
+}
+.btn svg { width: 14px; height: 14px; }
+.btn-primary { background: #425BE0; color: #fff; box-shadow: 0 2px 6px rgba(66,91,224,0.2); }
+.btn-primary:hover { box-shadow: 0 4px 12px rgba(66,91,224,0.3); transform: translateY(-1px); }
+.btn-secondary { background: #fff; color: var(--text-secondary); border: 1px solid var(--border-medium); }
+.btn-secondary:hover { background: #F4F1FF; color: #7B61FF; border-color: rgba(123,97,255,0.3); }
+
+/* Sub-order Table */
+.suborder-table { width: 100%; border-collapse: collapse; }
+.suborder-table thead th {
+  padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; white-space: nowrap;
+}
+
+/* Level 1 - Sub-order Row */
+.suborder-row { cursor: pointer; transition: background 0.15s; }
+.suborder-row:hover { background: var(--bg-hover); }
+.suborder-row td {
+  padding: 12px 16px; font-size: 13px; color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+}
+.suborder-row .expand-btn {
+  width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: none; cursor: pointer; color: var(--text-muted);
+  transition: all 0.2s; border-radius: 4px; padding: 0;
+}
+.suborder-row .expand-btn:hover { background: #F4F1FF; color: #7B61FF; }
+.suborder-row .expand-btn svg { width: 13px; height: 13px; transition: transform 0.2s; }
+.suborder-row.expanded .expand-btn svg { transform: rotate(90deg); }
+/* Header expand button */
+.suborder-table thead .expand-btn {
+  width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center;
+  border: none; background: none; cursor: pointer; color: var(--text-muted);
+  transition: all 0.2s; border-radius: 4px; padding: 0;
+}
+.suborder-table thead .expand-btn:hover { background: #F4F1FF; color: #7B61FF; }
+.suborder-table thead .expand-btn svg { width: 14px; height: 14px; transition: transform 0.2s; }
+.suborder-table thead .expand-btn.all-expanded svg { transform: rotate(90deg); }
+.suborder-row .suborder-id { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--text-primary); }
+.suborder-row .order-id { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.suborder-row .date-text { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.suborder-row .mono { font-family: var(--font-mono); font-weight: 500; }
+
+/* Time Cell */
+.time-cell { display: flex; flex-direction: column; gap: 2px; }
+.time-item { display: flex; align-items: center; gap: 6px; }
+.time-label { font-size: 10px; color: var(--text-muted); min-width: 24px; }
+
+/* Tracking Number */
+.tracking-no { font-family: var(--font-mono); font-size: 12px; color: #4078FF; font-weight: 500; }
+
+/* Level 2 - Product Row */
+.product-row { display: none; }
+.product-row.visible { display: table-row; }
+.product-row td { padding: 0; border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; }
+.product-container { padding: 8px 16px 8px 48px; }
+.product-table {
+  width: 100%; border-collapse: collapse; background: #fff;
+  border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-subtle);
+  table-layout: fixed;
+}
+.product-table th {
+  padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  background: #F7F8FA; border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.product-table td {
+  padding: 8px 12px; font-size: 12px; color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.product-table tr:last-child td { border-bottom: none; }
+.product-table th:nth-child(1), .product-table td:nth-child(1) { width: 18%; }
+.product-table th:nth-child(2), .product-table td:nth-child(2) { width: 35%; }
+.product-table th:nth-child(3), .product-table td:nth-child(3) { width: 15%; }
+.product-table th:nth-child(4), .product-table td:nth-child(4) { width: 15%; }
+.product-table th:nth-child(5), .product-table td:nth-child(5) { width: 17%; }
+.product-sku { font-family: var(--font-mono); font-weight: 500; font-size: 11px; }
+.product-qty { font-family: var(--font-mono); font-weight: 600; }
+
+/* Small Product Image */
+.product-img-sm {
+  width: 40px; height: 40px; border-radius: 4px;
+  background: #F7F8FA; overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-subtle);
+}
+.product-img-sm img { width: 100%; height: 100%; object-fit: cover; }
+.product-img-placeholder-sm { color: var(--text-muted); font-size: 18px; }
+
+/* Code Cell */
+.code-cell { display: flex; flex-direction: column; gap: 2px; }
+.code-item { display: flex; align-items: center; gap: 6px; }
+.code-label { font-size: 10px; color: var(--text-muted); min-width: 42px; }
+.code-value { font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); font-weight: 500; }
+
+/* Tags */
+.tag {
+  display: inline-flex; align-items: center; padding: 2px 7px;
+  border-radius: 4px; font-size: 11px; font-weight: 500; gap: 3px;
+}
+.tag-pending { background: #FEF3C7; color: #D97706; }
+.tag-accepted { background: #DBEAFE; color: #2563EB; }
+.tag-shipped { background: #D1FAE5; color: #059669; }
+.tag-completed { background: #E0E7FF; color: #4338CA; }
+.tag-cancelled { background: #FEE2E2; color: #DC2626; }
+
+/* Action Button */
+.action-btn {
+  display: inline; border: none; background: none;
+  font-size: 12px; font-weight: 400; cursor: pointer;
+  color: #4078FF; padding: 0; margin: 0; font-family: var(--font-body);
+}
+.action-btn:hover { text-decoration: underline; }
+
+/* Detail Modal */
+.detail-section { margin-bottom: 18px; }
+.detail-section-title {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.detail-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+}
+.detail-field {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.detail-field-label { font-size: 11px; color: var(--text-muted); }
+.detail-field-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.detail-field-value.mono { font-family: var(--font-mono); }
+
+/* Consignee Info Card */
+.consignee-card {
+  padding: 14px; background: #F7F8FA; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); margin-bottom: 14px;
+}
+
+/* Shipping Info Card */
+.shipping-card {
+  padding: 14px; background: #F0FDF4; border: 1px solid #BBF7D0;
+  border-radius: var(--radius-md); margin-bottom: 14px;
+}
+.consignee-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.consignee-field { display: flex; flex-direction: column; gap: 2px; }
+.consignee-label { font-size: 11px; color: var(--text-muted); }
+.consignee-value { font-size: 12px; color: var(--text-primary); }
+
+/* Product List in Modal */
+.product-list { display: flex; flex-direction: column; gap: 10px; }
+.product-card {
+  display: flex; gap: 14px; padding: 12px; background: #fff;
+  border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+  transition: border-color 0.2s;
+}
+.product-card:hover { border-color: #7B61FF; }
+.product-img {
+  width: 72px; height: 72px; border-radius: var(--radius-sm);
+  background: #F7F8FA; overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border-subtle);
+}
+.product-img img { width: 100%; height: 100%; object-fit: cover; }
+.product-img-placeholder { color: var(--text-muted); font-size: 24px; }
+.product-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.product-name { font-size: 13px; font-weight: 500; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+.product-name .product-attr-value { font-size: 12px; color: var(--text-secondary); font-weight: 400; }
+.product-attrs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; color: var(--text-secondary); }
+.product-attr {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; background: #F7F8FA; border-radius: 4px;
+}
+.product-attr-label { color: var(--text-muted); }
+.product-attr-value { font-weight: 500; color: var(--text-primary); }
+.product-qty-info { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-secondary); }
+.product-qty-num { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--text-primary); }
+
+/* Log List */
+.log-list { display: flex; flex-direction: column; gap: 0; }
+.log-item {
+  display: flex; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.log-item:last-child { border-bottom: none; }
+.log-time {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+  white-space: nowrap; min-width: 140px;
+}
+.log-content { font-size: 12px; color: var(--text-primary); flex: 1; }
+.log-user { color: #7B61FF; font-weight: 500; }
+
+/* Pagination */
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; border-top: 1px solid var(--border-subtle);
+}
+.page-info { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+.page-controls { display: flex; align-items: center; gap: 3px; }
+.page-btn {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); background: none; border: 1px solid transparent;
+  color: var(--text-muted); font-size: 12px; font-family: var(--font-mono);
+  font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.page-btn:hover { background: #F4F1FF; border-color: rgba(123,97,255,0.2); color: #7B61FF; }
+.page-btn.active { background: #F4F1FF; border-color: rgba(123,97,255,0.25); color: #7B61FF; }
+.page-btn svg { width: 13px; height: 13px; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(30,30,46,0.45);
+  backdrop-filter: blur(6px); z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal {
+  background: #fff; border-radius: 16px; width: 560px; max-width: 92vw; max-height: 90vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.15);
+  transform: translateY(20px) scale(0.97); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+}
+.modal-header-left { display: flex; align-items: center; gap: 10px; }
+.modal-icon {
+  width: 36px; height: 36px; border-radius: 10px; background: #7B61FF;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 10px rgba(123,97,255,0.25);
+}
+.modal-icon svg { width: 18px; height: 18px; color: #fff; }
+.modal-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.modal-subtitle { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-top: 2px; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border-subtle);
+  background: #fff; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-muted); transition: all 0.15s;
+}
+.modal-close:hover { background: #FEE2E2; border-color: #FCA5A5; color: #EF4444; }
+.modal-close svg { width: 14px; height: 14px; }
+.modal-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
+.modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 14px 22px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  background: #1e1e2e; color: #fff; padding: 9px 20px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; font-family: var(--font-body);
+  z-index: 2000; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+/* Animation */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D0E0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #B0B0C0; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <div class="logo-icon">供</div>
+        <span class="logo-text">供应商门户</span>
+      </div>
+      <div class="logo-divider"></div>
+      <span class="page-title">代发订单管理</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-badge">v2.0</span>
+      <div class="topbar-avatar">谢</div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- 列表区域（筛选 + 状态Tab + 列表 在一起） -->
+    <div class="list-section animate-in delay-1">
+
+      <!-- 筛选条件 -->
+      <div class="filter-area">
+        <div class="filter-header">
+          <div class="filter-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            筛选条件
+          </div>
+          <button class="filter-reset" onclick="resetFilters()">重置全部</button>
+        </div>
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label">供应商</label>
+            <select class="filter-select" id="filterSupplier">
+              <option value="">全部供应商</option>
+              <option value="SUP001">SUP001 - 深圳优品供应链</option>
+              <option value="SUP002">SUP002 - 广州跨境贸易</option>
+              <option value="SUP003">SUP003 - 义乌小商品供应商</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">子订单号 <span style="font-size:10px;color:var(--text-muted)">(支持批量，逗号分隔)</span></label>
+            <input type="text" class="filter-input" placeholder="多个子订单号用逗号分隔..." id="filterSubOrderId">
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">商品编码</label>
+            <div style="display:flex;gap:4px">
+              <select class="filter-select" id="filterCodeType" style="width:100px;flex-shrink:0">
+                <option value="SPU货号">SPU货号</option>
+                <option value="sku_no">SKU货号</option>
+                <option value="sku">SKU编码</option>
+              </select>
+              <input type="text" class="filter-input" placeholder="输入编码搜索..." id="filterCode" style="flex:1">
+            </div>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">时间筛选</label>
+            <div style="display:flex;gap:4px">
+              <select class="filter-select" id="filterTimeType" style="width:100px;flex-shrink:0">
+                <option value="create">创建时间</option>
+                <option value="accept">接单时间</option>
+                <option value="ship">发货时间</option>
+              </select>
+              <input type="date" class="filter-input" id="filterDate" style="flex:1">
+            </div>
+          </div>
+        </div>
+        <div class="filter-grid" style="margin-top:12px">
+          <div class="filter-group">
+            <label class="filter-label">&nbsp;</label>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="doSearch()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                查询
+              </button>
+              <button class="btn btn-secondary" onclick="resetFilters()">重置</button>
+            </div>
+          </div>
+          <div class="filter-group"></div>
+          <div class="filter-group"></div>
+          <div class="filter-group"></div>
+        </div>
+      </div>
+
+      <!-- 状态Tab -->
+      <div class="status-area">
+        <div class="status-tabs">
+          <button class="status-tab" onclick="switchTab(this, 'pending')">
+            待接单 <span class="tab-count">5</span>
+          </button>
+          <button class="status-tab active" onclick="switchTab(this, 'accepted')">
+            待发货 <span class="tab-count">12</span>
+          </button>
+          <button class="status-tab" onclick="switchTab(this, 'shipped')">
+            已发货 <span class="tab-count">38</span>
+          </button>
+          <button class="status-tab" onclick="switchTab(this, 'cancelled')">
+            已取消 <span class="tab-count">3</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 列表 -->
+      <div class="table-scroll">
+        <table class="suborder-table">
+          <thead>
+            <tr>
+              <th style="width:40px">
+                <button class="expand-btn" onclick="toggleAllExpand()" title="全部展开/收起">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </th>
+              <th>子订单号</th>
+              <th>供应商</th>
+              <th>收件人</th>
+              <th>收货地址</th>
+              <th>商品数</th>
+              <th>状态</th>
+              <th>承运商</th>
+              <th>跟踪单号</th>
+              <th>时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- 子订单1：待发货 -->
+            <tr class="suborder-row expanded" onclick="toggleExpand(this)">
+              <td>
+                <button class="expand-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </td>
+              <td><span class="suborder-id">SO_202507270001_01</span></td>
+              <td><span style="font-size:12px;color:var(--text-secondary)">深圳优品供应链</span></td>
+              <td>John Smith</td>
+              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="Los Angeles, CA 90001, 美国">Los Angeles, CA 90001, 美国</td>
+              <td><span class="mono">3</span></td>
+              <td><span class="tag tag-accepted">待发货</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td>
+                <div class="time-cell">
+                  <div class="time-item"><span class="time-label">创建</span> <span class="date-text">2025-07-27 10:00</span></div>
+                  <div class="time-item"><span class="time-label">接单</span> <span class="date-text">2025-07-27 10:05</span></div>
+                  <div class="time-item"><span class="time-label">发货</span> <span class="date-text" style="color:var(--text-muted)">—</span></div>
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;gap:10px">
+                  <button class="action-btn" onclick="event.stopPropagation();openDetailModal('SO_202507270001_01')">详情</button>
+                  <button class="action-btn" onclick="event.stopPropagation();openLogModal('SO_202507270001_01')">日志</button>
+                </div>
+              </td>
+            </tr>
+            <!-- 二级：商品列表 -->
+            <tr class="product-row visible">
+              <td colspan="11">
+                <div class="product-container">
+                  <table class="product-table">
+                    <thead>
+                      <tr>
+                        <th style="width:60px">图片</th>
+                        <th>商品编码</th>
+                        <th>商品名称</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👕</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250001</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">TSH-001-WM</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-TSH-001</span></div>
+                          </div>
+                        </td>
+                        <td>纯棉圆领T恤</td>
+                        <td>白色 / M</td>
+                        <td><span class="product-qty">2</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👗</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250002</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">DRS-002-CS</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-DRS-002</span></div>
+                          </div>
+                        </td>
+                        <td>雪纺碎花连衣裙</td>
+                        <td>碎花 / S</td>
+                        <td><span class="product-qty">1</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
+            <!-- 子订单2：待发货 -->
+            <tr class="suborder-row" onclick="toggleExpand(this)">
+              <td>
+                <button class="expand-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </td>
+              <td><span class="suborder-id">SO_202507270001_02</span></td>
+              <td><span style="font-size:12px;color:var(--text-secondary)">深圳优品供应链</span></td>
+              <td>John Smith</td>
+              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="Los Angeles, CA 90001, 美国">Los Angeles, CA 90001, 美国</td>
+              <td><span class="mono">2</span></td>
+              <td><span class="tag tag-accepted">待发货</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td>
+                <div class="time-cell">
+                  <div class="time-item"><span class="time-label">创建</span> <span class="date-text">2025-07-27 10:00</span></div>
+                  <div class="time-item"><span class="time-label">接单</span> <span class="date-text">2025-07-27 10:05</span></div>
+                  <div class="time-item"><span class="time-label">发货</span> <span class="date-text" style="color:var(--text-muted)">—</span></div>
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;gap:10px">
+                  <button class="action-btn" onclick="event.stopPropagation();openDetailModal('SO_202507270001_02')">详情</button>
+                  <button class="action-btn" onclick="event.stopPropagation();openLogModal('SO_202507270001_02')">日志</button>
+                </div>
+              </td>
+            </tr>
+            <tr class="product-row">
+              <td colspan="11">
+                <div class="product-container">
+                  <table class="product-table">
+                    <thead>
+                      <tr>
+                        <th style="width:60px">图片</th>
+                        <th>商品编码</th>
+                        <th>商品名称</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👖</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250003</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">JNS-003-BL</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-JNS-003</span></div>
+                          </div>
+                        </td>
+                        <td>高腰阔腿牛仔裤</td>
+                        <td>蓝色 / L</td>
+                        <td><span class="product-qty">2</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
+            <!-- 子订单3：待接单 -->
+            <tr class="suborder-row" onclick="toggleExpand(this)">
+              <td>
+                <button class="expand-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </td>
+              <td><span class="suborder-id">SO_202507270002_01</span></td>
+              <td><span style="font-size:12px;color:var(--text-secondary)">广州跨境贸易</span></td>
+              <td>Emily Johnson</td>
+              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="London, SW1A 1AA, 英国">London, SW1A 1AA, 英国</td>
+              <td><span class="mono">3</span></td>
+              <td><span class="tag tag-pending">待接单</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td><span style="color:var(--text-muted)">—</span></td>
+              <td>
+                <div class="time-cell">
+                  <div class="time-item"><span class="time-label">创建</span> <span class="date-text">2025-07-27 09:30</span></div>
+                  <div class="time-item"><span class="time-label">接单</span> <span class="date-text" style="color:var(--text-muted)">—</span></div>
+                  <div class="time-item"><span class="time-label">发货</span> <span class="date-text" style="color:var(--text-muted)">—</span></div>
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;gap:10px">
+                  <button class="action-btn" onclick="event.stopPropagation();openDetailModal('SO_202507270002_01')">详情</button>
+                  <button class="action-btn" onclick="event.stopPropagation();openLogModal('SO_202507270002_01')">日志</button>
+                </div>
+              </td>
+            </tr>
+            <tr class="product-row">
+              <td colspan="11">
+                <div class="product-container">
+                  <table class="product-table">
+                    <thead>
+                      <tr>
+                        <th style="width:60px">图片</th>
+                        <th>商品编码</th>
+                        <th>商品名称</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">🎒</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250004</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">BAG-004-BK</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-BAG-004</span></div>
+                          </div>
+                        </td>
+                        <td>商务双肩包</td>
+                        <td>黑色</td>
+                        <td><span class="product-qty">1</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👛</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250005</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">WLL-005-BR</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-WLL-005</span></div>
+                          </div>
+                        </td>
+                        <td>真皮钱包</td>
+                        <td>棕色</td>
+                        <td><span class="product-qty">2</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
+            <!-- 子订单4：已发货 -->
+            <tr class="suborder-row" onclick="toggleExpand(this)">
+              <td>
+                <button class="expand-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </td>
+              <td><span class="suborder-id">SO_202507260015_01</span></td>
+              <td><span style="font-size:12px;color:var(--text-secondary)">义乌小商品供应商</span></td>
+              <td>Michael Brown</td>
+              <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis" title="Berlin, 10115, 德国">Berlin, 10115, 德国</td>
+              <td><span class="mono">5</span></td>
+              <td><span class="tag tag-shipped">已发货</span></td>
+              <td>DHL</td>
+              <td><span class="tracking-no">DHL1234567890</span></td>
+              <td>
+                <div class="time-cell">
+                  <div class="time-item"><span class="time-label">创建</span> <span class="date-text">2025-07-26 14:20</span></div>
+                  <div class="time-item"><span class="time-label">接单</span> <span class="date-text">2025-07-26 14:25</span></div>
+                  <div class="time-item"><span class="time-label">发货</span> <span class="date-text">2025-07-26 16:30</span></div>
+                </div>
+              </td>
+              <td>
+                <div style="display:flex;gap:10px">
+                  <button class="action-btn" onclick="event.stopPropagation();openDetailModal('SO_202507260015_01')">详情</button>
+                  <button class="action-btn" onclick="event.stopPropagation();openLogModal('SO_202507260015_01')">日志</button>
+                </div>
+              </td>
+            </tr>
+            <tr class="product-row">
+              <td colspan="11">
+                <div class="product-container">
+                  <table class="product-table">
+                    <thead>
+                      <tr>
+                        <th style="width:60px">图片</th>
+                        <th>商品编码</th>
+                        <th>商品名称</th>
+                        <th>规格</th>
+                        <th>数量</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👕</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250001</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">TSH-001-WM</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-TSH-001</span></div>
+                          </div>
+                        </td>
+                        <td>纯棉圆领T恤</td>
+                        <td>白色 / M</td>
+                        <td><span class="product-qty">3</span></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="product-img-sm"><div class="product-img-placeholder-sm">👖</div></div>
+                        </td>
+                        <td>
+                          <div class="code-cell">
+                            <div class="code-item"><span class="code-label">SPU货号</span> <span class="code-value">SPU货号20250003</span></div>
+                            <div class="code-item"><span class="code-label">SKU货号</span> <span class="code-value">JNS-003-BL</span></div>
+                            <div class="code-item"><span class="code-label">SKU编码</span> <span class="code-value">SKU-JNS-003</span></div>
+                          </div>
+                        </td>
+                        <td>高腰阔腿牛仔裤</td>
+                        <td>蓝色 / L</td>
+                        <td><span class="product-qty">2</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 分页 -->
+      <div class="pagination">
+        <span class="page-info">共 12 条记录，第 1/1 页</span>
+        <div class="page-controls">
+          <button class="page-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- 查看日志弹窗 -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal" style="width:620px">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="modal-title">操作日志</div>
+          <div class="modal-subtitle" id="logModalSubNo">SO_202507270001_01</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('logModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="log-list">
+        <div class="log-item">
+          <span class="log-time">2025-07-27 10:00</span>
+          <span class="log-content">子订单创建，状态：<span class="log-user">待接单</span></span>
+        </div>
+        <div class="log-item">
+          <span class="log-time">2025-07-27 10:05</span>
+          <span class="log-content"><span class="log-user">系统</span> 自动接单（超过24小时未接单）</span>
+        </div>
+        <div class="log-item">
+          <span class="log-time">2025-07-27 10:05</span>
+          <span class="log-content">状态变更为：<span class="log-user">待发货</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 详情弹窗 -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" style="width:700px">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <div class="modal-title">子订单详情</div>
+          <div class="modal-subtitle" id="detailModalSubNo">SO_202507270001_01</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('detailModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- 子订单基础信息 -->
+      <div class="detail-section">
+        <div class="detail-section-title">子订单信息</div>
+        <div class="detail-grid">
+          <div class="detail-field">
+            <span class="detail-field-label">供应商</span>
+            <span class="detail-field-value">深圳优品供应链</span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">子订单号</span>
+            <span class="detail-field-value mono">SO_202507270001_01</span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">子订单状态</span>
+            <span class="detail-field-value"><span class="tag tag-accepted">待发货</span></span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">商品数量</span>
+            <span class="detail-field-value mono">3 件</span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">创建时间</span>
+            <span class="detail-field-value mono">2025-07-27 10:00:00</span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">接单时间</span>
+            <span class="detail-field-value mono">2025-07-27 10:05:00</span>
+          </div>
+          <div class="detail-field">
+            <span class="detail-field-label">发货时间</span>
+            <span class="detail-field-value" style="color:var(--text-muted)">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 发货信息（已发货状态显示） -->
+      <div class="detail-section" id="shippingInfoSection">
+        <div class="detail-section-title">发货信息</div>
+        <div class="shipping-card">
+          <div class="detail-grid">
+            <div class="detail-field">
+              <span class="detail-field-label">承运商</span>
+              <span class="detail-field-value">DHL</span>
+            </div>
+            <div class="detail-field">
+              <span class="detail-field-label">跟踪单号</span>
+              <span class="detail-field-value mono" style="color:#4078FF">DHL1234567890</span>
+            </div>
+            <div class="detail-field">
+              <span class="detail-field-label">发货时间</span>
+              <span class="detail-field-value mono">2025-07-27 16:30:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 收货信息 -->
+      <div class="detail-section">
+        <div class="detail-section-title">收货信息</div>
+        <div class="consignee-card">
+          <div class="consignee-grid">
+            <div class="consignee-field">
+              <span class="consignee-label">收件人</span>
+              <span class="consignee-value">John Smith</span>
+            </div>
+            <div class="consignee-field">
+              <span class="consignee-label">电话</span>
+              <span class="consignee-value" style="font-family:var(--font-mono)">+1-234-567-8900</span>
+            </div>
+            <div class="consignee-field">
+              <span class="consignee-label">邮箱</span>
+              <span class="consignee-value">john.smith@example.com</span>
+            </div>
+            <div class="consignee-field">
+              <span class="consignee-label">国家</span>
+              <span class="consignee-value">美国</span>
+            </div>
+            <div class="consignee-field" style="grid-column:span 2">
+              <span class="consignee-label">详细地址</span>
+              <span class="consignee-value">123 Main Street, Apt 4B, Los Angeles, CA 90001</span>
+            </div>
+            <div class="consignee-field">
+              <span class="consignee-label">邮编</span>
+              <span class="consignee-value" style="font-family:var(--font-mono)">90001</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 商品明细 -->
+      <div class="detail-section">
+        <div class="detail-section-title">商品明细</div>
+        <div class="product-list">
+          <div class="product-card">
+            <div class="product-img"><div class="product-img-placeholder">👕</div></div>
+            <div class="product-info">
+              <div class="product-name">纯棉圆领T恤 <span class="product-attr-value">白色/M</span></div>
+              <div class="product-attrs">
+                <span class="product-attr"><span class="product-attr-label">SPU</span> <span class="product-attr-value" style="font-family:var(--font-mono)">SPU20250001</span></span>
+                <span class="product-attr"><span class="product-attr-label">SKU货号</span> <span class="product-attr-value" style="font-family:var(--font-mono)">TSH-001-WM</span></span>
+                <span class="product-attr"><span class="product-attr-label">SKU</span> <span class="product-attr-value" style="font-family:var(--font-mono)">SKU-TSH-001</span></span>
+              </div>
+              <div class="product-qty-info">数量: <span class="product-qty-num">2</span></div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img"><div class="product-img-placeholder">👗</div></div>
+            <div class="product-info">
+              <div class="product-name">雪纺碎花连衣裙 <span class="product-attr-value">碎花/S</span></div>
+              <div class="product-attrs">
+                <span class="product-attr"><span class="product-attr-label">SPU</span> <span class="product-attr-value" style="font-family:var(--font-mono)">SPU20250002</span></span>
+                <span class="product-attr"><span class="product-attr-label">SKU货号</span> <span class="product-attr-value" style="font-family:var(--font-mono)">DRS-002-CS</span></span>
+                <span class="product-attr"><span class="product-attr-label">SKU</span> <span class="product-attr-value" style="font-family:var(--font-mono)">SKU-DRS-002</span></span>
+              </div>
+              <div class="product-qty-info">数量: <span class="product-qty-num">1</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Tab switch
+function switchTab(el, status) {
+  document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('已切换到: ' + el.textContent.trim().split(/\s/)[0]);
+}
+
+// Expand/Collapse
+function toggleExpand(row) {
+  row.classList.toggle('expanded');
+  const productRow = row.nextElementSibling;
+  if (productRow && productRow.classList.contains('product-row')) {
+    productRow.classList.toggle('visible');
+  }
+}
+
+let allExpanded = false;
+function toggleAllExpand() {
+  allExpanded = !allExpanded;
+  const headerBtn = document.querySelector('.suborder-table thead .expand-btn');
+  document.querySelectorAll('.suborder-row').forEach(row => {
+    if (allExpanded) {
+      row.classList.add('expanded');
+    } else {
+      row.classList.remove('expanded');
+    }
+    const productRow = row.nextElementSibling;
+    if (productRow && productRow.classList.contains('product-row')) {
+      if (allExpanded) {
+        productRow.classList.add('visible');
+      } else {
+        productRow.classList.remove('visible');
+      }
+    }
+  });
+  if (allExpanded) {
+    headerBtn.classList.add('all-expanded');
+  } else {
+    headerBtn.classList.remove('all-expanded');
+  }
+}
+
+// Modal
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Log Modal
+function openLogModal(subNo) {
+  document.getElementById('logModalSubNo').textContent = subNo;
+  openModal('logModal');
+}
+
+// Detail Modal
+function openDetailModal(subNo) {
+  document.getElementById('detailModalSubNo').textContent = subNo;
+  openModal('detailModal');
+}
+
+// Reset filters
+function resetFilters() {
+  document.getElementById('filterSupplier').value = '';
+  document.getElementById('filterSubOrderId').value = '';
+  document.getElementById('filterCodeType').value = 'SPU货号';
+  document.getElementById('filterCode').value = '';
+  document.getElementById('filterTimeType').value = 'create';
+  document.getElementById('filterDate').value = '';
+  showToast('已重置筛选条件');
+}
+
+function doSearch() {
+  showToast('正在查询...');
+}
+
+// Toast
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
