@@ -41,7 +41,10 @@
       "Bash(git commit -m 'docs: 新增724迭代需求PRD文档和供应商工作台页面 *)",
       "Bash(git commit -m 'feat: 更新拆单PRD和页面交互 *)",
       "Bash(grep -oP '\\(#[0-9a-fA-F]{3,8}\\)')",
-      "Bash(git commit -m 'feat: 代发订单页面优化 - 增加供应商筛选和字段调整 *)"
+      "Bash(git commit -m 'feat: 代发订单页面优化 - 增加供应商筛选和字段调整 *)",
+      "Bash(git commit -m 'feat: 更新全部PRD文档和拆单助手Agent汇报 *)",
+      "Bash(git commit -m 'fix: 优化NORMAL订单API数据结构 *)",
+      "Bash(git commit -m 'docs: 新增订单履约知识库，整合13份PRD文档 *)"
     ],
     "additionalDirectories": [
       "/Users/xiexie/Desktop/Claude code/.claude/skills",

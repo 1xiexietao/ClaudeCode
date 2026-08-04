@@ -539,6 +539,24 @@ body {
   font-family: var(--font-mono);
 }
 .split-preview-items { flex: 1; font-size: 12px; color: var(--text-secondary); }
+.split-preview-lock {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  background: #F7F8FA; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);
+  margin-top: 8px;
+}
+.split-preview-lock-label {
+  font-size: 12px; font-weight: 600; color: var(--text-secondary); white-space: nowrap;
+}
+.split-preview-lock-options {
+  display: flex; align-items: center; gap: 16px;
+}
+.split-preview-lock-options label {
+  display: flex; align-items: center; gap: 5px; cursor: pointer;
+  font-size: 12px; color: var(--text-primary);
+}
+.split-preview-lock-options input[type="radio"] {
+  width: 14px; height: 14px; accent-color: #7B61FF; cursor: pointer;
+}
 .split-preview-empty {
   padding: 16px; text-align: center; font-size: 12px; color: var(--text-muted);
 }
@@ -1892,6 +1910,13 @@ function updateSplitPreview() {
       </div>
       <div class="split-preview-section-body">
         ${selectedItemsHtml}
+        <div class="split-preview-lock">
+          <span class="split-preview-lock-label">锁定库存：</span>
+          <div class="split-preview-lock-options">
+            <label><input type="radio" name="lockInventory" value="yes"> 是</label>
+            <label><input type="radio" name="lockInventory" value="no" checked> 否</label>
+          </div>
+        </div>
       </div>
     </div>
   `;
@@ -1906,12 +1931,14 @@ function confirmManualSplit() {
   const warehouse = splitState.origin;
   const supplier = splitState.supplier || '无';
   const totalQty = splitState.selectedItems.reduce((s, item) => s + item.splitQty, 0);
+  const lockInventory = document.querySelector('input[name="lockInventory"]:checked')?.value === 'yes';
 
   // 二次确认弹窗
   showConfirmModal(
     '拆单后结果不可逆，请确认要拆单吗？',
     function() {
-      showToast(`拆单成功：从 ${splitState.subOrderNo} 拆出 ${splitState.selectedItems.length} 种商品（共${totalQty}件）→ ${warehouse}`);
+      const lockText = lockInventory ? '，已锁定库存' : '';
+      showToast(`拆单成功：从 ${splitState.subOrderNo} 拆出 ${splitState.selectedItems.length} 种商品（共${totalQty}件）→ ${warehouse}${lockText}`);
       setTimeout(() => { closeManualSplit(); }, 1200);
     }
   );
