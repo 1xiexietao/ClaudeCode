@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>订单履约平台 - 全业务流程图</title>
+  <style>
+    :root {
+      --blue: #3b82f6;
+      --blue-light: #eff6ff;
+      --green: #10b981;
+      --green-light: #ecfdf5;
+      --orange: #f59e0b;
+      --orange-light: #fffbeb;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --gray: #64748b;
+      --gray-light: #f1f5f9;
+      --text1: #1e293b;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --border: #e2e8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f0e6ff 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .header p { color: var(--text2); font-size: 15px; }
+    .section {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text1);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .system-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .system-card {
+      background: var(--blue-light);
+      border: 2px solid var(--blue);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .system-card.green { background: var(--green-light); border-color: var(--green); }
+    .system-card.orange { background: var(--orange-light); border-color: var(--orange); }
+    .system-card.purple { background: #f5f3ff; border-color: var(--purple); }
+    .system-card .name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .system-card .desc { font-size: 12px; color: var(--text2); }
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag.blue { background: #dbeafe; color: #1d4ed8; }
+    .tag.green { background: #d1fae5; color: #059669; }
+    .tag.orange { background: #fed7aa; color: #9a3412; }
+    .tag.red { background: #fecaca; color: #991b1b; }
+    .tag.gray { background: #e2e8f0; color: #475569; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--gray-light);
+      font-weight: 600;
+      color: var(--text1);
+    }
+    tr:hover { background: #f8fafc; }
+    .mermaid-wrapper {
+      background: #fafbfc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+    .mermaid { display: flex; justify-content: center; }
+    .mermaid-loading {
+      min-height: 80px;
+      background: repeating-linear-gradient(90deg, #f1f5f9 0px, #f1f5f9 8px, transparent 8px, transparent 16px) center/100% 2px no-repeat;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+    .flow-note {
+      background: var(--blue-light);
+      border-left: 4px solid var(--blue);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 768px) {
+      .system-cards { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>📦 订单履约平台 - 全业务流程图</h1>
+      <p>覆盖 Shopify · 订单履约平台 · 易仓ERP · 供应商门户 全链路</p>
+    </div>
+
+    <!-- 系统架构 -->
+    <div class="section">
+      <div class="section-title">系统架构</div>
+      <div class="system-cards">
+        <div class="system-card">
+          <div class="name">🛒 Shopify</div>
+          <div class="desc">电商平台 · 订单来源</div>
+        </div>
+        <div class="system-card green">
+          <div class="name">📦 订单履约平台</div>
+          <div class="desc">拆单主体 · 核心中枢</div>
+        </div>
+        <div class="system-card orange">
+          <div class="name">🏭 易仓ERP</div>
+          <div class="desc">发货执行 · 仓库管理</div>
+        </div>
+        <div class="system-card purple">
+          <div class="name">🚚 供应商门户</div>
+          <div class="desc">订单接收 · 物流回传</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 推品流程 -->
+    <div class="section">
+      <div class="section-title">推品流程（商品进入销售前）</div>
+
+      <!-- 方式一：门户手动创建/批量导入 -->
+      <h4 style="margin-bottom:12px">方式一：供应商门户手动创建/批量导入</h4>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    subgraph 供应商创建商品
+        A[供应商登录门户] --> B{创建方式}
+        B -->|手动创建| C[逐个填写商品信息]
+        B -->|批量导入| D[上传Excel批量导入]
+        C --> E[添加SKU和价格库存]
+        D --> E
+        E --> F[上传商品图片]
+        F --> G[商品状态: 草稿]
+    end
+
+    subgraph 推品到货品池
+        G --> H[供应商推品]
+        H --> I[商品进入买手货品池]
+        I --> J[商品状态: 待选品]
+    end
+
+    subgraph 买手选品
+        J --> K{买手操作}
+        K -->|选中| L[商品状态: 已选品]
+        K -->|未选中| M[商品状态: 未选中]
+        M --> N[可重新选品]
+        N --> J
+    end
+
+    subgraph 同步到商品运营平台
+        L --> O[确认商品资料图包]
+        O --> P[同步到商品运营平台]
+        P --> Q[商品可上架销售]
+    end
+
+    style G fill:#fff3e0
+    style J fill:#e3f2fd
+    style L fill:#e1f5e1
+    style Q fill:#e1f5e1
+        </pre>
+      </div>
+
+      <!-- 方式二：MUSE标准API -->
+      <h4 style="margin:20px 0 12px">方式二：MUSE标准对接API</h4>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    subgraph 供应商系统对接
+        A[供应商系统] --> B[调用MUSE标准API]
+        B --> C[推送商品信息]
+        C --> D[自动创建商品]
+        D --> E[商品状态: 草稿]
+    end
+
+    subgraph 自动推品
+        E --> F[自动推品到货品池]
+        F --> G[商品状态: 待选品]
+    end
+
+    subgraph 买手选品
+        G --> H{买手操作}
+        H -->|选中| I[商品状态: 已选品]
+        H -->|未选中| J[商品状态: 未选中]
+    end
+
+    subgraph 同步到商品运营平台
+        I --> K[确认商品资料图包]
+        K --> L[同步到商品运营平台]
+        L --> M[商品可上架销售]
+    end
+
+    style E fill:#fff3e0
+    style G fill:#e3f2fd
+    style I fill:#e1f5e1
+    style M fill:#e1f5e1
+        </pre>
+      </div>
+
+      <!-- 推品说明表格 -->
+      <div style="margin-top:20px">
+        <h4 style="margin-bottom:12px">推品方式说明</h4>
+        <table>
+          <thead><tr><th>方式</th><th>说明</th><th>适用场景</th></tr></thead>
+          <tbody>
+            <tr><td>门户手动创建</td><td>供应商在门户逐个填写商品信息</td><td>少量商品、新供应商</td></tr>
+            <tr><td>门户批量导入</td><td>供应商通过Excel批量上传商品</td><td>大量商品、定期更新</td></tr>
+            <tr><td>MUSE标准API</td><td>供应商系统直接对接API推送商品</td><td>已有系统的供应商、自动化对接</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:12px">商品状态流转</h4>
+        <table>
+          <thead><tr><th>阶段</th><th>操作</th><th>商品状态</th></tr></thead>
+          <tbody>
+            <tr><td>创建商品</td><td>供应商新建商品（手动/API）</td><td><span class="tag orange">草稿</span></td></tr>
+            <tr><td>推品</td><td>供应商将商品推入买手货品池</td><td><span class="tag blue">待选品</span></td></tr>
+            <tr><td>选品</td><td>买手筛选商品，选中或淘汰</td><td><span class="tag green">已选品</span> / <span class="tag gray">未选中</span></td></tr>
+            <tr><td>同步</td><td>确认资料图包后同步到商品运营平台</td><td><span class="tag green">可上架销售</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 全业务流程总览 -->
+    <div class="section">
+      <div class="section-title">全业务流程总览</div>
+      <div class="flow-note">Shopify订单自动推送至履约平台 → 拆单 → 根据仓发地和供应商类型分流处理</div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    Start([客户在Shopify下单]) --> A[Shopify生成订单]
+    A --> B[订单推送到履约平台]
+    B --> C[系统自动拆单]
+
+    C --> D{判断发货渠道}
+    D -->|国内发货| E[生成采购需求]
+    D -->|海外代发| F[运营发送订单给供应商]
+
+    E --> G[采购员确认生成采购单]
+    G --> H[供应商接单发货]
+    H --> I[创建入库通知同步易仓]
+    I --> J[易仓收货入库]
+    J --> K{到仓时间检查}
+    K -->|已到仓| L[易仓出库发货]
+    K -->|未到仓| M[继续等待]
+    M --> K
+
+    L --> N[易仓返回物流单号]
+    N --> O[物流信息回写Shopify]
+
+    F --> P[供应商发货回传物流]
+    P --> O
+
+    O --> Q([客户查看物流])
+        </pre>
+      </div>
+    </div>
+
+    <!-- 拆单规则 -->
+    <div class="section">
+      <div class="section-title">拆单规则</div>
+      <div class="flow-note">拆单优先级：仓发地 > 供应商类型。履约平台是拆单主体，易仓不允许拆单/合单。</div>
+      <table>
+        <thead>
+          <tr><th>优先级</th><th>仓发地</th><th>供应商类型</th><th>拆单规则</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>国内</td><td><span class="tag orange">代发供应商</span></td><td><strong>按供应商拆单</strong></td><td>每个代发供应商生成一个子订单</td></tr>
+          <tr><td>1</td><td>国内</td><td>非代发供应商</td><td>不拆单</td><td>整单处理</td></tr>
+          <tr><td>1</td><td>海外</td><td>所有供应商</td><td><strong>按供应商拆单</strong></td><td>每个供应商生成一个子订单</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:8px">供应商标签识别</h4>
+        <div style="display:flex;gap:12px">
+          <div class="tag orange">代发供应商</div>
+          <div style="font-size:13px;color:var(--text2)">供应商档案新增"代发供应商"标签，子订单包含代发商品则代发标识=是</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 国内订单履约流程 -->
+    <div class="section">
+      <div class="section-title">国内订单履约流程</div>
+      <div class="flow-note">国内子订单根据需求类型分流：生产需求（AIGC→致景，已弃用）、采购需求（缺货计算/销一采一）</div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    A[国内子订单] --> B{需求类型判断}
+
+    B -->|生产需求| C[手动创建AIGC生产需求单]
+    B -->|采购需求| D{采购需求生成方式}
+
+    C --> C1[同步致景生产系统]
+    C1 --> C2[致景完成派单生产]
+    C2 --> C3[同步入库通知]
+    C3 --> E
+
+    D -->|缺货计算| D1[计算缺货数量]
+    D1 --> D2[缺货数量 = 需求数量 - 可用库存 - 在途]
+    D2 --> D3{缺货数量 > 0?}
+    D3 -->|是| D4[生成采购需求单]
+    D3 -->|否| D5[不生成需求]
+
+    D -->|销一采一| D6[根据前日动销订单]
+    D6 --> D7[按订单数量生成需求单]
+
+    D4 --> D8[采购员确认需求]
+    D7 --> D8
+    D8 --> D9{是否1688采购?}
+
+    D9 -->|是1688| D10[采购单拆分寻源]
+    D10 --> D11[一键向1688下单]
+    D11 --> D12[拉取1688订单]
+    D12 --> D13[1688商家发货]
+    D13 --> D14[自动同步物流单号]
+    D14 --> E
+
+    D9 -->|否| D15[按供应商生成采购单]
+    D15 --> D16[供应商接单]
+    D16 --> D17[供应商发货]
+    D17 --> E
+
+    E[创建入库通知同步易仓]
+    E --> F[易仓收货质检入库]
+    F --> G[库存可用]
+
+    G --> H{订单创建满4天?}
+    H -->|否| I[继续等待]
+    I --> H
+    H -->|是| J[检查库存状态]
+    J --> K{库存情况}
+    K -->|全部有货| L[整单可发货]
+    K -->|部分有货| M[拆分有货先发]
+    K -->|全部无货| N[继续等待]
+
+    L --> O[易仓出库发货]
+    M --> O
+    O --> P[生成物流单号]
+    P --> Q[物流信息同步到履约平台]
+    Q --> R[回写到Shopify]
+    R --> S([客户可查看物流])
+
+    style C fill:#fff3e0,stroke:#ff9800
+    style C1 fill:#fff3e0,stroke:#ff9800
+    style C2 fill:#fff3e0,stroke:#ff9800
+    style C3 fill:#fff3e0,stroke:#ff9800
+    style D10 fill:#e3f2fd,stroke:#2196f3
+    style D11 fill:#e3f2fd,stroke:#2196f3
+    style D12 fill:#e3f2fd,stroke:#2196f3
+    style D13 fill:#e3f2fd,stroke:#2196f3
+    style D14 fill:#e3f2fd,stroke:#2196f3
+        </pre>
+      </div>
+
+      <div style="margin-top:20px">
+        <h4 style="margin-bottom:12px">采购需求自动生成方式</h4>
+        <table>
+          <thead><tr><th>生成方式</th><th>说明</th><th>计算公式</th></tr></thead>
+          <tbody>
+            <tr><td>缺货计算</td><td>通过计算商品缺货数量生成需求单</td><td>缺货数量 = 需求数量 - 可用库存 - 在途</td></tr>
+            <tr><td>销一采一</td><td>根据前一天Shopify动销订单直接生成</td><td>按订单数量生成对应数量需求</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flow-note" style="margin-top:16px">
+        <strong>说明：</strong>缺货数量 ≤ 0 时不生成该SKU需求单；可用库存 = 易仓ERP可用库存（生成前主动更新）；在途 = 履约平台中状态为待确认/待下单/待接单/已接单/进行中的需求单数量
+      </div>
+
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:12px">流程分支说明</h4>
+        <table>
+          <thead><tr><th>流程分支</th><th>说明</th><th>当前状态</th></tr></thead>
+          <tbody>
+            <tr><td>生产需求（AIGC）</td><td>手动创建AIGC生产需求单 → 同步致景生产系统 → 致景完成派单生产 → 入库通知 → 易仓收货</td><td><span class="tag red">⚠️ 流程已弃用</span></td></tr>
+            <tr><td>采购需求-1688采购</td><td>采购单拆分寻源 → 一键向1688下单 → 拉取1688订单 → 1688商家发货自动同步物流 → 入库通知 → 易仓收货</td><td><span class="tag orange">⚠️ 流程需调整优化</span></td></tr>
+            <tr><td>采购需求-普通采购</td><td>按供应商生成采购单 → 供应商接单发货 → 入库通知 → 易仓收货</td><td><span class="tag green">正常使用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 采购需求与供应商门户流程 -->
+    <div class="section">
+      <div class="section-title">采购需求与供应商门户流程</div>
+      <div class="flow-note">从缺货检测到供应商发货入库的完整协同链路</div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    subgraph 需求生成
+        A[系统定时检查缺货] --> B[计算各SKU缺口数量]
+        B --> C{有缺货?}
+        C -->|是| D[生成采购需求单]
+        C -->|否| E[不生成]
+    end
+
+    subgraph 需求确认
+        D --> F[采购员确认需求]
+        F --> G[按供应商分组]
+        G --> H[生成采购单]
+    end
+
+    subgraph 供应商协同
+        H --> I{供应商开启门户?}
+        I -->|是| J[采购单推送到门户]
+        I -->|否| K[线下沟通采购]
+
+        J --> L[供应商查看订单]
+        L --> M{供应商操作}
+        M -->|接单| N[确认接单]
+        M -->|申请缺货| O[发起缺货审核]
+
+        O --> P[采购员审核]
+        P -->|通过| Q[缺货部分终止]
+        P -->|驳回| N
+
+        N --> R[供应商发货]
+        R --> S[填写物流信息]
+    end
+
+    subgraph 入库通知
+        S --> T[创建入库通知]
+        T --> U[同步到易仓]
+        U --> V[等待易仓收货]
+    end
+        </pre>
+      </div>
+    </div>
+
+    <!-- 海外代发流程 -->
+    <div class="section">
+      <div class="section-title">海外代发流程</div>
+      <div class="flow-note">海外订单直接发送给供应商，支持API自动化对接（推荐）和人工流程（备用）</div>
+
+      <!-- 方式一：供应商API自动化对接 -->
+      <h4 style="margin:16px 0 12px">方式一：供应商API自动化对接（推荐）</h4>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    subgraph 供应商自动拉取订单
+        A[海外子订单生成] --> B[供应商通过API拉取订单]
+        B --> C[供应商系统接收订单]
+    end
+
+    subgraph 供应商自主操作
+        C --> D{供应商操作}
+        D -->|接单| E[API确认接单]
+        D -->|拆单| F[API拆分子订单]
+        D -->|发货| G[API回传物流信息]
+    end
+
+    subgraph 自动回写
+        E --> H[订单状态更新为待发货]
+        F --> I[生成子订单]
+        G --> J[物流信息同步到履约平台]
+        J --> K[回写到Shopify]
+    end
+
+    K --> L([客户可查看物流])
+        </pre>
+      </div>
+
+      <!-- 方式二：人工流程 -->
+      <h4 style="margin:20px 0 12px">方式二：人工流程（备用）</h4>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+flowchart TD
+    subgraph 人工流程
+        A[海外子订单] --> B[运营导出订单]
+        B --> C[发送给对应供应商]
+        C --> D[供应商备货发货]
+        D --> E[供应商回传物流单号]
+        E --> F[运营录入物流信息]
+    end
+
+    subgraph 回写Shopify
+        F --> G[物流信息回写Shopify]
+        G --> H([客户可查看物流])
+    end
+        </pre>
+      </div>
+
+      <!-- API接口表 -->
+      <h4 style="margin:20px 0 12px">供应商API能力清单</h4>
+      <table>
+        <thead>
+          <tr><th>能力</th><th>API接口</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>拉取订单列表</td><td>查询订单</td><td>供应商自主拉取待处理订单</td></tr>
+          <tr><td>查看订单详情</td><td>订单详情</td><td>获取订单完整信息</td></tr>
+          <tr><td>确认接单</td><td>确认接单</td><td>供应商确认接单，状态变为待发货</td></tr>
+          <tr><td>回传物流</td><td>订单发货</td><td>供应商上传物流单号和物流公司</td></tr>
+          <tr><td>订单拆单</td><td>订单拆单</td><td>代发订单支持供应商拆分（如需分批发货）</td></tr>
+          <tr><td>缺货申请</td><td>缺货申请</td><td>采购订单专用，供应商发起缺货</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 订单状态流转 -->
+    <div class="section">
+      <div class="section-title">订单状态流转</div>
+      <div class="mermaid-wrapper">
+        <pre class="mermaid">
+stateDiagram-v2
+    [*] --> 待处理: 收到Shopify订单
+
+    待处理 --> 已拆单: 系统自动拆单完成
+    待处理 --> 拆单失败: 异常需人工处理
+
+    已拆单 --> 等待入库: 同步到易仓
+    已拆单 --> 海外待发货: 海外代发订单
+
+    等待入库 --> 可发货: 库存充足/商品到仓
+    等待入库 --> 已拆分: 二次拆单(部分有货先发)
+
+    可发货 --> 已发货: 易仓出库完成
+    已拆分 --> 已发货: 有货部分发货
+
+    海外待发货 --> 已发货: 供应商发货+录入物流
+
+    已发货 --> 已完成: 物流回写Shopify成功
+
+    已完成 --> [*]
+        </pre>
+      </div>
+      <table style="margin-top:16px">
+        <thead>
+          <tr><th>状态</th><th>触发条件</th><th>下游动作</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tag blue">待处理</span></td><td>Shopify订单推送</td><td>系统自动拆单</td></tr>
+          <tr><td><span class="tag blue">已拆单</span></td><td>拆单规则执行完成</td><td>同步到易仓 / 海外代发</td></tr>
+          <tr><td><span class="tag red">拆单失败</span></td><td>异常需人工处理</td><td>人工介入处理</td></tr>
+          <tr><td><span class="tag orange">等待入库</span></td><td>同步到易仓等待收货</td><td>等待库存充足/商品到仓</td></tr>
+          <tr><td><span class="tag orange">海外待发货</span></td><td>海外代发订单</td><td>等待供应商发货+录入物流</td></tr>
+          <tr><td><span class="tag purple">已拆分</span></td><td>二次拆单（部分有货先发）</td><td>有货部分先发货</td></tr>
+          <tr><td><span class="tag green">可发货</span></td><td>库存充足/商品到仓</td><td>易仓出库发货</td></tr>
+          <tr><td><span class="tag purple">已发货</span></td><td>易仓出库完成 / 供应商发货</td><td>物流回写Shopify</td></tr>
+          <tr><td><span class="tag gray">已完成</span></td><td>物流回写Shopify成功</td><td>订单关闭</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 异常处理 -->
+    <div class="section">
+      <div class="section-title">异常处理</div>
+      <table>
+        <thead>
+          <tr><th>异常场景</th><th>处理方式</th><th>告警方式</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>拆单失败</strong></td><td>自动重试3次，失败后人工介入</td><td><span class="tag red">钉钉告警</span></td></tr>
+          <tr><td><strong>易仓同步失败</strong></td><td>自动重试，失败后人工处理</td><td><span class="tag red">钉钉告警</span></td></tr>
+          <tr><td><strong>供应商门户超时</strong></td><td>自动关单，通知相关人员</td><td><span class="tag orange">钉钉群通知</span></td></tr>
+          <tr><td><strong>库存不足</strong></td><td>等待采购到货或二次拆单</td><td><span class="tag gray">系统自动处理</span></td></tr>
+          <tr><td><strong>物流回写失败</strong></td><td>自动重试，失败后人工补录</td><td><span class="tag red">钉钉告警</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 关键业务节点说明 -->
+    <div class="section">
+      <div class="section-title">关键业务节点说明</div>
+      <table>
+        <thead>
+          <tr><th>业务节点</th><th>触发方式</th><th>负责方</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>订单接收</strong></td><td>实时推送</td><td>系统自动</td><td>Shopify订单自动推送到履约平台</td></tr>
+          <tr><td><strong>首次拆单</strong></td><td>定时触发（每5分钟）</td><td>系统自动</td><td>按仓发地+供应商规则拆分</td></tr>
+          <tr><td><strong>同步易仓</strong></td><td>拆单后自动触发</td><td>系统自动</td><td>国内订单同步到易仓等待发货</td></tr>
+          <tr><td><strong>缺货计算</strong></td><td>定时触发（每天2次）</td><td>系统自动</td><td>计算缺口生成采购需求</td></tr>
+          <tr><td><strong>需求确认</strong></td><td>人工操作</td><td>采购员</td><td>确认需求单生成采购单</td></tr>
+          <tr><td><strong>供应商接单</strong></td><td>人工操作</td><td>供应商</td><td>通过门户接单或线下确认</td></tr>
+          <tr><td><strong>供应商发货</strong></td><td>人工操作</td><td>供应商</td><td>发货并回传物流信息</td></tr>
+          <tr><td><strong>入库收货</strong></td><td>到货触发</td><td>仓库</td><td>收货→质检→上架</td></tr>
+          <tr><td><strong>二次拆单</strong></td><td>定时触发（订单满4天）</td><td>系统自动</td><td>检查库存，部分有货先发</td></tr>
+          <tr><td><strong>出库发货</strong></td><td>入库完成后触发</td><td>仓库</td><td>拣货→打包→发货</td></tr>
+          <tr><td><strong>物流回写</strong></td><td>定时触发（每10分钟）</td><td>系统自动</td><td>获取物流单号回写Shopify</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align:center;padding:40px 0;color:#94a3b8;font-size:13px">
+      订单履约平台 · 全业务流程图 · 2025
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      },
+      themeVariables: {
+        primaryColor: '#dbeafe',
+        primaryBorderColor: '#3b82f6',
+        primaryTextColor: '#1e293b',
+        lineColor: '#64748b',
+        secondaryColor: '#d1fae5',
+        tertiaryColor: '#fef3c7'
+      }
+    });
+
+    // 延迟加载：只渲染滚动到视口内的mermaid图
+    (function() {
+      var blocks = document.querySelectorAll('.mermaid');
+      var rendered = 0;
+      var total = blocks.length;
+
+      function renderBlock(block) {
+        if (block.dataset.rendered) return;
+        block.dataset.rendered = 'true';
+        var code = block.textContent.trim();
+        var id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+        try {
+          mermaid.render(id, code).then(function(result) {
+            block.innerHTML = result.svg;
+            block.classList.remove('mermaid-loading');
+            rendered++;
+          }).catch(function(err) {
+            console.error('Mermaid render error:', err);
+            block.classList.remove('mermaid-loading');
+            rendered++;
+          });
+        } catch(e) {
+          block.classList.remove('mermaid-loading');
+          rendered++;
+        }
+      }
+
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              renderBlock(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px' });
+
+        blocks.forEach(function(block) {
+          block.classList.add('mermaid-loading');
+          observer.observe(block);
+        });
+
+        // 兜底：3秒后如果还有未渲染的，全部渲染
+        setTimeout(function() {
+          if (rendered < total) {
+            blocks.forEach(renderBlock);
+          }
+        }, 3000);
+      } else {
+        // 不支持IntersectionObserver的浏览器直接渲染
+        blocks.forEach(renderBlock);
+      }
+    })();
+  </script>
+</body>
+</html>
