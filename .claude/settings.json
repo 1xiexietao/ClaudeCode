@@ -86,7 +86,11 @@
       "Bash(mkdir -p 原型设计 文档 脚本)",
       "Bash(git mv *)",
       "Bash(mv 采购异常列表.html 原型设计/)",
-      "Bash(git commit -m 'refactor: 重构项目目录结构，按功能分类归档 *)"
+      "Bash(git commit -m 'refactor: 重构项目目录结构，按功能分类归档 *)",
+      "Bash(ls -la ~/.claude/skills/; echo \"=== 项目级 skill 清单 ===\"; ls \"/Users/xiexie/Desktop/Claude code/.claude/skills/\")",
+      "Bash(cp \"/Users/xiexie/Desktop/Claude code/.claude/projects/-Users-xiexie-Desktop-Claude-code/memory/project-multi-repo-strategy.md\" ~/.claude/projects/-Users-xiexie-Desktop-Claude-code/memory/ && echo \"已复制到用户级\" && ls ~/.claude/projects/-Users-xiexie-Desktop-Claude-code/memory/)",
+      "Bash(rm \".claude/projects/-Users-xiexie-Desktop-Claude-code/memory/project-multi-repo-strategy.md\")",
+      "Bash(git commit -m 'refactor: 上移通用skill至用户级，项目级仅保留ERP专属技能 *)"
     ],
     "additionalDirectories": [
       "/Users/xiexie/Desktop/Claude code/.claude/skills",
@@ -94,7 +98,8 @@
       "/Users/xiexie/Desktop/Claude code/docs",
       "/Users/xiexie/Downloads",
       "/tmp/eccang_chunks",
-      "/private/tmp/eccang_chunks"
+      "/private/tmp/eccang_chunks",
+      "/Users/xiexie/Desktop/Claude code/.claude/projects/-Users-xiexie-Desktop-Claude-code/memory"
     ]
   }
 }

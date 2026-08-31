@@ -24,7 +24,7 @@
 │   ├── CLAUDE.md               # 项目规范
 │   ├── agents/                 # 自定义代理
 │   ├── memory/                 # 记忆系统
-│   └── skills/                 # 自定义技能
+│   └── skills/                 # 项目专属技能（通用技能在用户级 ~/.claude/skills/）
 └── README.md
 ```
 
