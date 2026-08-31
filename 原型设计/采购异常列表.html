@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>采购异常 · 供应商门户</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #F7F8FA;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F4F1FF;
+  --bg-sub: #FAFBFC;
+  --bg-input: #F7F8FA;
+  --border-subtle: #E4E7ED;
+  --border-medium: #DCDFE6;
+  --border-strong: #C0C4CC;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+  --text-muted: #C0C4CC;
+  --accent: #7B61FF;
+  --accent-soft: #F4F1FF;
+  --green: #10b981;
+  --red: #ef4444;
+  --blue: #4078FF;
+  --orange: #FF9933;
+  --btn-primary: #425BE0;
+  --btn-export: #FF9933;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; background: #fff;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 30px; height: 30px; background: #7B61FF; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-display);
+}
+.logo-text { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--text-primary); }
+.logo-divider { width: 1px; height: 20px; background: var(--border-medium); }
+.page-title { font-size: 13px; color: var(--text-muted); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.role-switch { display: flex; align-items: center; background: #F7F8FA; border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; }
+.role-btn { border: none; background: none; padding: 5px 12px; font-size: 12px; font-family: var(--font-body); color: var(--text-muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.role-btn.active { background: #7B61FF; color: #fff; font-weight: 500; }
+.role-btn:hover:not(.active) { color: #7B61FF; }
+.supplier-chip { display: flex; align-items: center; gap: 8px; padding: 4px 10px; background: #F7F8FA; border: 1px solid var(--border-subtle); border-radius: 16px; font-size: 12px; color: var(--text-secondary); }
+.supplier-chip .code { font-family: var(--font-mono); color: #7B61FF; font-weight: 500; }
+.topbar-badge { padding: 3px 9px; background: #F4F1FF; color: #7B61FF; border-radius: 16px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); }
+.topbar-avatar { width: 30px; height: 30px; border-radius: 50%; background: #7B61FF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; }
+
+/* Main */
+.main { padding: 20px 28px 40px; max-width: 1400px; margin: 0 auto; }
+
+/* Filter Section */
+.filter-section {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 18px 22px; margin-bottom: 14px;
+  box-shadow: var(--shadow-card);
+}
+.filter-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.filter-title {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.filter-title svg { width: 15px; height: 15px; color: #7B61FF; }
+.filter-reset { font-size: 12px; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: var(--font-body); transition: color 0.2s; }
+.filter-reset:hover { color: #7B61FF; }
+.filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.filter-group { display: flex; flex-direction: column; gap: 5px; }
+.filter-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+.filter-input, .filter-select {
+  height: 36px; background: var(--bg-input); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); padding: 0 12px; color: var(--text-primary);
+  font-size: 12px; font-family: var(--font-body); outline: none; width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filter-input::placeholder { color: var(--text-muted); }
+.filter-input:focus, .filter-select:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.filter-select {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C0C4CC' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+}
+.filter-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 16px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 500; font-family: var(--font-body);
+  cursor: pointer; transition: all 0.2s; border: none;
+}
+.btn svg { width: 14px; height: 14px; }
+.btn-primary { background: #425BE0; color: #fff; box-shadow: 0 2px 6px rgba(66,91,224,0.2); }
+.btn-primary:hover { box-shadow: 0 4px 12px rgba(66,91,224,0.3); transform: translateY(-1px); }
+.btn-export { background: #FF9933; color: #fff; box-shadow: 0 2px 6px rgba(255,153,51,0.2); }
+.btn-export:hover { box-shadow: 0 4px 12px rgba(255,153,51,0.3); transform: translateY(-1px); }
+.btn-secondary { background: #fff; color: var(--text-secondary); border: 1px solid var(--border-medium); }
+.btn-secondary:hover { background: #F4F1FF; color: #7B61FF; border-color: rgba(123,97,255,0.3); }
+
+/* Table Section */
+.table-section {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card);
+}
+
+/* Tabs */
+.tabs { display: flex; align-items: center; gap: 2px; padding: 0 22px; border-bottom: 1px solid var(--border-subtle); background: #fff; }
+.tab {
+  position: relative; display: inline-flex; align-items: center; gap: 7px;
+  padding: 14px 18px; font-size: 13px; font-weight: 500; cursor: pointer;
+  color: var(--text-secondary); border-bottom: 2px solid transparent;
+  transition: color 0.2s; margin-bottom: -1px; user-select: none;
+}
+.tab:hover { color: #7B61FF; }
+.tab.active { color: #7B61FF; font-weight: 600; border-bottom-color: #7B61FF; }
+.tab-badge {
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+  background: #F7F8FA; color: var(--text-secondary);
+}
+.tab.active .tab-badge { background: #F4F1FF; color: #7B61FF; }
+
+.table-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; border-bottom: 1px solid var(--border-subtle);
+}
+.table-toolbar-left { display: flex; align-items: center; gap: 10px; }
+.table-toolbar-right { display: flex; align-items: center; gap: 8px; }
+.table-count { font-size: 12px; color: var(--text-muted); }
+.table-count span { color: #7B61FF; font-weight: 600; font-family: var(--font-mono); }
+.table-hint { font-size: 11px; color: var(--text-muted); }
+
+.table-scroll { overflow-x: auto; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead th {
+  padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; white-space: nowrap;
+}
+.data-table tbody td {
+  padding: 12px 16px; font-size: 13px; color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+}
+.main-row { cursor: pointer; transition: background 0.15s; }
+.main-row:hover { background: var(--bg-hover); }
+.main-row.open { background: var(--accent-soft); }
+.main-row.open td { border-bottom-color: rgba(123,97,255,0.12); }
+
+/* Expand caret */
+.expand-caret {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 4px; color: var(--text-muted);
+  transition: transform 0.2s, color 0.2s, background 0.2s;
+}
+.expand-caret svg { width: 14px; height: 14px; }
+.main-row:hover .expand-caret { color: #7B61FF; }
+.main-row.open .expand-caret { transform: rotate(90deg); color: #7B61FF; }
+
+/* Expand-all toggle (table header) */
+.expand-all-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 4px; cursor: pointer;
+  color: var(--text-muted); transition: color 0.2s, background 0.2s;
+}
+.expand-all-toggle:hover { color: #7B61FF; background: #F4F1FF; }
+.expand-all-toggle svg { width: 14px; height: 14px; }
+
+/* Detail row */
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-cell { padding: 0 !important; background: var(--bg-sub); }
+.detail-wrap {
+  padding: 6px 16px 14px 16px; border-bottom: 1px solid var(--border-subtle);
+  border-left: 2px solid rgba(123,97,255,0.4); margin-left: 16px;
+}
+.sub-table { width: 100%; border-collapse: collapse; }
+.sub-table th {
+  padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+}
+.sub-table td {
+  padding: 9px 12px; font-size: 12px; color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+}
+.sub-table tr:last-child td { border-bottom: none; }
+.sub-table th:nth-child(1), .sub-table td:nth-child(1) { min-width: 260px; }
+.sub-table th:nth-child(2), .sub-table td:nth-child(2),
+.sub-table th:nth-child(3), .sub-table td:nth-child(3),
+.sub-table th:nth-child(4), .sub-table td:nth-child(4) { text-align: center; }
+.sub-table th:nth-child(6), .sub-table td:nth-child(6) { text-align: center; }
+.detail-title {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px 4px;
+  font-size: 11px; font-weight: 600; color: #7B61FF; letter-spacing: 0.02em;
+}
+.detail-title .bar { width: 3px; height: 12px; background: #7B61FF; border-radius: 2px; }
+
+.mono { font-family: var(--font-mono); font-weight: 500; font-size: 12px; }
+.mono-link { font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: #4078FF; cursor: pointer; }
+.mono-link:hover { text-decoration: underline; }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+
+/* SKU count badge */
+.sku-count {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+  background: #F4F1FF; color: #7B61FF; border-radius: 10px;
+  font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+}
+
+/* Product cell */
+.product-cell { display: flex; flex-direction: column; gap: 2px; }
+.product-name { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+.product-sku { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+.product-spec { font-size: 11px; color: var(--text-secondary); }
+
+/* Product with image */
+.product-with-img { display: flex; align-items: center; gap: 10px; }
+.product-thumb {
+  width: 36px; height: 36px; border-radius: var(--radius-sm);
+  background: #F7F8FA; border: 1px solid var(--border-subtle);
+  overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Diff quantity */
+.diff-qty { font-family: var(--font-mono); font-weight: 600; font-size: 12px; }
+.diff-qty.less { color: #4078FF; }
+.diff-qty.more { color: #FF9933; }
+
+/* Status tags */
+.status-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 9px; border-radius: 10px; font-size: 11px; font-weight: 500; white-space: nowrap;
+}
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.status-tag.pending { background: #FFF3E0; color: #E67E22; }
+.status-tag.deciding { background: #F7F8FA; color: #909399; }
+.status-tag.decided { background: #E8F0FE; color: #4078FF; }
+.status-tag.reviewing { background: #E8F0FE; color: #4078FF; }
+.status-tag.syncing { background: #F4F1FF; color: #7B61FF; }
+.status-tag.syncing .status-dot { animation: pulse 1.2s infinite; }
+.status-tag.failed { background: #FEE2E2; color: #DC2626; }
+.status-tag.closed { background: #D1FAE5; color: #059669; }
+
+/* Type tags */
+.type-tag { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+.type-tag.more { background: #FEF3C7; color: #D97706; }
+.type-tag.less { background: #E8F0FE; color: #4078FF; }
+.type-tag.exchange { background: #F4F1FF; color: #7B61FF; }
+.type-tag.return { background: #E8F0FE; color: #2563EB; }
+.type-tag.destroy { background: #FEE2E2; color: #DC2626; }
+.type-tag.supplier { background: #FFF3E0; color: #E67E22; }
+.type-tag.ours { background: #F7F8FA; color: var(--text-secondary); }
+.type-tag.shelf { background: #E8F0FE; color: #2563EB; }
+.type-tag.pending { background: #F7F8FA; color: #909399; }
+
+/* Decision cell（决策 + 物流单号补充信息） */
+.decision-cell { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+.tracking-sub { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* Defect text */
+.defect-text { font-size: 12px; color: #DC2626; }
+
+/* Action links */
+.action-group { display: flex; gap: 12px; }
+.action-btn {
+  display: inline; border: none; background: none;
+  font-size: 12px; font-weight: 400; cursor: pointer;
+  color: #4078FF; padding: 0; font-family: var(--font-body); white-space: nowrap;
+}
+.action-btn:hover { text-decoration: underline; }
+.action-btn.primary { color: #7B61FF; }
+.action-btn.danger { color: #DC2626; }
+.action-btn.muted { color: var(--text-muted); }
+
+/* Pagination */
+.pagination {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; border-top: 1px solid var(--border-subtle);
+}
+.page-info { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+.page-controls { display: flex; align-items: center; gap: 3px; }
+.page-btn {
+  width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); background: none; border: 1px solid transparent;
+  color: var(--text-muted); font-size: 12px; font-family: var(--font-mono);
+  font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.page-btn:hover { background: #F4F1FF; border-color: rgba(123,97,255,0.2); color: #7B61FF; }
+.page-btn.active { background: #F4F1FF; border-color: rgba(123,97,255,0.25); color: #7B61FF; }
+.page-btn svg { width: 13px; height: 13px; }
+.page-size-select { height: 30px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 12px; font-family: var(--font-body); color: var(--text-secondary); padding: 0 8px; background: #fff; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  background: #1e1e2e; color: #fff; padding: 9px 20px; border-radius: 8px;
+  font-size: 12px; font-weight: 500; font-family: var(--font-body);
+  z-index: 2000; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(30,30,46,0.5);
+  display: none; align-items: center; justify-content: center; z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  width: 640px; max-width: 92vw; max-height: 80vh;
+  background: #fff; border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: modalIn 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 22px; border-bottom: 1px solid var(--border-subtle);
+}
+.modal-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.modal-close {
+  width: 28px; height: 28px; border: none; background: none; cursor: pointer;
+  font-size: 20px; color: var(--text-muted); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+.modal-close:hover { background: #F4F1FF; color: #7B61FF; }
+.modal-body { padding: 16px 22px; overflow-y: auto; }
+.modal-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+.logistics-table { width: 100%; border-collapse: collapse; }
+.logistics-table th {
+  padding: 9px 12px; text-align: left; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  border-bottom: 1px solid var(--border-subtle); background: #F7F8FA; white-space: nowrap;
+}
+.logistics-table td {
+  padding: 10px 12px; font-size: 12px; color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle); white-space: nowrap;
+}
+.logistics-table tr:last-child td { border-bottom: none; }
+.detail-list-label {
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  margin: 4px 0 8px; letter-spacing: 0.02em;
+}
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+.form-label .required { color: #DC2626; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  padding: 14px 22px; border-top: 1px solid var(--border-subtle); background: #FAFBFC;
+}
+
+/* Animation */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D0D0E0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #B0B0C0; }
+</style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">
+        <div class="logo-icon">供</div>
+        <span class="logo-text">易仓供应商门户</span>
+      </div>
+      <div class="logo-divider"></div>
+      <span class="page-title">采购异常协作</span>
+    </div>
+    <div class="topbar-right">
+      <div class="role-switch">
+        <button class="role-btn active" data-role="supplier" onclick="switchRole('supplier')">供应商视角</button>
+        <button class="role-btn" data-role="internal" onclick="switchRole('internal')">企业内视角</button>
+      </div>
+      <span class="supplier-chip" id="roleChip">供应商 <span class="code">GYS001</span></span>
+      <span class="topbar-badge">v1.0.0</span>
+      <div class="topbar-avatar" id="roleAvatar">供</div>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- FILTERS -->
+    <div class="filter-section animate-in delay-1">
+      <div class="filter-header">
+        <div class="filter-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          筛选条件
+        </div>
+        <button class="filter-reset" onclick="resetFilters()">重置全部</button>
+      </div>
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label class="filter-label">协作状态</label>
+          <select class="filter-select" id="filterStatus">
+            <option value="">全部状态</option>
+            <option value="采购决策中">采购决策中</option>
+            <option value="待回填单号">待回填单号</option>
+            <option value="已决策">已决策</option>
+            <option value="待审核">待审核</option>
+            <option value="同步中">同步中</option>
+            <option value="同步失败">同步失败</option>
+            <option value="已结案">已结案</option>
+          </select>
+        </div>
+        <div class="filter-group" id="filterSupplierGroup">
+          <label class="filter-label">供应商</label>
+          <select class="filter-select" id="filterSupplier">
+            <option value="">全部供应商</option>
+            <option value="深圳市华强电子科技有限公司">深圳市华强电子科技有限公司</option>
+            <option value="东莞市精密制造有限公司">东莞市精密制造有限公司</option>
+            <option value="广州市恒达贸易有限公司">广州市恒达贸易有限公司</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">单据号</label>
+          <input type="text" class="filter-input" placeholder="收货单号/参考号/内部采购单号/内部采购订单号" id="filterCode">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">商品搜索</label>
+          <input type="text" class="filter-input" placeholder="货号/SKU/SPU" id="filterProduct">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">创建时间（开始）</label>
+          <input type="date" class="filter-input" id="filterDateStart">
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">至</label>
+          <input type="date" class="filter-input" id="filterDateEnd">
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="applyFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          查询
+        </button>
+        <button class="btn btn-secondary" onclick="resetFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          重置
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-section animate-in delay-2">
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="receiving" onclick="switchTab('receiving')">
+          收货差异处理 <span class="tab-badge" id="receivingCount">0</span>
+        </div>
+        <div class="tab" data-tab="qc" onclick="switchTab('qc')">
+          质检异常协同 <span class="tab-badge" id="qcCount">0</span>
+        </div>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="table-toolbar-left">
+          <span class="table-count">共 <span id="totalCount">0</span> 条异常单</span>
+          <span class="table-hint" id="tabHint"></span>
+        </div>
+        <div class="table-toolbar-right">
+          <button class="btn btn-export" onclick="exportData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            导出
+          </button>
+          <button class="btn btn-primary" onclick="toast('已触发立即同步，正在拉取易仓最新数据…')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            立即同步
+          </button>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table class="data-table" id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="page-info" id="pageInfo">显示 0-0 / 共 0 条</div>
+        <div class="page-controls">
+          <button class="page-btn" title="上一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn" title="下一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- LOGISTICS MODAL -->
+  <div class="modal-overlay" id="logisticsModal" onclick="if(event.target===this) closeLogisticsModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">填写物流信息</span>
+        <button class="modal-close" onclick="closeLogisticsModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-subtitle"><span id="modalCodeType">入库单</span> <span class="mono" id="modalCode"></span> · <span id="modalCodeDesc">以下换货商品将打包补发</span></div>
+        <div class="detail-list-label" id="modalDetailLabel">换货商品明细</div>
+        <table class="logistics-table">
+          <thead id="logisticsHead">
+            <tr><th>商品信息</th><th>问题数量</th><th>不合格项</th></tr>
+          </thead>
+          <tbody id="logisticsBody"></tbody>
+        </table>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">物流单号 <span class="required">*</span></label>
+            <input type="text" class="filter-input" id="trackingNo" placeholder="请输入补发物流单号">
+          </div>
+          <div class="form-group">
+            <label class="form-label">运输方式 <span class="required">*</span></label>
+            <select class="filter-select" id="shipperMethod">
+              <option value="">请选择</option>
+              <option value="1">自提</option>
+              <option value="2">快递</option>
+              <option value="3">物流</option>
+              <option value="4">送货</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">承运商 <span class="required">*</span></label>
+            <select class="filter-select" id="carrier">
+              <option value="">请选择</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">补发运费（元）</label>
+            <input type="number" class="filter-input" id="shipAmount" placeholder="0.00">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeLogisticsModal()">取消</button>
+        <button class="btn btn-primary" onclick="submitLogistics()">提交</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+<script>
+// ============ 数据模型（单据级主记录 + 多个商品明细） ============
+// 主记录 = 一条异常单（收货单/质检单），details = 该单下的多个异常商品明细
+
+const receivingData = [
+  {
+    receivingCode: 'R20260821001', poCode: 'PO20260821001', internalPoCode: 'CG20260821001', internalOrderCode: 'DD20260821001',
+    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:12',
+    type: '少发', decision: '待确认', confirmed: false,
+    details: [
+      { productName: '无线蓝牙耳机', sku: 'BT001-BK-01', img: 'https://picsum.photos/seed/bt001bk/80/80', expected: 100, received: 80 },
+      { productName: '无线蓝牙耳机', sku: 'BT001-WH-01', img: 'https://picsum.photos/seed/bt001wh/80/80', expected: 100, received: 90 },
+    ]
+  },
+  {
+    receivingCode: 'R20260821002', poCode: 'PO20260821002', internalPoCode: 'CG20260821002', internalOrderCode: 'DD20260821002',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:30',
+    type: '少发', decision: '继续来货', confirmed: true,
+    details: [
+      { productName: 'LED台灯', sku: 'LED002-WH-01', img: 'https://picsum.photos/seed/led002wh/80/80', expected: 50, received: 42 },
+      { productName: 'LED台灯', sku: 'LED002-BK-01', img: 'https://picsum.photos/seed/led002bk/80/80', expected: 50, received: 45 },
+    ]
+  },
+  {
+    receivingCode: 'R20260820003', poCode: 'PO20260820003', internalPoCode: 'CG20260820003', internalOrderCode: 'DD20260820003',
+    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-20 14:05',
+    type: '少发', decision: '终止来货', confirmed: true,
+    details: [
+      { productName: '运动手环', sku: 'BD003-BL-SM', img: 'https://picsum.photos/seed/bd003sm/80/80', expected: 200, received: 180 },
+      { productName: '运动手环', sku: 'BD003-BL-MD', img: 'https://picsum.photos/seed/bd003md/80/80', expected: 150, received: 145 },
+    ]
+  },
+  {
+    receivingCode: 'R20260820004', poCode: 'PO20260820004', internalPoCode: 'CG20260820004', internalOrderCode: 'DD20260820004',
+    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-20 16:40',
+    type: '多发', decision: '入库', confirmed: true,
+    details: [
+      { productName: '瑜伽垫', sku: 'YG004-PP-01', img: 'https://picsum.photos/seed/yg004p1/80/80', expected: 80, received: 82 },
+      { productName: '瑜伽垫', sku: 'YG004-PP-02', img: 'https://picsum.photos/seed/yg004p2/80/80', expected: 80, received: 81 },
+    ]
+  },
+  {
+    receivingCode: 'R20260819005', poCode: 'PO20260819005', internalPoCode: 'CG20260819005', internalOrderCode: 'DD20260819005',
+    supplier: '深圳市华强电子科技有限公司', status: '同步中', time: '2026-08-19 11:20',
+    type: '少发', decision: '继续来货', confirmed: true, trackingNo: 'SF1234567890',
+    details: [
+      { productName: '蓝牙音箱', sku: 'SP006-BK-01', img: 'https://picsum.photos/seed/sp006bk/80/80', expected: 120, received: 100 },
+      { productName: '蓝牙音箱', sku: 'SP006-WH-01', img: 'https://picsum.photos/seed/sp006wh/80/80', expected: 120, received: 115 },
+    ]
+  },
+  {
+    receivingCode: 'R20260818006', poCode: 'PO20260818006', internalPoCode: 'CG20260818006', internalOrderCode: 'DD20260818006',
+    supplier: '深圳市华强电子科技有限公司', status: '同步失败', time: '2026-08-18 09:40',
+    type: '少发', decision: '继续来货', confirmed: true, trackingNo: 'SF1234567891',
+    details: [
+      { productName: '机械键盘', sku: 'KB009-BK-87', img: 'https://picsum.photos/seed/kb00987/80/80', expected: 90, received: 70 },
+      { productName: '机械键盘', sku: 'KB009-BK-104', img: 'https://picsum.photos/seed/kb009104/80/80', expected: 60, received: 55 },
+      { productName: '机械键盘', sku: 'KB009-WH-87', img: 'https://picsum.photos/seed/kb009w87/80/80', expected: 40, received: 35 },
+    ]
+  },
+  {
+    receivingCode: 'R20260818007', poCode: 'PO20260818007', internalPoCode: 'CG20260818007', internalOrderCode: 'DD20260818007',
+    supplier: '广州市恒达贸易有限公司', status: '已决策', time: '2026-08-18 13:15',
+    type: '少发', decision: '退货', confirmed: true,
+    details: [
+      { productName: '充电宝', sku: 'PB008-WH-01', img: 'https://picsum.photos/seed/pb008wh/80/80', expected: 150, received: 148 },
+      { productName: '充电宝', sku: 'PB008-BK-01', img: 'https://picsum.photos/seed/pb008bk/80/80', expected: 100, received: 96 },
+    ]
+  },
+  {
+    receivingCode: 'R20260818008', poCode: 'PO20260818008', internalPoCode: 'CG20260818008', internalOrderCode: 'DD20260818008',
+    supplier: '深圳市华强电子科技有限公司', status: '已结案', time: '2026-08-18 16:50',
+    type: '多发', decision: '终止来货', confirmed: true,
+    details: [
+      { productName: '智能手表', sku: 'SW007-SV-42', img: 'https://picsum.photos/seed/sw007sv/80/80', expected: 30, received: 35 },
+      { productName: '智能手表', sku: 'SW007-BK-42', img: 'https://picsum.photos/seed/sw007bk/80/80', expected: 30, received: 31 },
+    ]
+  },
+];
+
+const qcData = [
+  {
+    receivingCode: 'R20260821001', poCode: 'PO20260821001', internalPoCode: 'CG20260821001', internalOrderCode: 'DD20260821001',
+    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:20',
+    decision: '待确认', confirmed: false,
+    details: [
+      { productName: '无线蓝牙耳机', sku: 'BT001-BK-01', img: 'https://picsum.photos/seed/bt001/80/80', send: 100, received: 100, bad: 8, defect: '外观划痕', processType: '待确认' },
+      { productName: '无线蓝牙耳机', sku: 'BT001-WH-01', img: 'https://picsum.photos/seed/bt001w/80/80', send: 100, received: 100, bad: 3, defect: '外观划痕', processType: '待确认' },
+    ]
+  },
+  {
+    receivingCode: 'R20260821002', poCode: 'PO20260821002', internalPoCode: 'CG20260821002', internalOrderCode: 'DD20260821002',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:45',
+    decision: '换货', confirmed: true,
+    details: [
+      { productName: '运动手环', sku: 'BD003-BL-SM', img: 'https://picsum.photos/seed/bd003/80/80', send: 200, received: 200, bad: 15, defect: '功能不良', processType: '换货', logisticsTrackingNumber: 'SF1234567890', qeDesc: '已与采购确认补发' },
+      { productName: '运动手环', sku: 'BD003-BL-MD', img: 'https://picsum.photos/seed/bd003m/80/80', send: 150, received: 150, bad: 6, defect: '功能不良', processType: '换货', logisticsTrackingNumber: 'SF1234567890' },
+    ]
+  },
+  {
+    receivingCode: 'R20260820003', poCode: 'PO20260820003', internalPoCode: 'CG20260820003', internalOrderCode: 'DD20260820003',
+    supplier: '东莞市精密制造有限公司', status: '已决策', time: '2026-08-20 14:30',
+    decision: '退回', confirmed: true,
+    details: [
+      { productName: '瑜伽垫', sku: 'YG004-PP-01', img: 'https://picsum.photos/seed/yg004/80/80', send: 80, received: 80, bad: 5, defect: '尺寸不符', processType: '退回', logisticsTrackingNumber: 'YT9876543211' },
+      { productName: '瑜伽垫', sku: 'YG004-PP-02', img: 'https://picsum.photos/seed/yg004p/80/80', send: 80, received: 80, bad: 2, defect: '尺寸不符', processType: '退回', logisticsTrackingNumber: 'YT9876543211' },
+    ]
+  },
+  {
+    receivingCode: 'R20260820004', poCode: 'PO20260820004', internalPoCode: 'CG20260820004', internalOrderCode: 'DD20260820004',
+    supplier: '深圳市华强电子科技有限公司', status: '待审核', time: '2026-08-20 17:10',
+    decision: '换货', confirmed: true,
+    details: [
+      { productName: '筋膜枪', sku: 'FG005-GY-01', img: 'https://picsum.photos/seed/fg005/80/80', send: 60, received: 60, bad: 3, defect: '外观破损', processType: '换货', logisticsTrackingNumber: 'SF5678901234' },
+      { productName: '筋膜枪', sku: 'FG005-BK-01', img: 'https://picsum.photos/seed/fg005b/80/80', send: 60, received: 60, bad: 1, defect: '外观破损', processType: '换货', logisticsTrackingNumber: 'SF5678901234' },
+    ]
+  },
+  {
+    receivingCode: 'R20260819005', poCode: 'PO20260819005', internalPoCode: 'CG20260819005', internalOrderCode: 'DD20260819005',
+    supplier: '广州市恒达贸易有限公司', status: '已结案', time: '2026-08-19 12:05',
+    decision: '退回', confirmed: true,
+    details: [
+      { productName: '蓝牙音箱', sku: 'SP006-BK-01', img: 'https://picsum.photos/seed/sp006/80/80', send: 120, received: 120, bad: 10, defect: '功能不良', processType: '退回', logisticsTrackingNumber: 'YT2468013579', qeDesc: '已退货入库' },
+    ]
+  },
+  {
+    receivingCode: 'R20260819006', poCode: 'PO20260819006', internalPoCode: 'CG20260819006', internalOrderCode: 'DD20260819006',
+    supplier: '深圳市华强电子科技有限公司', status: '同步失败', time: '2026-08-19 16:20',
+    decision: '换货', confirmed: true, trackingNo: 'YT9876543210',
+    details: [
+      { productName: '智能手表', sku: 'SW007-SV-42', img: 'https://picsum.photos/seed/sw007/80/80', send: 30, received: 30, bad: 2, defect: '外观划痕', processType: '换货', logisticsTrackingNumber: 'YT9876543210' },
+      { productName: '智能手表', sku: 'SW007-BK-42', img: 'https://picsum.photos/seed/sw007b/80/80', send: 30, received: 30, bad: 1, defect: '外观划痕', processType: '换货', logisticsTrackingNumber: 'YT9876543210' },
+    ]
+  },
+  {
+    receivingCode: 'R20260818007', poCode: 'PO20260818007', internalPoCode: 'CG20260818007', internalOrderCode: 'DD20260818007',
+    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-18 10:00',
+    decision: '销毁', confirmed: true,
+    details: [
+      { productName: '机械键盘', sku: 'KB009-BK-87', img: 'https://picsum.photos/seed/kb009/80/80', send: 90, received: 90, bad: 6, defect: '键帽缺失', processType: '销毁' },
+    ]
+  },
+  {
+    receivingCode: 'R20260818008', poCode: 'PO20260818008', internalPoCode: 'CG20260818008', internalOrderCode: 'DD20260818008',
+    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-18 14:25',
+    decision: '不良品上架', confirmed: true,
+    details: [
+      { productName: '充电宝', sku: 'PB008-WH-01', img: 'https://picsum.photos/seed/pb008/80/80', send: 150, received: 150, bad: 12, defect: '电池鼓包', processType: '不良品上架' },
+      { productName: '充电宝', sku: 'PB008-BK-01', img: 'https://picsum.photos/seed/pb008b/80/80', send: 100, received: 100, bad: 8, defect: '电池鼓包', processType: '不良品上架' },
+    ]
+  },
+];
+
+// 商品属性补全：货号(itemNo)/SPU(spu)/颜色(color)/尺码(size) 由 SKU 编码解析（演示数据）
+const COLOR_MAP = { BK: '黑色', WH: '白色', BL: '蓝色', PP: '紫色', SV: '银色', GY: '灰色' };
+const SIZE_MAP = { SM: 'S码', MD: 'M码', '87': '87键', '104': '104键', '42': '42mm', '01': '均码', '02': '均码' };
+function enrichProductMeta(list) {
+  list.forEach(row => row.details.forEach(d => {
+    const seg = d.sku.split('-');
+    d.itemNo = seg[0];
+    d.spu = 'SPU-' + seg[0];
+    d.color = COLOR_MAP[seg[1]] || seg[1];
+    d.size = SIZE_MAP[seg[2]] || seg[2] || '均码';
+  }));
+}
+enrichProductMeta(receivingData);
+enrichProductMeta(qcData);
+
+// ============ 状态/类型映射 ============
+const statusClassMap = { '采购决策中': 'deciding', '待回填单号': 'pending', '已决策': 'decided', '待审核': 'reviewing', '同步中': 'syncing', '同步失败': 'failed', '已结案': 'closed' };
+const processTypeClassMap = { '换货': 'exchange', '退回': 'return', '销毁': 'destroy', '不良品上架': 'shelf', '待确认': 'pending' };
+
+function statusTag(status) {
+  const cls = statusClassMap[status] || '';
+  return `<span class="status-tag ${cls}"><span class="status-dot"></span>${status}</span>`;
+}
+function processTypeTag(t) {
+  return `<span class="type-tag ${processTypeClassMap[t] || ''}">${t}</span>`;
+}
+const decisionClassMap = { '待确认': 'pending', '继续来货': 'exchange', '终止来货': 'destroy', '入库': 'ours', '退货': 'return', '换货': 'exchange', '退回': 'return', '销毁': 'destroy', '不良品上架': 'shelf' };
+function decisionTag(d, confirmed) {
+  const cls = decisionClassMap[d] || 'ours';
+  const mark = confirmed ? ' <span style="font-size:9px;opacity:0.65">✓</span>' : '';
+  return `<span class="type-tag ${cls}">${d}${mark}</span>`;
+}
+function decisionCell(row) {
+  const tag = decisionTag(row.decision, row.confirmed);
+  const tracking = row.trackingNo ? `<span class="tracking-sub">${row.trackingNo}</span>` : '';
+  return `<div class="decision-cell">${tag}${tracking}</div>`;
+}
+function typeTag(type) {
+  return `<span class="type-tag ${type === '多发' ? 'more' : 'less'}">比预期${type === '多发' ? '多' : '少'}</span>`;
+}
+
+// ============ 操作按钮（单据级，按状态 + 采购决策 + 是否已确认判断） ============
+// Tab1 收货差异：决策权在采购员(ERP)，供应商仅「继续来货+已确认」时可回填物流号
+function receivingActions(row) {
+  if (row.status === '采购决策中') return '';
+  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('receiving', '${row.receivingCode}')">回填物流号</button>`;
+  if (row.status === '已决策') return '';
+  if (row.status === '同步中') return '';
+  if (row.status === '同步失败') return `<button class="action-btn primary" onclick="event.stopPropagation(); toast('重新提交：重新回写易仓')">重新提交</button>`;
+  if (row.status === '已结案') return `<button class="action-btn muted" onclick="event.stopPropagation(); toast('查看处理历史')">处理历史</button>`;
+  return '';
+}
+
+// Tab2 质检异常：「换货+已确认」可回填补货单号 + 申请异常终止；其余仅查看
+function qcActions(row) {
+  if (row.status === '采购决策中') return '';
+  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('qc', '${row.receivingCode}')">填写物流</button>
+              <button class="action-btn danger" onclick="event.stopPropagation(); toast('异常终止申请：跳转「填写终止原因」页')">申请终止</button>`;
+  if (row.status === '已决策') return '';
+  if (row.status === '待审核') return `<button class="action-btn" onclick="event.stopPropagation(); toast('撤回申请：已撤回，状态回退「待回填单号」')">撤回申请</button>`;
+  if (row.status === '同步中') return '';
+  if (row.status === '同步失败') return `<button class="action-btn primary" onclick="event.stopPropagation(); toast('重新提交：重新回写易仓')">重新提交</button>`;
+  if (row.status === '已结案') return `<button class="action-btn muted" onclick="event.stopPropagation(); toast('查看处理历史')">处理历史</button>`;
+  return '';
+}
+
+// ============ 渲染 ============
+const CURRENT_SUPPLIER = '深圳市华强电子科技有限公司'; // 供应商账号 GYS001 对应的供应商主体
+let currentTab = 'receiving';
+let currentRole = 'supplier'; // 'supplier' 供应商视角 | 'internal' 企业内视角
+let filteredData = [];
+
+// 按视角做数据隔离：供应商视角仅返回自己供应商数据，企业内返回全部
+function getScopedData(src) {
+  if (currentRole === 'supplier') return src.filter(row => row.supplier === CURRENT_SUPPLIER);
+  return [...src];
+}
+
+function renderSupplierOptions() {
+  const sel = document.getElementById('filterSupplier');
+  if (currentRole === 'internal') {
+    sel.innerHTML = `<option value="">全部供应商</option>
+      <option value="深圳市华强电子科技有限公司">深圳市华强电子科技有限公司</option>
+      <option value="东莞市精密制造有限公司">东莞市精密制造有限公司</option>
+      <option value="广州市恒达贸易有限公司">广州市恒达贸易有限公司</option>`;
+  } else {
+    sel.innerHTML = `<option value="">全部供应商</option>
+      <option value="${CURRENT_SUPPLIER}">${CURRENT_SUPPLIER}</option>`;
+  }
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+  renderTable();
+}
+
+function switchRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.toggle('active', b.dataset.role === role));
+  const chip = document.getElementById('roleChip');
+  const avatar = document.getElementById('roleAvatar');
+  if (role === 'internal') {
+    chip.innerHTML = '采购员 <span class="code">张三</span>';
+    avatar.textContent = '采';
+  } else {
+    chip.innerHTML = '供应商 <span class="code">GYS001</span>';
+    avatar.textContent = '供';
+  }
+  renderSupplierOptions();
+  filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+  renderTable();
+}
+
+function exportData() {
+  const scopeText = currentRole === 'supplier' ? '本人供应商数据' : '当前筛选范围';
+  if (filteredData.length > 10000) {
+    toast('导出数据超过 10000 行，请缩小筛选范围后分批导出');
+    return;
+  }
+  toast(`已导出 ${filteredData.length} 条异常数据（${scopeText}），已记录导出日志`);
+}
+
+function toggleDetail(idx) {
+  const detailRow = document.getElementById('detail-' + idx);
+  const mainRow = document.getElementById('main-' + idx);
+  if (!detailRow || !mainRow) return;
+  const willOpen = !detailRow.classList.contains('open');
+  detailRow.classList.toggle('open', willOpen);
+  mainRow.classList.toggle('open', willOpen);
+}
+
+let allExpanded = false;
+
+function toggleAll() {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.main-row').forEach(r => r.classList.toggle('open', allExpanded));
+  document.querySelectorAll('.detail-row').forEach(r => r.classList.toggle('open', allExpanded));
+  updateToggleBtn();
+}
+
+function updateToggleBtn() {
+  const btn = document.getElementById('toggleAllBtn');
+  const icon = document.getElementById('toggleAllIcon');
+  if (icon) icon.innerHTML = allExpanded
+    ? '<polyline points="7 11 12 6 17 11"/><polyline points="7 18 12 13 17 18"/>'
+    : '<polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/>';
+  if (btn) btn.title = allExpanded ? '折叠全部' : '展开全部';
+}
+
+function renderTable() {
+  const isReceiving = currentTab === 'receiving';
+  const thead = document.getElementById('tableHead');
+  const tbody = document.getElementById('tableBody');
+  const hint = document.getElementById('tabHint');
+
+  // 表头（单据级主列，第一列为批量展开/折叠图标）
+  const expandAllTh = `<th style="width:44px"><span class="expand-all-toggle" id="toggleAllBtn" onclick="toggleAll()" title="展开全部"><svg id="toggleAllIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg></span></th>`;
+  const supplierTh = `<th>供应商</th>`;
+  if (isReceiving) {
+    thead.innerHTML = `<tr>
+      ${expandAllTh}<th>收货单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>内部采购订单号</th><th>异常商品</th>
+      <th>异常类型</th><th>采购决策</th><th>协作状态</th><th>创建时间</th><th>操作</th>
+    </tr>`;
+    hint.textContent = '点击行展开商品明细 · 采购决策为「继续来货」且已确认时可回填物流号，其余仅查看';
+  } else {
+    thead.innerHTML = `<tr>
+      ${expandAllTh}<th>入库单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>内部采购订单号</th><th>异常商品</th>
+      <th>采购决策</th><th>协作状态</th><th>创建时间</th><th>操作</th>
+    </tr>`;
+    hint.textContent = '点击行展开商品明细 · 「换货」且已确认可回填物流/申请终止，其余仅查看';
+  }
+
+  // 表体（主行 + 展开明细行）
+  tbody.innerHTML = filteredData.map((row, i) => {
+    const caret = `<span class="expand-caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>`;
+    const code = row.receivingCode;
+    const codeCell = `<span class="mono-link" onclick="event.stopPropagation(); toast('查看详情：${code}')">${code}</span>`;
+    const skuCount = `<span class="sku-count">× ${row.details.length} SKU</span>`;
+    const status = statusTag(row.status);
+    const time = `<span class="mono text-secondary">${row.time}</span>`;
+    const actions = isReceiving ? receivingActions(row) : qcActions(row);
+
+    const supplierCell = `<td>${row.supplier}</td>`;
+    const mainRow = isReceiving
+      ? `<tr class="main-row" id="main-${i}" onclick="toggleDetail(${i})">
+          <td>${caret}</td>
+          <td>${codeCell}</td>
+          ${supplierCell}
+          <td><span class="mono">${row.poCode}</span></td>
+          <td><span class="mono">${row.internalPoCode}</span></td>
+          <td><span class="mono">${row.internalOrderCode}</span></td>
+          <td>${skuCount}</td>
+          <td>${typeTag(row.type)}</td>
+          <td>${decisionCell(row)}</td>
+          <td>${status}</td>
+          <td>${time}</td>
+          <td><div class="action-group">${actions}</div></td>
+        </tr>`
+      : `<tr class="main-row" id="main-${i}" onclick="toggleDetail(${i})">
+          <td>${caret}</td>
+          <td>${codeCell}</td>
+          ${supplierCell}
+          <td><span class="mono">${row.poCode}</span></td>
+          <td><span class="mono">${row.internalPoCode}</span></td>
+          <td><span class="mono">${row.internalOrderCode}</span></td>
+          <td>${skuCount}</td>
+          <td>${decisionCell(row)}</td>
+          <td>${status}</td>
+          <td>${time}</td>
+          <td><div class="action-group">${actions}</div></td>
+        </tr>`;
+
+    const detailRow = `<tr class="detail-row" id="detail-${i}">
+      <td colspan="${isReceiving ? 12 : 11}" class="detail-cell">
+        <div class="detail-wrap">
+          <div class="detail-title"><span class="bar"></span>商品异常明细（${row.details.length} 个 SKU）</div>
+          ${renderDetails(row.details, isReceiving)}
+        </div>
+      </td>
+    </tr>`;
+
+    return mainRow + detailRow;
+  }).join('');
+
+  // 计数与分页
+  document.getElementById('totalCount').textContent = filteredData.length;
+  document.getElementById('pageInfo').textContent = `显示 1-${filteredData.length} / 共 ${filteredData.length} 条`;
+  document.getElementById('receivingCount').textContent = receivingData.length;
+  document.getElementById('qcCount').textContent = qcData.length;
+
+  // 重置展开状态
+  allExpanded = false;
+  updateToggleBtn();
+}
+
+function renderDetails(details, isReceiving) {
+  if (isReceiving) {
+    const rows = details.map(d => {
+      const diff = d.received - d.expected;
+      const diffText = (diff > 0 ? '+' : '') + diff;
+      return `<tr>
+        <td><div class="product-with-img">
+          <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
+          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+        </div></td>
+        <td><span class="mono">${d.expected}</span></td>
+        <td><span class="mono">${d.received}</span></td>
+        <td><span class="diff-qty ${diff > 0 ? 'more' : 'less'}">${diffText}</span></td>
+      </tr>`;
+    }).join('');
+    return `<table class="sub-table">
+      <thead><tr><th>商品信息</th><th>预期数量</th><th>实际收货数量</th><th>差异数量</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  } else {
+    const rows = details.map(d => {
+      return `<tr>
+        <td><div class="product-with-img">
+          <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
+          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+        </div></td>
+        <td><span class="mono">${d.send}</span></td>
+        <td><span class="mono">${d.received}</span></td>
+        <td><span class="diff-qty more">${d.bad}</span></td>
+        <td><span class="defect-text">${d.defect}</span></td>
+        <td>${processTypeTag(d.processType)}</td>
+        <td>${d.qeDesc ? d.qeDesc : '<span class="text-muted">—</span>'}</td>
+        <td>${d.logisticsTrackingNumber ? `<span class="mono">${d.logisticsTrackingNumber}</span>` : '<span class="text-muted">—</span>'}</td>
+      </tr>`;
+    }).join('');
+    return `<table class="sub-table">
+      <thead><tr><th>商品信息</th><th>送检数量</th><th>实收数量</th><th>问题数量</th><th>不合格项</th><th>处理类型</th><th>备注</th><th>物流单号</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+}
+
+// ============ 筛选 ============
+function applyFilters() {
+  const status = document.getElementById('filterStatus').value;
+  const code = document.getElementById('filterCode').value.trim().toLowerCase();
+  const product = document.getElementById('filterProduct').value.trim().toLowerCase();
+  const supplier = document.getElementById('filterSupplier').value;
+  const src = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+
+  filteredData = src.filter(row => {
+    if (status && row.status !== status) return false;
+    if (supplier && row.supplier !== supplier) return false;
+    if (code) {
+      const codeFields = [row.receivingCode, row.poCode, row.internalPoCode, row.internalOrderCode];
+      if (!codeFields.some(f => f && f.toLowerCase().includes(code))) return false;
+    }
+    if (product) {
+      if (!row.details.some(d =>
+        d.itemNo.toLowerCase().includes(product) ||
+        d.sku.toLowerCase().includes(product) ||
+        d.spu.toLowerCase().includes(product)
+      )) return false;
+    }
+    return true;
+  });
+  renderTable();
+  toast(`已筛选，共 ${filteredData.length} 条`);
+}
+
+function resetFilters() {
+  document.getElementById('filterStatus').value = '';
+  document.getElementById('filterCode').value = '';
+  document.getElementById('filterProduct').value = '';
+  document.getElementById('filterSupplier').value = '';
+  document.getElementById('filterDateStart').value = '';
+  document.getElementById('filterDateEnd').value = '';
+  filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+  renderTable();
+}
+
+// ============ Toast ============
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ============ 填写物流弹窗（Tab1 收货差异 / Tab2 质检异常 共用） ============
+let currentLogisticsDetails = [];
+
+// 模拟易仓 getPurchaseShipper 接口：拉取承运商列表（ps_id / ps_name）
+function getPurchaseShipper() {
+  // 实际由后端调用易仓 getPurchaseShipper 接口，此处为原型演示数据
+  return [
+    { ps_id: 1, ps_name: '顺丰速运' },
+    { ps_id: 2, ps_name: '中通快递' },
+    { ps_id: 3, ps_name: '德邦物流' },
+    { ps_id: 4, ps_name: '京东物流' },
+    { ps_id: 5, ps_name: '圆通速递' },
+  ];
+}
+
+function openLogisticsModal(tab, code) {
+  const isReceiving = tab === 'receiving';
+  const src = isReceiving ? receivingData : qcData;
+  const row = src.find(r => r.receivingCode === code);
+  if (!row) return;
+
+  // 明细：Tab1 全部少发商品；Tab2 仅换货商品
+  currentLogisticsDetails = isReceiving ? row.details : row.details.filter(d => d.processType === '换货');
+
+  // 副标题 + 明细标签
+  document.getElementById('modalCodeType').textContent = isReceiving ? '收货单' : '入库单';
+  document.getElementById('modalCode').textContent = code;
+  document.getElementById('modalCodeDesc').textContent = isReceiving ? '以下少发商品将打包补发' : '以下换货商品将打包补发';
+  document.getElementById('modalDetailLabel').textContent = isReceiving ? '少发商品明细' : '换货商品明细';
+
+  const productCell = d => `<td><div class="product-with-img">
+    <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
+    <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+  </div></td>`;
+
+  if (isReceiving) {
+    document.getElementById('logisticsHead').innerHTML = `<tr><th>商品信息</th><th>预期数量</th><th>实际收货数量</th><th>少发数量</th></tr>`;
+    document.getElementById('logisticsBody').innerHTML = currentLogisticsDetails.map(d => {
+      const shortfall = d.expected - d.received;
+      return `<tr>
+        ${productCell(d)}
+        <td><span class="mono">${d.expected}</span></td>
+        <td><span class="mono">${d.received}</span></td>
+        <td><span class="diff-qty less">${shortfall}</span></td>
+      </tr>`;
+    }).join('');
+  } else {
+    document.getElementById('logisticsHead').innerHTML = `<tr><th>商品信息</th><th>问题数量</th><th>不合格项</th></tr>`;
+    document.getElementById('logisticsBody').innerHTML = currentLogisticsDetails.map(d => `<tr>
+      ${productCell(d)}
+      <td><span class="diff-qty more">${d.bad}</span></td>
+      <td><span class="defect-text">${d.defect}</span></td>
+    </tr>`).join('');
+  }
+
+  // 动态加载承运商下拉（易仓 getPurchaseShipper 接口：ps_id / ps_name）
+  const shippers = getPurchaseShipper();
+  document.getElementById('carrier').innerHTML = '<option value="">请选择</option>' +
+    shippers.map(s => `<option value="${s.ps_id}">${s.ps_name}</option>`).join('');
+
+  document.getElementById('trackingNo').value = '';
+  document.getElementById('shipperMethod').value = '';
+  document.getElementById('carrier').value = '';
+  document.getElementById('shipAmount').value = '';
+  document.getElementById('logisticsModal').classList.add('show');
+}
+
+function closeLogisticsModal() {
+  document.getElementById('logisticsModal').classList.remove('show');
+}
+
+function submitLogistics() {
+  const trackingNo = document.getElementById('trackingNo').value.trim();
+  const method = document.getElementById('shipperMethod').value;
+  const carrier = document.getElementById('carrier').value;
+  if (!trackingNo) { toast('请填写物流单号'); return; }
+  if (!method) { toast('请选择运输方式'); return; }
+  if (!carrier) { toast('请选择承运商'); return; }
+  toast(`已提交补发物流单号 ${trackingNo}，回写 syncPurchaseTrackingNote`);
+  closeLogisticsModal();
+}
+
+// ============ 初始化 ============
+renderSupplierOptions();
+filteredData = getScopedData(receivingData);
+renderTable();
+</script>
+</body>
+</html>
