@@ -530,7 +530,7 @@ body {
           </button>
           <button class="btn btn-primary" onclick="confirmSyncNow()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-            立即同步
+            更新异常数据
           </button>
         </div>
       </div>
@@ -538,6 +538,7 @@ body {
       <div class="table-toolbar">
         <div class="table-toolbar-left">
           <span class="table-hint" id="tabHint"></span>
+          <span class="table-count">共 <span id="totalCount">0</span> 条</span>
         </div>
       </div>
 
@@ -1043,7 +1044,7 @@ function getScopedData(src) {
 function switchTab(tab) {
   currentTab = tab;
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+  filteredData = applyFilterTo(getScopedData(currentTab === 'receiving' ? receivingData : qcData));
   renderTable();
 }
 
@@ -1068,13 +1069,13 @@ function confirmExport() {
 
 function confirmSyncNow() {
   openGenericConfirm(
-    '立即同步',
-    '确认立即同步易仓最新异常数据？<br>将增量拉取易仓接口并全量覆盖更新本地数据（每 15 分钟定时同步不受影响）。',
+    '更新异常数据',
+    '确认更新异常数据？<br>将增量拉取易仓接口并全量覆盖更新本地数据（每 15 分钟定时同步不受影响）。',
     '确认同步',
     false,
     () => {
       closeGenericConfirm();
-      toast('已触发立即同步，正在拉取易仓最新数据…');
+      toast('已触发更新异常数据，正在拉取易仓最新数据…');
     }
   );
 }
@@ -1235,8 +1236,9 @@ function renderTable() {
   // 计数与分页
   document.getElementById('totalCount').textContent = filteredData.length;
   document.getElementById('pageInfo').textContent = `显示 1-${filteredData.length} / 共 ${filteredData.length} 条`;
-  document.getElementById('receivingCount').textContent = receivingData.length;
-  document.getElementById('qcCount').textContent = qcData.length;
+  // Tab 徽标 = 当前筛选条件下各 Tab 的异常单数（与列表共用 applyFilterTo，保证口径一致）
+  document.getElementById('receivingCount').textContent = applyFilterTo(getScopedData(receivingData)).length;
+  document.getElementById('qcCount').textContent = applyFilterTo(getScopedData(qcData)).length;
 
   // 重置展开状态
   allExpanded = false;
@@ -1286,14 +1288,14 @@ function renderDetails(details, isReceiving) {
 }
 
 // ============ 筛选 ============
-function applyFilters() {
+// 统一筛选逻辑：徽标计数与列表展示共用，保证"筛选后徽标随之变化"语义一致
+function applyFilterTo(src) {
   const status = document.getElementById('filterStatus').value;
   const code = document.getElementById('filterCode').value.trim().toLowerCase();
   const product = document.getElementById('filterProduct').value.trim().toLowerCase();
   const timeType = document.getElementById('filterTimeType').value;
   const dateStart = document.getElementById('filterDateStart').value;
   const dateEnd = document.getElementById('filterDateEnd').value;
-  const src = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
 
   const inRange = (v, s, e) => {
     if (!v) return false;
@@ -1303,7 +1305,7 @@ function applyFilters() {
     return true;
   };
 
-  filteredData = src.filter(row => {
+  return src.filter(row => {
     if (status && row.status !== status) return false;
     if (code) {
       const codeFields = [row.receivingCode, row.poCode, row.internalPoCode, row.internalOrderCode];
@@ -1322,6 +1324,11 @@ function applyFilters() {
     }
     return true;
   });
+}
+
+function applyFilters() {
+  const src = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+  filteredData = applyFilterTo(src);
   renderTable();
   toast(`已筛选，共 ${filteredData.length} 条`);
 }
@@ -1443,7 +1450,7 @@ function confirmTerminate() {
   closeConfirmTerminateModal();
 }
 
-// ============ 通用确认弹窗（撤回申请 / 导出 / 立即同步 / 回写失败提示） ============
+// ============ 通用确认弹窗（撤回申请 / 导出 / 更新异常数据 / 回写失败提示） ============
 let gcOnConfirm = () => {};
 
 function openGenericConfirm(title, text, okText, danger, onConfirm) {
