@@ -64,10 +64,6 @@ body {
 .logo-divider { width: 1px; height: 20px; background: var(--border-medium); }
 .page-title { font-size: 13px; color: var(--text-muted); }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
-.role-switch { display: flex; align-items: center; background: #F7F8FA; border: 1px solid var(--border-subtle); border-radius: 8px; overflow: hidden; }
-.role-btn { border: none; background: none; padding: 5px 12px; font-size: 12px; font-family: var(--font-body); color: var(--text-muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.role-btn.active { background: #7B61FF; color: #fff; font-weight: 500; }
-.role-btn:hover:not(.active) { color: #7B61FF; }
 .supplier-chip { display: flex; align-items: center; gap: 8px; padding: 4px 10px; background: #F7F8FA; border: 1px solid var(--border-subtle); border-radius: 16px; font-size: 12px; color: var(--text-secondary); }
 .supplier-chip .code { font-family: var(--font-mono); color: #7B61FF; font-weight: 500; }
 .topbar-badge { padding: 3px 9px; background: #F4F1FF; color: #7B61FF; border-radius: 16px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); }
@@ -91,7 +87,14 @@ body {
 .filter-title svg { width: 15px; height: 15px; color: #7B61FF; }
 .filter-reset { font-size: 12px; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: var(--font-body); transition: color 0.2s; }
 .filter-reset:hover { color: #7B61FF; }
-.filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.filter-group-wide { grid-column: 1 / -1; }
+.time-range { display: flex; align-items: center; gap: 6px; }
+.time-range .filter-input { flex: 1; min-width: 0; }
+.range-sep { color: var(--text-muted); font-size: 12px; flex-shrink: 0; }
+.filter-row { display: flex; align-items: center; gap: 6px; }
+.filter-row .filter-select { flex: 0 0 108px; }
+.filter-row .filter-input { flex: 1; min-width: 0; }
 .filter-group { display: flex; flex-direction: column; gap: 5px; }
 .filter-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
 .filter-input, .filter-select {
@@ -123,6 +126,37 @@ body {
 .btn-export:hover { box-shadow: 0 4px 12px rgba(255,153,51,0.3); transform: translateY(-1px); }
 .btn-secondary { background: #fff; color: var(--text-secondary); border: 1px solid var(--border-medium); }
 .btn-secondary:hover { background: #F4F1FF; color: #7B61FF; border-color: rgba(123,97,255,0.3); }
+.btn-danger { background: #DC2626; color: #fff; box-shadow: 0 2px 6px rgba(220,38,38,0.2); }
+.btn-danger:hover { box-shadow: 0 4px 12px rgba(220,38,38,0.3); transform: translateY(-1px); }
+.confirm-box { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1px solid #FEE2E2; background: #FFF5F5; border-radius: var(--radius-md); margin-top: 4px; }
+.confirm-warning-icon { width: 18px; height: 18px; flex-shrink: 0; color: #DC2626; margin-top: 2px; }
+.confirm-warning-text { font-size: 13px; line-height: 1.7; color: var(--text-primary); }
+.confirm-warning-text strong { color: #DC2626; }
+.info-box { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; background: #F7F8FA; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 16px; }
+.info-row { display: flex; gap: 12px; font-size: 12px; }
+.info-label { width: 64px; flex-shrink: 0; color: var(--text-muted); }
+.info-value { color: var(--text-primary); }
+.audit-options { display: flex; gap: 20px; margin-bottom: 14px; }
+.audit-approve-hint { font-size: 12px; color: #DC2626; font-weight: 600; margin-bottom: 12px; }
+.audit-approve-hint strong { color: #DC2626; font-weight: 700; }
+.log-list { display: flex; flex-direction: column; max-height: 320px; overflow-y: auto; padding-right: 4px; }
+.log-list::-webkit-scrollbar { width: 4px; }
+.log-list::-webkit-scrollbar-thumb { background: #D8DCE5; border-radius: 2px; }
+.log-item { display: flex; gap: 12px; padding: 10px 2px; border-bottom: 1px dashed var(--border-subtle); }
+.log-item:last-child { border-bottom: none; }
+.log-time { width: 92px; flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); padding-top: 3px; }
+.log-body { flex: 1; min-width: 0; }
+.log-actor { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.log-actor-tag { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.log-actor-tag.sys { background: #EEF0F3; color: #6B7280; }
+.log-actor-tag.buyer { background: #E8EFFF; color: #425BE0; }
+.log-actor-tag.supplier { background: #FFF4E5; color: #FF9933; }
+.log-action { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.log-detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.audit-radio { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-primary); cursor: pointer; }
+.audit-radio input { accent-color: #7B61FF; width: 15px; height: 15px; }
+.audit-reject-input { width: 100%; min-height: 72px; padding: 10px 12px; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 12px; font-family: var(--font-body); color: var(--text-primary); outline: none; resize: vertical; transition: border-color 0.2s, box-shadow 0.2s; }
+.audit-reject-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
 
 /* Table Section */
 .table-section {
@@ -131,7 +165,9 @@ body {
 }
 
 /* Tabs */
-.tabs { display: flex; align-items: center; gap: 2px; padding: 0 22px; border-bottom: 1px solid var(--border-subtle); background: #fff; }
+.tabs { display: flex; align-items: center; justify-content: space-between; padding: 0 22px; border-bottom: 1px solid var(--border-subtle); background: #fff; }
+.tabs-group { display: flex; align-items: center; gap: 2px; }
+.tabs-actions { display: flex; align-items: center; gap: 8px; padding: 7px 0; }
 .tab {
   position: relative; display: inline-flex; align-items: center; gap: 7px;
   padding: 14px 18px; font-size: 13px; font-weight: 500; cursor: pointer;
@@ -157,6 +193,10 @@ body {
 .table-count { font-size: 12px; color: var(--text-muted); }
 .table-count span { color: #7B61FF; font-weight: 600; font-family: var(--font-mono); }
 .table-hint { font-size: 11px; color: var(--text-muted); }
+.time-info { display: flex; flex-direction: column; gap: 3px; }
+.time-row { display: flex; align-items: center; gap: 6px; font-size: 11px; line-height: 1.5; white-space: nowrap; }
+.time-row b { font-weight: 500; color: var(--text-muted); }
+.time-row .mono { font-size: 11px; color: var(--text-secondary); }
 
 .table-scroll { overflow-x: auto; }
 
@@ -268,9 +308,7 @@ body {
 .status-tag.deciding { background: #F7F8FA; color: #909399; }
 .status-tag.decided { background: #E8F0FE; color: #4078FF; }
 .status-tag.reviewing { background: #E8F0FE; color: #4078FF; }
-.status-tag.syncing { background: #F4F1FF; color: #7B61FF; }
-.status-tag.syncing .status-dot { animation: pulse 1.2s infinite; }
-.status-tag.failed { background: #FEE2E2; color: #DC2626; }
+.status-tag.pending-close { background: #CCFBF1; color: #0D9488; }
 .status-tag.closed { background: #D1FAE5; color: #059669; }
 
 /* Type tags */
@@ -389,7 +427,6 @@ body {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .animate-in { animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
 .delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -410,13 +447,9 @@ body {
       <span class="page-title">采购异常协作</span>
     </div>
     <div class="topbar-right">
-      <div class="role-switch">
-        <button class="role-btn active" data-role="supplier" onclick="switchRole('supplier')">供应商视角</button>
-        <button class="role-btn" data-role="internal" onclick="switchRole('internal')">企业内视角</button>
-      </div>
-      <span class="supplier-chip" id="roleChip">供应商 <span class="code">GYS001</span></span>
+      <span class="supplier-chip">供应商 <span class="code">GYS001</span></span>
       <span class="topbar-badge">v1.0.0</span>
-      <div class="topbar-avatar" id="roleAvatar">供</div>
+      <div class="topbar-avatar">供</div>
     </div>
   </header>
 
@@ -440,18 +473,8 @@ body {
             <option value="待回填单号">待回填单号</option>
             <option value="已决策">已决策</option>
             <option value="待审核">待审核</option>
-            <option value="同步中">同步中</option>
-            <option value="同步失败">同步失败</option>
+            <option value="待结案">待结案</option>
             <option value="已结案">已结案</option>
-          </select>
-        </div>
-        <div class="filter-group" id="filterSupplierGroup">
-          <label class="filter-label">供应商</label>
-          <select class="filter-select" id="filterSupplier">
-            <option value="">全部供应商</option>
-            <option value="深圳市华强电子科技有限公司">深圳市华强电子科技有限公司</option>
-            <option value="东莞市精密制造有限公司">东莞市精密制造有限公司</option>
-            <option value="广州市恒达贸易有限公司">广州市恒达贸易有限公司</option>
           </select>
         </div>
         <div class="filter-group">
@@ -462,13 +485,18 @@ body {
           <label class="filter-label">商品搜索</label>
           <input type="text" class="filter-input" placeholder="货号/SKU/SPU" id="filterProduct">
         </div>
-        <div class="filter-group">
-          <label class="filter-label">创建时间（开始）</label>
-          <input type="date" class="filter-input" id="filterDateStart">
-        </div>
-        <div class="filter-group">
-          <label class="filter-label">至</label>
-          <input type="date" class="filter-input" id="filterDateEnd">
+        <div class="filter-group filter-group-wide">
+          <label class="filter-label">时间筛选</label>
+          <div class="filter-row">
+            <select class="filter-select" id="filterTimeType">
+              <option value="create">创建时间</option>
+              <option value="update">更新时间</option>
+              <option value="operate">操作时间</option>
+            </select>
+            <input type="date" class="filter-input" id="filterDateStart">
+            <span class="range-sep">~</span>
+            <input type="date" class="filter-input" id="filterDateEnd">
+          </div>
         </div>
       </div>
       <div class="filter-actions">
@@ -487,28 +515,29 @@ body {
     <div class="table-section animate-in delay-2">
       <!-- Tabs -->
       <div class="tabs">
-        <div class="tab active" data-tab="receiving" onclick="switchTab('receiving')">
-          收货差异处理 <span class="tab-badge" id="receivingCount">0</span>
+        <div class="tabs-group">
+          <div class="tab active" data-tab="receiving" onclick="switchTab('receiving')">
+            收货差异处理 <span class="tab-badge" id="receivingCount">0</span>
+          </div>
+          <div class="tab" data-tab="qc" onclick="switchTab('qc')">
+            质检异常协同 <span class="tab-badge" id="qcCount">0</span>
+          </div>
         </div>
-        <div class="tab" data-tab="qc" onclick="switchTab('qc')">
-          质检异常协同 <span class="tab-badge" id="qcCount">0</span>
+        <div class="tabs-actions">
+          <button class="btn btn-export" onclick="confirmExport()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            导出
+          </button>
+          <button class="btn btn-primary" onclick="confirmSyncNow()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            立即同步
+          </button>
         </div>
       </div>
 
       <div class="table-toolbar">
         <div class="table-toolbar-left">
-          <span class="table-count">共 <span id="totalCount">0</span> 条异常单</span>
           <span class="table-hint" id="tabHint"></span>
-        </div>
-        <div class="table-toolbar-right">
-          <button class="btn btn-export" onclick="exportData()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            导出
-          </button>
-          <button class="btn btn-primary" onclick="toast('已触发立即同步，正在拉取易仓最新数据…')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-            立即同步
-          </button>
         </div>
       </div>
 
@@ -535,7 +564,7 @@ body {
   <div class="modal-overlay" id="logisticsModal" onclick="if(event.target===this) closeLogisticsModal()">
     <div class="modal">
       <div class="modal-header">
-        <span class="modal-title">填写物流信息</span>
+        <span class="modal-title">回填物流信息</span>
         <button class="modal-close" onclick="closeLogisticsModal()">×</button>
       </div>
       <div class="modal-body">
@@ -573,10 +602,115 @@ body {
             <input type="number" class="filter-input" id="shipAmount" placeholder="0.00">
           </div>
         </div>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);margin-top:12px;cursor:pointer">
+          <input type="checkbox" id="mockSyncFail" checked style="accent-color:#7B61FF"> 演示：模拟回写接口调用失败（单据保持待回填单号）
+        </label>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeLogisticsModal()">取消</button>
         <button class="btn btn-primary" onclick="submitLogistics()">提交</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM TERMINATE MODAL -->
+  <div class="modal-overlay" id="confirmTerminateModal" onclick="if(event.target===this) closeConfirmTerminateModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">申请终止来货</span>
+        <button class="modal-close" onclick="closeConfirmTerminateModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-subtitle">入库单 <span class="mono" id="confirmCode"></span> · 涉及 <span class="mono" id="confirmSkuCount">0</span> 个换货商品</div>
+        <div class="confirm-box">
+          <svg class="confirm-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="confirm-warning-text">确认申请终止该质检异常的来货？<br>提交后单据进入「<strong>待审核</strong>」，由采购员审核；审核通过后将强制完成采购单。</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeConfirmTerminateModal()">取消</button>
+        <button class="btn btn-danger" onclick="confirmTerminate()">确认终止</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIT MODAL -->
+  <div class="modal-overlay" id="auditModal" onclick="if(event.target===this) closeAuditModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">异常终止审核</span>
+        <button class="modal-close" onclick="closeAuditModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-subtitle">入库单 <span class="mono" id="auditCode"></span> · 供应商 <span id="auditSupplier"></span></div>
+        <div class="info-box">
+          <div class="info-row"><span class="info-label">终止原因</span><span class="info-value" id="auditReason"></span></div>
+          <div class="info-row"><span class="info-label">涉及商品</span><span class="info-value mono" id="auditSkuCount"></span></div>
+        </div>
+        <div class="audit-options">
+          <label class="audit-radio"><input type="radio" name="auditResult" value="approve" checked onchange="onAuditOptionChange()"><span>审核通过</span></label>
+          <label class="audit-radio"><input type="radio" name="auditResult" value="reject" onchange="onAuditOptionChange()"><span>审核驳回</span></label>
+        </div>
+        <div class="form-group" id="approveFields">
+          <div class="audit-approve-hint">审核通过后将强制完成采购单，<strong>此操作不可撤销</strong></div>
+          <label class="form-label">退款类型 <span class="required">*</span></label>
+          <select class="filter-select" id="refundType">
+            <option value="2">退还货款+税金+运费（默认）</option>
+            <option value="1">只退还货款</option>
+            <option value="3">退还货款+税金+运费+退回运费</option>
+            <option value="4">退回货款+税金</option>
+          </select>
+          <label class="form-label" style="margin-top:12px">审核备注</label>
+          <textarea class="audit-reject-input" id="auditRemark" placeholder="选填" style="min-height:52px"></textarea>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);margin-top:12px;cursor:pointer">
+            <input type="checkbox" id="mockForceFail" checked style="accent-color:#7B61FF"> 演示：模拟强关接口调用失败（单据保持待审核）
+          </label>
+        </div>
+        <div class="form-group" id="rejectFields" style="display:none">
+          <label class="form-label">驳回原因 <span class="required">*</span></label>
+          <textarea class="audit-reject-input" id="rejectReason" placeholder="请填写驳回原因"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeAuditModal()">取消</button>
+        <button class="btn btn-primary" onclick="submitAudit()">确认审核</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERIC CONFIRM MODAL -->
+  <div class="modal-overlay" id="genericConfirmModal" onclick="if(event.target===this) closeGenericConfirm()">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title" id="gcTitle">操作确认</span>
+        <button class="modal-close" onclick="closeGenericConfirm()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-box">
+          <svg class="confirm-warning-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="confirm-warning-text" id="gcText"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeGenericConfirm()">取消</button>
+        <button class="btn btn-primary" id="gcOkBtn" onclick="gcOnConfirm()">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG MODAL -->
+  <div class="modal-overlay" id="logModal" onclick="if(event.target===this) closeLogModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">操作日志</span>
+        <button class="modal-close" onclick="closeLogModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-subtitle">异常单 <span class="mono" id="logCode"></span> · 供应商 <span id="logSupplier"></span></div>
+        <div class="log-list" id="logList"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeLogModal()">关闭</button>
       </div>
     </div>
   </div>
@@ -591,75 +725,116 @@ body {
 const receivingData = [
   {
     receivingCode: 'R20260821001', poCode: 'PO20260821001', internalPoCode: 'CG20260821001', internalOrderCode: 'DD20260821001',
-    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:12',
+    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:12', updateTime: '2026-08-21 09:12', operateTime: null,
     type: '少发', decision: '待确认', confirmed: false,
     details: [
       { productName: '无线蓝牙耳机', sku: 'BT001-BK-01', img: 'https://picsum.photos/seed/bt001bk/80/80', expected: 100, received: 80 },
       { productName: '无线蓝牙耳机', sku: 'BT001-WH-01', img: 'https://picsum.photos/seed/bt001wh/80/80', expected: 100, received: 90 },
+    ],
+    logs: [
+      { time: '08-21 09:12', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），2个商品明细；首次全量落库保存' },
+      { time: '08-21 09:12', actor: '系统', action: '更新', detail: '定时拉取全量覆盖更新，等待采购员决策' },
     ]
   },
   {
     receivingCode: 'R20260821002', poCode: 'PO20260821002', internalPoCode: 'CG20260821002', internalOrderCode: 'DD20260821002',
-    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:30',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:30', updateTime: '2026-08-21 10:42', operateTime: null,
     type: '少发', decision: '继续来货', confirmed: true,
     details: [
       { productName: 'LED台灯', sku: 'LED002-WH-01', img: 'https://picsum.photos/seed/led002wh/80/80', expected: 50, received: 42 },
       { productName: 'LED台灯', sku: 'LED002-BK-01', img: 'https://picsum.photos/seed/led002bk/80/80', expected: 50, received: 45 },
+    ],
+    logs: [
+      { time: '08-21 10:30', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），2个商品明细' },
+      { time: '08-21 10:42', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「继续来货」，状态：待确认→已确认' },
+      { time: '08-21 10:42', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「待回填单号」' },
     ]
   },
   {
     receivingCode: 'R20260820003', poCode: 'PO20260820003', internalPoCode: 'CG20260820003', internalOrderCode: 'DD20260820003',
-    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-20 14:05',
+    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-20 14:05', updateTime: '2026-08-20 15:21', operateTime: null,
     type: '少发', decision: '终止来货', confirmed: true,
     details: [
       { productName: '运动手环', sku: 'BD003-BL-SM', img: 'https://picsum.photos/seed/bd003sm/80/80', expected: 200, received: 180 },
       { productName: '运动手环', sku: 'BD003-BL-MD', img: 'https://picsum.photos/seed/bd003md/80/80', expected: 150, received: 145 },
+    ],
+    logs: [
+      { time: '08-20 14:05', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），2个商品明细' },
+      { time: '08-20 15:20', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「终止来货」' },
+      { time: '08-20 15:21', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「已决策」' },
     ]
   },
   {
     receivingCode: 'R20260820004', poCode: 'PO20260820004', internalPoCode: 'CG20260820004', internalOrderCode: 'DD20260820004',
-    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-20 16:40',
+    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-20 16:40', updateTime: '2026-08-20 17:00', operateTime: null,
     type: '多发', decision: '入库', confirmed: true,
     details: [
       { productName: '瑜伽垫', sku: 'YG004-PP-01', img: 'https://picsum.photos/seed/yg004p1/80/80', expected: 80, received: 82 },
       { productName: '瑜伽垫', sku: 'YG004-PP-02', img: 'https://picsum.photos/seed/yg004p2/80/80', expected: 80, received: 81 },
+    ],
+    logs: [
+      { time: '08-20 16:40', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（多发），2个商品明细' },
+      { time: '08-20 16:58', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「入库」' },
+      { time: '08-20 17:00', actor: '系统', action: '更新', detail: '同步发现易仓侧已完成（re_status=4），状态自动结案（外部同步）' },
     ]
   },
   {
     receivingCode: 'R20260819005', poCode: 'PO20260819005', internalPoCode: 'CG20260819005', internalOrderCode: 'DD20260819005',
-    supplier: '深圳市华强电子科技有限公司', status: '同步中', time: '2026-08-19 11:20',
+    supplier: '深圳市华强电子科技有限公司', status: '待结案', time: '2026-08-19 11:20', updateTime: '2026-08-19 14:31', operateTime: '2026-08-19 14:30',
     type: '少发', decision: '继续来货', confirmed: true, trackingNo: 'SF1234567890',
     details: [
       { productName: '蓝牙音箱', sku: 'SP006-BK-01', img: 'https://picsum.photos/seed/sp006bk/80/80', expected: 120, received: 100 },
       { productName: '蓝牙音箱', sku: 'SP006-WH-01', img: 'https://picsum.photos/seed/sp006wh/80/80', expected: 120, received: 115 },
+    ],
+    logs: [
+      { time: '08-19 11:20', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），2个商品明细' },
+      { time: '08-19 13:05', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「继续来货」' },
+      { time: '08-19 14:30', actor: '供应商·华强电子', action: '回填物流号', detail: '回填顺丰单号 SF1234567890' },
+      { time: '08-19 14:31', actor: '系统', action: '更新', detail: '调用 syncPurchaseTrackingNote 回写易仓成功，状态进入「待结案」，等待易仓推进完成后自动结案' },
     ]
   },
   {
     receivingCode: 'R20260818006', poCode: 'PO20260818006', internalPoCode: 'CG20260818006', internalOrderCode: 'DD20260818006',
-    supplier: '深圳市华强电子科技有限公司', status: '同步失败', time: '2026-08-18 09:40',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-18 09:40', updateTime: '2026-08-18 11:01', operateTime: '2026-08-18 11:00',
     type: '少发', decision: '继续来货', confirmed: true, trackingNo: 'SF1234567891',
     details: [
       { productName: '机械键盘', sku: 'KB009-BK-87', img: 'https://picsum.photos/seed/kb00987/80/80', expected: 90, received: 70 },
       { productName: '机械键盘', sku: 'KB009-BK-104', img: 'https://picsum.photos/seed/kb009104/80/80', expected: 60, received: 55 },
       { productName: '机械键盘', sku: 'KB009-WH-87', img: 'https://picsum.photos/seed/kb009w87/80/80', expected: 40, received: 35 },
+    ],
+    logs: [
+      { time: '08-18 09:40', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），3个商品明细' },
+      { time: '08-18 10:15', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「继续来货」' },
+      { time: '08-18 11:00', actor: '供应商·华强电子', action: '回填物流号', detail: '回填顺丰单号 SF1234567891' },
+      { time: '08-18 11:01', actor: '系统', action: '更新', detail: '调用 syncPurchaseTrackingNote 回写易仓失败：该单号已在途，请核实。单据保持「待回填单号」，可修改后重新提交' },
     ]
   },
   {
     receivingCode: 'R20260818007', poCode: 'PO20260818007', internalPoCode: 'CG20260818007', internalOrderCode: 'DD20260818007',
-    supplier: '广州市恒达贸易有限公司', status: '已决策', time: '2026-08-18 13:15',
+    supplier: '广州市恒达贸易有限公司', status: '已决策', time: '2026-08-18 13:15', updateTime: '2026-08-18 14:41', operateTime: null,
     type: '少发', decision: '退货', confirmed: true,
     details: [
       { productName: '充电宝', sku: 'PB008-WH-01', img: 'https://picsum.photos/seed/pb008wh/80/80', expected: 150, received: 148 },
       { productName: '充电宝', sku: 'PB008-BK-01', img: 'https://picsum.photos/seed/pb008bk/80/80', expected: 100, received: 96 },
+    ],
+    logs: [
+      { time: '08-18 13:15', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（少发），2个商品明细' },
+      { time: '08-18 14:40', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「退货」' },
+      { time: '08-18 14:41', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「已决策」' },
     ]
   },
   {
     receivingCode: 'R20260818008', poCode: 'PO20260818008', internalPoCode: 'CG20260818008', internalOrderCode: 'DD20260818008',
-    supplier: '深圳市华强电子科技有限公司', status: '已结案', time: '2026-08-18 16:50',
+    supplier: '深圳市华强电子科技有限公司', status: '已结案', time: '2026-08-18 16:50', updateTime: '2026-08-18 17:22', operateTime: null,
     type: '多发', decision: '终止来货', confirmed: true,
     details: [
       { productName: '智能手表', sku: 'SW007-SV-42', img: 'https://picsum.photos/seed/sw007sv/80/80', expected: 30, received: 35 },
       { productName: '智能手表', sku: 'SW007-BK-42', img: 'https://picsum.photos/seed/sw007bk/80/80', expected: 30, received: 31 },
+    ],
+    logs: [
+      { time: '08-18 16:50', actor: '系统', action: '创建', detail: '易仓同步生成收货异常单（多发），2个商品明细' },
+      { time: '08-18 17:20', actor: '采购员·王强', action: '采购决策', detail: '处理类型设为「终止来货」' },
+      { time: '08-18 17:22', actor: '系统', action: '更新', detail: '同步发现易仓侧已完成（re_status=4），状态自动结案（外部同步）' },
     ]
   },
 ];
@@ -667,72 +842,113 @@ const receivingData = [
 const qcData = [
   {
     receivingCode: 'R20260821001', poCode: 'PO20260821001', internalPoCode: 'CG20260821001', internalOrderCode: 'DD20260821001',
-    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:20',
+    supplier: '深圳市华强电子科技有限公司', status: '采购决策中', time: '2026-08-21 09:20', updateTime: '2026-08-21 09:20', operateTime: null,
     decision: '待确认', confirmed: false,
     details: [
       { productName: '无线蓝牙耳机', sku: 'BT001-BK-01', img: 'https://picsum.photos/seed/bt001/80/80', send: 100, received: 100, bad: 8, defect: '外观划痕', processType: '待确认' },
       { productName: '无线蓝牙耳机', sku: 'BT001-WH-01', img: 'https://picsum.photos/seed/bt001w/80/80', send: 100, received: 100, bad: 3, defect: '外观划痕', processType: '待确认' },
+    ],
+    logs: [
+      { time: '08-21 09:20', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细；首次全量落库保存' },
+      { time: '08-21 09:20', actor: '系统', action: '更新', detail: '定时拉取全量覆盖更新，等待采购员决策' },
     ]
   },
   {
     receivingCode: 'R20260821002', poCode: 'PO20260821002', internalPoCode: 'CG20260821002', internalOrderCode: 'DD20260821002',
-    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:45',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-21 10:45', updateTime: '2026-08-21 10:52', operateTime: null,
     decision: '换货', confirmed: true,
     details: [
-      { productName: '运动手环', sku: 'BD003-BL-SM', img: 'https://picsum.photos/seed/bd003/80/80', send: 200, received: 200, bad: 15, defect: '功能不良', processType: '换货', logisticsTrackingNumber: 'SF1234567890', qeDesc: '已与采购确认补发' },
-      { productName: '运动手环', sku: 'BD003-BL-MD', img: 'https://picsum.photos/seed/bd003m/80/80', send: 150, received: 150, bad: 6, defect: '功能不良', processType: '换货', logisticsTrackingNumber: 'SF1234567890' },
+      { productName: '运动手环', sku: 'BD003-BL-SM', img: 'https://picsum.photos/seed/bd003/80/80', send: 200, received: 200, bad: 15, defect: '功能不良', processType: '换货', qeDesc: '已与采购确认补发' },
+      { productName: '运动手环', sku: 'BD003-BL-MD', img: 'https://picsum.photos/seed/bd003m/80/80', send: 150, received: 150, bad: 6, defect: '功能不良', processType: '换货' },
+    ],
+    logs: [
+      { time: '08-21 10:45', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细' },
+      { time: '08-21 10:52', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「换货」，状态：待确认→已确认' },
+      { time: '08-21 10:52', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「待回填单号」' },
     ]
   },
   {
     receivingCode: 'R20260820003', poCode: 'PO20260820003', internalPoCode: 'CG20260820003', internalOrderCode: 'DD20260820003',
-    supplier: '东莞市精密制造有限公司', status: '已决策', time: '2026-08-20 14:30',
+    supplier: '东莞市精密制造有限公司', status: '已决策', time: '2026-08-20 14:30', updateTime: '2026-08-20 15:11', operateTime: null,
     decision: '退回', confirmed: true,
     details: [
       { productName: '瑜伽垫', sku: 'YG004-PP-01', img: 'https://picsum.photos/seed/yg004/80/80', send: 80, received: 80, bad: 5, defect: '尺寸不符', processType: '退回', logisticsTrackingNumber: 'YT9876543211' },
       { productName: '瑜伽垫', sku: 'YG004-PP-02', img: 'https://picsum.photos/seed/yg004p/80/80', send: 80, received: 80, bad: 2, defect: '尺寸不符', processType: '退回', logisticsTrackingNumber: 'YT9876543211' },
+    ],
+    logs: [
+      { time: '08-20 14:30', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细' },
+      { time: '08-20 15:10', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「退回」' },
+      { time: '08-20 15:11', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「已决策」' },
     ]
   },
   {
     receivingCode: 'R20260820004', poCode: 'PO20260820004', internalPoCode: 'CG20260820004', internalOrderCode: 'DD20260820004',
-    supplier: '深圳市华强电子科技有限公司', status: '待审核', time: '2026-08-20 17:10',
-    decision: '换货', confirmed: true,
+    supplier: '深圳市华强电子科技有限公司', status: '待审核', time: '2026-08-20 17:10', updateTime: '2026-08-20 19:21', operateTime: '2026-08-20 19:20',
+    decision: '换货', confirmed: true, terminateReason: '产能不足，无法按期补发，申请终止',
     details: [
-      { productName: '筋膜枪', sku: 'FG005-GY-01', img: 'https://picsum.photos/seed/fg005/80/80', send: 60, received: 60, bad: 3, defect: '外观破损', processType: '换货', logisticsTrackingNumber: 'SF5678901234' },
-      { productName: '筋膜枪', sku: 'FG005-BK-01', img: 'https://picsum.photos/seed/fg005b/80/80', send: 60, received: 60, bad: 1, defect: '外观破损', processType: '换货', logisticsTrackingNumber: 'SF5678901234' },
+      { productName: '筋膜枪', sku: 'FG005-GY-01', img: 'https://picsum.photos/seed/fg005/80/80', send: 60, received: 60, bad: 3, defect: '外观破损', processType: '换货' },
+      { productName: '筋膜枪', sku: 'FG005-BK-01', img: 'https://picsum.photos/seed/fg005b/80/80', send: 60, received: 60, bad: 1, defect: '外观破损', processType: '换货' },
+    ],
+    logs: [
+      { time: '08-20 17:10', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细（外观破损）' },
+      { time: '08-20 17:30', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「换货」，状态：待确认→已确认' },
+      { time: '08-20 19:20', actor: '供应商·华强电子', action: '申请终止', detail: '终止原因：产能不足，无法按期补发' },
+      { time: '08-20 19:21', actor: '系统', action: '更新', detail: '状态进入「待审核」，等待采购员审核' },
     ]
   },
   {
     receivingCode: 'R20260819005', poCode: 'PO20260819005', internalPoCode: 'CG20260819005', internalOrderCode: 'DD20260819005',
-    supplier: '广州市恒达贸易有限公司', status: '已结案', time: '2026-08-19 12:05',
+    supplier: '广州市恒达贸易有限公司', status: '已结案', time: '2026-08-19 12:05', updateTime: '2026-08-19 15:00', operateTime: '2026-08-19 14:00',
     decision: '退回', confirmed: true,
     details: [
       { productName: '蓝牙音箱', sku: 'SP006-BK-01', img: 'https://picsum.photos/seed/sp006/80/80', send: 120, received: 120, bad: 10, defect: '功能不良', processType: '退回', logisticsTrackingNumber: 'YT2468013579', qeDesc: '已退货入库' },
+    ],
+    logs: [
+      { time: '08-19 12:05', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，1个商品明细（功能不良）' },
+      { time: '08-19 13:20', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「退回」' },
+      { time: '08-19 15:00', actor: '系统', action: '更新', detail: '同步发现易仓侧已完成（qe_status=3），状态自动结案「已结案」（外部同步）' },
     ]
   },
   {
     receivingCode: 'R20260819006', poCode: 'PO20260819006', internalPoCode: 'CG20260819006', internalOrderCode: 'DD20260819006',
-    supplier: '深圳市华强电子科技有限公司', status: '同步失败', time: '2026-08-19 16:20',
+    supplier: '深圳市华强电子科技有限公司', status: '待回填单号', time: '2026-08-19 16:20', updateTime: '2026-08-19 17:16', operateTime: '2026-08-19 17:15',
     decision: '换货', confirmed: true, trackingNo: 'YT9876543210',
     details: [
       { productName: '智能手表', sku: 'SW007-SV-42', img: 'https://picsum.photos/seed/sw007/80/80', send: 30, received: 30, bad: 2, defect: '外观划痕', processType: '换货', logisticsTrackingNumber: 'YT9876543210' },
       { productName: '智能手表', sku: 'SW007-BK-42', img: 'https://picsum.photos/seed/sw007b/80/80', send: 30, received: 30, bad: 1, defect: '外观划痕', processType: '换货', logisticsTrackingNumber: 'YT9876543210' },
+    ],
+    logs: [
+      { time: '08-19 16:20', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细（外观划痕）' },
+      { time: '08-19 16:50', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「换货」' },
+      { time: '08-19 17:15', actor: '供应商·华强电子', action: '回填物流号', detail: '回填圆通单号 YT9876543210' },
+      { time: '08-19 17:16', actor: '系统', action: '更新', detail: '调用 syncPurchaseTrackingNote 回写易仓失败：接口超时，请重试。单据保持「待回填单号」，可修改后重新提交' },
     ]
   },
   {
     receivingCode: 'R20260818007', poCode: 'PO20260818007', internalPoCode: 'CG20260818007', internalOrderCode: 'DD20260818007',
-    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-18 10:00',
+    supplier: '东莞市精密制造有限公司', status: '已结案', time: '2026-08-18 10:00', updateTime: '2026-08-18 11:30', operateTime: null,
     decision: '销毁', confirmed: true,
     details: [
       { productName: '机械键盘', sku: 'KB009-BK-87', img: 'https://picsum.photos/seed/kb009/80/80', send: 90, received: 90, bad: 6, defect: '键帽缺失', processType: '销毁' },
+    ],
+    logs: [
+      { time: '08-18 10:00', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，1个商品明细（键帽缺失）' },
+      { time: '08-18 10:40', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「销毁」' },
+      { time: '08-18 11:30', actor: '系统', action: '更新', detail: '同步发现易仓侧已完成（qe_status=3），状态自动结案（外部同步）' },
     ]
   },
   {
     receivingCode: 'R20260818008', poCode: 'PO20260818008', internalPoCode: 'CG20260818008', internalOrderCode: 'DD20260818008',
-    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-18 14:25',
+    supplier: '深圳市华强电子科技有限公司', status: '已决策', time: '2026-08-18 14:25', updateTime: '2026-08-18 15:11', operateTime: null,
     decision: '不良品上架', confirmed: true,
     details: [
       { productName: '充电宝', sku: 'PB008-WH-01', img: 'https://picsum.photos/seed/pb008/80/80', send: 150, received: 150, bad: 12, defect: '电池鼓包', processType: '不良品上架' },
       { productName: '充电宝', sku: 'PB008-BK-01', img: 'https://picsum.photos/seed/pb008b/80/80', send: 100, received: 100, bad: 8, defect: '电池鼓包', processType: '不良品上架' },
+    ],
+    logs: [
+      { time: '08-18 14:25', actor: '系统', action: '创建', detail: '易仓同步生成质检异常单，2个商品明细（电池鼓包）' },
+      { time: '08-18 15:10', actor: '采购员·王强', action: '采购决策', detail: '质检处置设为「不良品上架」' },
+      { time: '08-18 15:11', actor: '系统', action: '更新', detail: '同步采购决策结果，状态进入「已决策」' },
     ]
   },
 ];
@@ -753,7 +969,7 @@ enrichProductMeta(receivingData);
 enrichProductMeta(qcData);
 
 // ============ 状态/类型映射 ============
-const statusClassMap = { '采购决策中': 'deciding', '待回填单号': 'pending', '已决策': 'decided', '待审核': 'reviewing', '同步中': 'syncing', '同步失败': 'failed', '已结案': 'closed' };
+const statusClassMap = { '采购决策中': 'deciding', '待回填单号': 'pending', '已决策': 'decided', '待审核': 'reviewing', '待结案': 'pending-close', '已结案': 'closed' };
 const processTypeClassMap = { '换货': 'exchange', '退回': 'return', '销毁': 'destroy', '不良品上架': 'shelf', '待确认': 'pending' };
 
 function statusTag(status) {
@@ -778,54 +994,50 @@ function typeTag(type) {
   return `<span class="type-tag ${type === '多发' ? 'more' : 'less'}">比预期${type === '多发' ? '多' : '少'}</span>`;
 }
 
-// ============ 操作按钮（单据级，按状态 + 采购决策 + 是否已确认判断） ============
-// Tab1 收货差异：决策权在采购员(ERP)，供应商仅「继续来货+已确认」时可回填物流号
-function receivingActions(row) {
-  if (row.status === '采购决策中') return '';
-  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('receiving', '${row.receivingCode}')">回填物流号</button>`;
-  if (row.status === '已决策') return '';
-  if (row.status === '同步中') return '';
-  if (row.status === '同步失败') return `<button class="action-btn primary" onclick="event.stopPropagation(); toast('重新提交：重新回写易仓')">重新提交</button>`;
-  if (row.status === '已结案') return `<button class="action-btn muted" onclick="event.stopPropagation(); toast('查看处理历史')">处理历史</button>`;
-  return '';
+// 主行时间信息：创建时间（易仓）/ 更新时间（易仓）/ 操作时间（门户）
+function timeInfoCell(row) {
+  const operate = row.operateTime
+    ? `<span class="time-row"><b>操作</b><span class="mono">${row.operateTime}</span></span>`
+    : `<span class="time-row"><b>操作</b><span class="mono" style="color:var(--text-muted)">—</span></span>`;
+  return `<div class="time-info">
+      <span class="time-row"><b>创建</b><span class="mono">${row.time}</span></span>
+      <span class="time-row"><b>更新</b><span class="mono">${row.updateTime}</span></span>
+      ${operate}
+    </div>`;
 }
 
-// Tab2 质检异常：「换货+已确认」可回填补货单号 + 申请异常终止；其余仅查看
+// ============ 操作按钮（单据级，按协作状态 + 采购决策定案判断） ============
+// Tab1 收货差异：决策权在采购员(ERP)，供应商仅「继续来货+已审核（re_status=3）」时可回填物流号
+function receivingActions(row) {
+  const logBtn = `<button class="action-btn muted" onclick="event.stopPropagation(); openLogModal('receiving', '${row.receivingCode}')">操作日志</button>`;
+  if (row.status === '采购决策中') return logBtn;
+  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('receiving', '${row.receivingCode}')">回填物流号</button>${logBtn}`;
+  if (row.status === '已决策') return logBtn;
+  if (row.status === '已结案') return logBtn;
+  return logBtn;
+}
+
+// Tab2 质检异常：「换货+已确认」可回填物流号 + 申请异常终止；其余仅查看
 function qcActions(row) {
-  if (row.status === '采购决策中') return '';
-  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('qc', '${row.receivingCode}')">填写物流</button>
-              <button class="action-btn danger" onclick="event.stopPropagation(); toast('异常终止申请：跳转「填写终止原因」页')">申请终止</button>`;
-  if (row.status === '已决策') return '';
-  if (row.status === '待审核') return `<button class="action-btn" onclick="event.stopPropagation(); toast('撤回申请：已撤回，状态回退「待回填单号」')">撤回申请</button>`;
-  if (row.status === '同步中') return '';
-  if (row.status === '同步失败') return `<button class="action-btn primary" onclick="event.stopPropagation(); toast('重新提交：重新回写易仓')">重新提交</button>`;
-  if (row.status === '已结案') return `<button class="action-btn muted" onclick="event.stopPropagation(); toast('查看处理历史')">处理历史</button>`;
-  return '';
+  const logBtn = `<button class="action-btn muted" onclick="event.stopPropagation(); openLogModal('qc', '${row.receivingCode}')">操作日志</button>`;
+  if (row.status === '采购决策中') return logBtn;
+  if (row.status === '待回填单号') return `<button class="action-btn primary" onclick="event.stopPropagation(); openLogisticsModal('qc', '${row.receivingCode}')">回填物流号</button>
+              <button class="action-btn danger" onclick="event.stopPropagation(); openConfirmTerminate('${row.receivingCode}')">申请终止</button>${logBtn}`;
+  if (row.status === '已决策') return logBtn;
+  if (row.status === '待审核') return `<button class="action-btn primary" onclick="event.stopPropagation(); openAuditModal('${row.receivingCode}')">审核</button>
+              <button class="action-btn" onclick="event.stopPropagation(); openConfirmWithdraw('${row.receivingCode}')">撤回申请</button>${logBtn}`;
+  if (row.status === '已结案') return logBtn;
+  return logBtn;
 }
 
 // ============ 渲染 ============
 const CURRENT_SUPPLIER = '深圳市华强电子科技有限公司'; // 供应商账号 GYS001 对应的供应商主体
 let currentTab = 'receiving';
-let currentRole = 'supplier'; // 'supplier' 供应商视角 | 'internal' 企业内视角
 let filteredData = [];
 
-// 按视角做数据隔离：供应商视角仅返回自己供应商数据，企业内返回全部
+// 供应商账号数据隔离：仅返回本供应商数据
 function getScopedData(src) {
-  if (currentRole === 'supplier') return src.filter(row => row.supplier === CURRENT_SUPPLIER);
-  return [...src];
-}
-
-function renderSupplierOptions() {
-  const sel = document.getElementById('filterSupplier');
-  if (currentRole === 'internal') {
-    sel.innerHTML = `<option value="">全部供应商</option>
-      <option value="深圳市华强电子科技有限公司">深圳市华强电子科技有限公司</option>
-      <option value="东莞市精密制造有限公司">东莞市精密制造有限公司</option>
-      <option value="广州市恒达贸易有限公司">广州市恒达贸易有限公司</option>`;
-  } else {
-    sel.innerHTML = `<option value="">全部供应商</option>
-      <option value="${CURRENT_SUPPLIER}">${CURRENT_SUPPLIER}</option>`;
-  }
+  return src.filter(row => row.supplier === CURRENT_SUPPLIER);
 }
 
 function switchTab(tab) {
@@ -835,30 +1047,87 @@ function switchTab(tab) {
   renderTable();
 }
 
-function switchRole(role) {
-  currentRole = role;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.toggle('active', b.dataset.role === role));
-  const chip = document.getElementById('roleChip');
-  const avatar = document.getElementById('roleAvatar');
-  if (role === 'internal') {
-    chip.innerHTML = '采购员 <span class="code">张三</span>';
-    avatar.textContent = '采';
-  } else {
-    chip.innerHTML = '供应商 <span class="code">GYS001</span>';
-    avatar.textContent = '供';
-  }
-  renderSupplierOptions();
-  filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
-  renderTable();
+function confirmExport() {
+  const scopeText = '本人供应商数据';
+  const isQc = currentTab === 'qc';
+  const detailCount = filteredData.reduce((n, r) => n + (r.details || []).length, 0);
+  if (detailCount === 0) { toast('当前筛选条件下没有可导出的数据'); return; }
+  if (detailCount > 10000) { toast('导出数据超过 10000 行，请缩小筛选范围后分批导出'); return; }
+  const tabName = isQc ? '质检异常' : '收货差异';
+  openGenericConfirm(
+    '导出确认',
+    `确认导出当前筛选下的「<strong>${tabName}</strong>」数据？`,
+    '确认导出',
+    false,
+    () => {
+      closeGenericConfirm();
+      exportData();
+    }
+  );
+}
+
+function confirmSyncNow() {
+  openGenericConfirm(
+    '立即同步',
+    '确认立即同步易仓最新异常数据？<br>将增量拉取易仓接口并全量覆盖更新本地数据（每 15 分钟定时同步不受影响）。',
+    '确认同步',
+    false,
+    () => {
+      closeGenericConfirm();
+      toast('已触发立即同步，正在拉取易仓最新数据…');
+    }
+  );
 }
 
 function exportData() {
-  const scopeText = currentRole === 'supplier' ? '本人供应商数据' : '当前筛选范围';
-  if (filteredData.length > 10000) {
+  const scopeText = '本人供应商数据';
+  const isQc = currentTab === 'qc';
+  // 商品维度行数 = 筛选范围内所有明细之和
+  const detailCount = filteredData.reduce((n, r) => n + (r.details || []).length, 0);
+  if (detailCount > 10000) {
     toast('导出数据超过 10000 行，请缩小筛选范围后分批导出');
     return;
   }
-  toast(`已导出 ${filteredData.length} 条异常数据（${scopeText}），已记录导出日志`);
+  if (filteredData.length === 0) {
+    toast('当前筛选条件下没有可导出的数据');
+    return;
+  }
+  const esc = v => {
+    const s = v == null ? '' : String(v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const common = (r, withType) => {
+    const arr = [r.receivingCode, r.supplier, r.poCode, r.internalPoCode, r.internalOrderCode, r.decision || '', r.status];
+    if (withType) arr.push(r.type || ''); // 异常类型仅 Tab1（收货差异）有
+    arr.push(r.time, r.updateTime, r.operateTime || '');
+    return arr;
+  };
+  // 双 Tab 独立模板（单据级公共字段 + 各自商品字段）
+  const headers = isQc
+    ? ['异常单号','供应商','参考号','内部采购单号','内部采购订单号','采购决策','协作状态','创建时间','更新时间','操作时间','商品名称','货号','SKU编码','SPU','属性','商品图片链接','送检数量','实收数量','问题数量','不合格项','处理类型','备注','物流单号']
+    : ['异常单号','供应商','参考号','内部采购单号','内部采购订单号','采购决策','协作状态','异常类型','创建时间','更新时间','操作时间','商品名称','货号','SKU编码','SPU','属性','商品图片链接','预期数量','实际收货数量','差异数量','物流单号'];
+  let csv = headers.map(esc).join(',') + '\n';
+  filteredData.forEach(row => {
+    (row.details || []).forEach(d => {
+      const base = common(row, !isQc);
+      if (isQc) {
+        csv += [...base, d.productName, d.itemNo, d.sku, d.spu, `${d.color}/${d.size}`, d.img, d.send, d.received, d.bad, d.defect || '', d.processType || '', d.qeDesc || '', d.logisticsTrackingNumber || ''].map(esc).join(',') + '\n';
+      } else {
+        const diff = row.type === '多发' ? d.received - d.expected : d.expected - d.received;
+        csv += [...base, d.productName, d.itemNo, d.sku, d.spu, `${d.color}/${d.size}`, d.img, d.expected, d.received, diff, row.trackingNo || ''].map(esc).join(',') + '\n';
+      }
+    });
+  });
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `采购异常_${isQc ? '质检异常' : '收货差异'}_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast(`已导出 ${detailCount} 条商品明细（${scopeText}）`);
 }
 
 function toggleDetail(idx) {
@@ -899,14 +1168,14 @@ function renderTable() {
   const supplierTh = `<th>供应商</th>`;
   if (isReceiving) {
     thead.innerHTML = `<tr>
-      ${expandAllTh}<th>收货单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>内部采购订单号</th><th>异常商品</th>
-      <th>异常类型</th><th>采购决策</th><th>协作状态</th><th>创建时间</th><th>操作</th>
+      ${expandAllTh}<th>采购订单号</th><th>收货单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>异常商品</th>
+      <th>异常类型</th><th>采购决策</th><th>协作状态</th><th>时间信息</th><th>操作</th>
     </tr>`;
-    hint.textContent = '点击行展开商品明细 · 采购决策为「继续来货」且已确认时可回填物流号，其余仅查看';
+    hint.textContent = '点击行展开商品明细 · 采购决策为「继续来货」且已审核（re_status=3）可回填物流号，其余仅查看';
   } else {
     thead.innerHTML = `<tr>
-      ${expandAllTh}<th>入库单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>内部采购订单号</th><th>异常商品</th>
-      <th>采购决策</th><th>协作状态</th><th>创建时间</th><th>操作</th>
+      ${expandAllTh}<th>采购订单号</th><th>入库单号</th>${supplierTh}<th>参考号</th><th>内部采购单号</th><th>异常商品</th>
+      <th>采购决策</th><th>协作状态</th><th>时间信息</th><th>操作</th>
     </tr>`;
     hint.textContent = '点击行展开商品明细 · 「换货」且已确认可回填物流/申请终止，其余仅查看';
   }
@@ -918,18 +1187,18 @@ function renderTable() {
     const codeCell = `<span class="mono-link" onclick="event.stopPropagation(); toast('查看详情：${code}')">${code}</span>`;
     const skuCount = `<span class="sku-count">× ${row.details.length} SKU</span>`;
     const status = statusTag(row.status);
-    const time = `<span class="mono text-secondary">${row.time}</span>`;
+    const time = timeInfoCell(row);
     const actions = isReceiving ? receivingActions(row) : qcActions(row);
 
     const supplierCell = `<td>${row.supplier}</td>`;
     const mainRow = isReceiving
       ? `<tr class="main-row" id="main-${i}" onclick="toggleDetail(${i})">
           <td>${caret}</td>
+          <td><span class="mono">${row.internalOrderCode}</span></td>
           <td>${codeCell}</td>
           ${supplierCell}
           <td><span class="mono">${row.poCode}</span></td>
           <td><span class="mono">${row.internalPoCode}</span></td>
-          <td><span class="mono">${row.internalOrderCode}</span></td>
           <td>${skuCount}</td>
           <td>${typeTag(row.type)}</td>
           <td>${decisionCell(row)}</td>
@@ -939,11 +1208,11 @@ function renderTable() {
         </tr>`
       : `<tr class="main-row" id="main-${i}" onclick="toggleDetail(${i})">
           <td>${caret}</td>
+          <td><span class="mono">${row.internalOrderCode}</span></td>
           <td>${codeCell}</td>
           ${supplierCell}
           <td><span class="mono">${row.poCode}</span></td>
           <td><span class="mono">${row.internalPoCode}</span></td>
-          <td><span class="mono">${row.internalOrderCode}</span></td>
           <td>${skuCount}</td>
           <td>${decisionCell(row)}</td>
           <td>${status}</td>
@@ -982,7 +1251,7 @@ function renderDetails(details, isReceiving) {
       return `<tr>
         <td><div class="product-with-img">
           <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
-          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">属性 ${d.color}/${d.size}</span></div>
         </div></td>
         <td><span class="mono">${d.expected}</span></td>
         <td><span class="mono">${d.received}</span></td>
@@ -998,7 +1267,7 @@ function renderDetails(details, isReceiving) {
       return `<tr>
         <td><div class="product-with-img">
           <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
-          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+          <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">属性 ${d.color}/${d.size}</span></div>
         </div></td>
         <td><span class="mono">${d.send}</span></td>
         <td><span class="mono">${d.received}</span></td>
@@ -1021,12 +1290,21 @@ function applyFilters() {
   const status = document.getElementById('filterStatus').value;
   const code = document.getElementById('filterCode').value.trim().toLowerCase();
   const product = document.getElementById('filterProduct').value.trim().toLowerCase();
-  const supplier = document.getElementById('filterSupplier').value;
+  const timeType = document.getElementById('filterTimeType').value;
+  const dateStart = document.getElementById('filterDateStart').value;
+  const dateEnd = document.getElementById('filterDateEnd').value;
   const src = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
+
+  const inRange = (v, s, e) => {
+    if (!v) return false;
+    const d = String(v).slice(0, 10);
+    if (s && d < s) return false;
+    if (e && d > e) return false;
+    return true;
+  };
 
   filteredData = src.filter(row => {
     if (status && row.status !== status) return false;
-    if (supplier && row.supplier !== supplier) return false;
     if (code) {
       const codeFields = [row.receivingCode, row.poCode, row.internalPoCode, row.internalOrderCode];
       if (!codeFields.some(f => f && f.toLowerCase().includes(code))) return false;
@@ -1038,6 +1316,10 @@ function applyFilters() {
         d.spu.toLowerCase().includes(product)
       )) return false;
     }
+    if (dateStart || dateEnd) {
+      const field = timeType === 'update' ? row.updateTime : (timeType === 'operate' ? row.operateTime : row.time);
+      if (!inRange(field, dateStart, dateEnd)) return false;
+    }
     return true;
   });
   renderTable();
@@ -1048,7 +1330,7 @@ function resetFilters() {
   document.getElementById('filterStatus').value = '';
   document.getElementById('filterCode').value = '';
   document.getElementById('filterProduct').value = '';
-  document.getElementById('filterSupplier').value = '';
+  document.getElementById('filterTimeType').value = 'create';
   document.getElementById('filterDateStart').value = '';
   document.getElementById('filterDateEnd').value = '';
   filteredData = getScopedData(currentTab === 'receiving' ? receivingData : qcData);
@@ -1065,8 +1347,10 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
 }
 
-// ============ 填写物流弹窗（Tab1 收货差异 / Tab2 质检异常 共用） ============
+// ============ 回填物流弹窗（Tab1 收货差异 / Tab2 质检异常 共用） ============
 let currentLogisticsDetails = [];
+let currentLogisticsTab = 'receiving';
+let currentLogisticsCode = '';
 
 // 模拟易仓 getPurchaseShipper 接口：拉取承运商列表（ps_id / ps_name）
 function getPurchaseShipper() {
@@ -1086,6 +1370,8 @@ function openLogisticsModal(tab, code) {
   const row = src.find(r => r.receivingCode === code);
   if (!row) return;
 
+  currentLogisticsTab = tab;
+  currentLogisticsCode = code;
   // 明细：Tab1 全部少发商品；Tab2 仅换货商品
   currentLogisticsDetails = isReceiving ? row.details : row.details.filter(d => d.processType === '换货');
 
@@ -1097,7 +1383,7 @@ function openLogisticsModal(tab, code) {
 
   const productCell = d => `<td><div class="product-with-img">
     <div class="product-thumb"><img src="${d.img}" alt="${d.productName}" onerror="this.parentElement.textContent='📦'"></div>
-    <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">颜色 ${d.color} · 尺码 ${d.size}</span></div>
+    <div class="product-cell"><span class="product-name">${d.productName}</span><span class="product-sku">货号 ${d.itemNo} · SKU ${d.sku} · SPU ${d.spu}</span><span class="product-spec">属性 ${d.color}/${d.size}</span></div>
   </div></td>`;
 
   if (isReceiving) {
@@ -1136,6 +1422,159 @@ function closeLogisticsModal() {
   document.getElementById('logisticsModal').classList.remove('show');
 }
 
+// ============ 申请终止确认弹窗 ============
+let terminateCode = '';
+
+function openConfirmTerminate(code) {
+  const row = qcData.find(r => r.receivingCode === code);
+  if (!row) return;
+  terminateCode = code;
+  document.getElementById('confirmCode').textContent = code;
+  document.getElementById('confirmSkuCount').textContent = row.details.filter(d => d.processType === '换货').length;
+  document.getElementById('confirmTerminateModal').classList.add('show');
+}
+
+function closeConfirmTerminateModal() {
+  document.getElementById('confirmTerminateModal').classList.remove('show');
+}
+
+function confirmTerminate() {
+  toast(`已提交终止申请，入库单 ${terminateCode} 进入「待审核」，等待采购员审核`);
+  closeConfirmTerminateModal();
+}
+
+// ============ 通用确认弹窗（撤回申请 / 导出 / 立即同步 / 回写失败提示） ============
+let gcOnConfirm = () => {};
+
+function openGenericConfirm(title, text, okText, danger, onConfirm) {
+  document.getElementById('gcTitle').textContent = title;
+  document.getElementById('gcText').innerHTML = text;
+  const okBtn = document.getElementById('gcOkBtn');
+  okBtn.textContent = okText;
+  okBtn.className = danger ? 'btn btn-danger' : 'btn btn-primary';
+  gcOnConfirm = onConfirm;
+  document.getElementById('genericConfirmModal').classList.add('show');
+}
+
+function closeGenericConfirm() {
+  document.getElementById('genericConfirmModal').classList.remove('show');
+}
+
+function openConfirmWithdraw(code) {
+  openGenericConfirm(
+    '撤回申请',
+    `确认撤回「<strong>${code}</strong>」的终止申请？<br>撤回后状态回退「待回填单号」，供应商可重新操作。`,
+    '确认撤回',
+    true,
+    () => {
+      toast(`已撤回：入库单 ${code} 状态回退「待回填单号」`);
+      closeGenericConfirm();
+    }
+  );
+}
+
+// ============ 操作日志弹窗 ============
+function actorTag(actor) {
+  const cls = actor.startsWith('系统') ? 'sys' : (actor.startsWith('采购员') ? 'buyer' : 'supplier');
+  return `<span class="log-actor-tag ${cls}">${actor}</span>`;
+}
+
+function logItemHtml(log) {
+  return `<div class="log-item">
+      <div class="log-time">${log.time}</div>
+      <div class="log-body">
+        <div class="log-actor">${actorTag(log.actor)}<span class="log-action">${log.action}</span></div>
+        <div class="log-detail">${log.detail}</div>
+      </div>
+    </div>`;
+}
+
+function openLogModal(kind, code) {
+  const data = kind === 'receiving' ? receivingData : qcData;
+  const row = data.find(r => r.receivingCode === code);
+  if (!row) return;
+  document.getElementById('logCode').textContent = code;
+  document.getElementById('logSupplier').textContent = row.supplier;
+  document.getElementById('logList').innerHTML = (row.logs || []).map(logItemHtml).join('');
+  document.getElementById('logModal').classList.add('show');
+}
+
+function closeLogModal() {
+  document.getElementById('logModal').classList.remove('show');
+}
+
+// ============ 审核弹窗 ============
+let auditCode = '';
+
+function openAuditModal(code) {
+  const row = qcData.find(r => r.receivingCode === code);
+  if (!row) return;
+  auditCode = code;
+  document.getElementById('auditCode').textContent = code;
+  document.getElementById('auditSupplier').textContent = row.supplier;
+  document.getElementById('auditReason').textContent = row.terminateReason || '—';
+  document.getElementById('auditSkuCount').textContent = `${row.details.length} 个商品`;
+  document.querySelector('input[name="auditResult"][value="approve"]').checked = true;
+  document.getElementById('refundType').value = '2';
+  document.getElementById('rejectReason').value = '';
+  document.getElementById('auditRemark').value = '';
+  showApproveFields();
+  document.getElementById('auditModal').classList.add('show');
+}
+
+function closeAuditModal() {
+  document.getElementById('auditModal').classList.remove('show');
+}
+
+function onAuditOptionChange() {
+  const v = document.querySelector('input[name="auditResult"]:checked').value;
+  document.getElementById('approveFields').style.display = v === 'approve' ? '' : 'none';
+  document.getElementById('rejectFields').style.display = v === 'reject' ? '' : 'none';
+}
+
+function showApproveFields() {
+  document.getElementById('approveFields').style.display = '';
+  document.getElementById('rejectFields').style.display = 'none';
+}
+
+function submitAudit() {
+  const v = document.querySelector('input[name="auditResult"]:checked').value;
+  if (v === 'approve') {
+    const refundType = document.getElementById('refundType').value;
+    const mockFail = document.getElementById('mockForceFail').checked;
+    closeAuditModal();
+    toast('正在调用采购单强制完成接口…');
+    setTimeout(() => {
+      if (mockFail) {
+        // 强关失败：提示接口返回错误信息，单据不流转保持"待审核"
+        openGenericConfirm(
+          '强关失败',
+          '接口返回错误信息：<strong>该采购单存在未处理记录，无法强制完成</strong><br>异常单据未流转，状态保持「待审核」，采购员可重新审核。',
+          '知道了',
+          true,
+          closeGenericConfirm
+        );
+      } else {
+        // 强关成功：已结案
+        const now = new Date();
+        const t = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        const row = qcData.find(r => r.receivingCode === auditCode);
+        if (row) {
+          row.status = '已结案';
+          row.logs.push({ time: t, actor: '系统', action: '更新', detail: `审核通过，purchaseForceCompletion 强关成功（退款类型 ${refundType}），状态进入「已结案」` });
+        }
+        renderTable();
+        toast(`强关成功：入库单 ${auditCode} 已结案`);
+      }
+    }, 800);
+  } else {
+    const reason = document.getElementById('rejectReason').value.trim();
+    if (!reason) { toast('请填写驳回原因'); return; }
+    toast(`已驳回：入库单 ${auditCode} 回退「待回填单号」`);
+    closeAuditModal();
+  }
+}
+
 function submitLogistics() {
   const trackingNo = document.getElementById('trackingNo').value.trim();
   const method = document.getElementById('shipperMethod').value;
@@ -1143,12 +1582,36 @@ function submitLogistics() {
   if (!trackingNo) { toast('请填写物流单号'); return; }
   if (!method) { toast('请选择运输方式'); return; }
   if (!carrier) { toast('请选择承运商'); return; }
-  toast(`已提交补发物流单号 ${trackingNo}，回写 syncPurchaseTrackingNote`);
+
+  const isReceiving = currentLogisticsTab === 'receiving';
+  const src = isReceiving ? receivingData : qcData;
+  const row = src.find(r => r.receivingCode === currentLogisticsCode);
+  const mockFail = document.getElementById('mockSyncFail').checked;
+
   closeLogisticsModal();
+  toast('正在回写 syncPurchaseTrackingNote…');
+
+  setTimeout(() => {
+    const now = new Date();
+    const t = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    if (mockFail) {
+      // 回写失败：提示接口错误信息，单据保持「待回填单号」，不流转
+      if (row) row.logs.push({ time: t, actor: '系统', action: '更新', detail: `调用 syncPurchaseTrackingNote 回写易仓失败：该物流单号已存在，请核实。单据保持「待回填单号」，可修改后重新提交（单号 ${trackingNo}）` });
+      renderTable();
+      openGenericConfirm('回写失败', '接口返回错误信息：<strong>该物流单号已存在，请核实</strong><br>单据状态保持「待回填单号」，可修改后重新提交。', '知道了', true, closeGenericConfirm);
+    } else if (row) {
+      // 回写成功：状态进入「待结案」，等待易仓推进完成后自动结案
+      row.status = '待结案';
+      row.trackingNo = trackingNo;
+      row.logs.push({ time: t, actor: `${row.supplier}·供应商`, action: '回填物流号', detail: `回填物流单号 ${trackingNo}（运输方式 ${method === '2' ? '快递' : '物流'}）` });
+      row.logs.push({ time: t, actor: '系统', action: '更新', detail: '调用 syncPurchaseTrackingNote 回写易仓成功，状态进入「待结案」，等待易仓推进完成后自动结案' });
+      renderTable();
+      toast(`回写成功：${isReceiving ? '收货单' : '入库单'} ${currentLogisticsCode} 进入「待结案」`);
+    }
+  }, 800);
 }
 
 // ============ 初始化 ============
-renderSupplierOptions();
 filteredData = getScopedData(receivingData);
 renderTable();
 </script>
