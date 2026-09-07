@@ -663,8 +663,8 @@ mutation fulfillmentCreate($fulfillment: FulfillmentInput!, $message: String) {
 ## 9. 前端页面设计
 
 > 详见独立文档：
-> - **原型文档**：`PRD文档/拆单结果原型.md`
-> - **功能PRD**：`PRD文档/拆单结果PRD.md`
+> - **原型文档**：`拆单结果原型.md`（文档待补）
+> - **功能PRD**：`拆单结果PRD.md`（文档待补）
 
 ---
 
